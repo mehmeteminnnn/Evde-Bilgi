@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: camel_case_types
 class giris_ekrani extends StatelessWidget {
   final IconData iconData;
   final String text;

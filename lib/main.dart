@@ -1,4 +1,5 @@
-import 'package:evde_bilgi/giris_ekran%C4%B1_logo_widget.dart';
+import 'package:evde_bilgi/giris_ekranı_logo_widget.dart';
+import 'package:evde_bilgi/ilan_ver.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -21,14 +22,86 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {},
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+                ;
+              },
+            );
+          },
         ),
         title: Text("cw"),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        elevation: 0,
+      ),
+      drawer: Drawer(
+        child: Column(
+          children: <Widget>[
+            DrawerHeader(
+              child: Image.asset('assets/logov3.png'),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Ana Sayfa'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.list),
+              title: Text('İş İlanları'),
+              onTap: () {
+                // Handle the action
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add_box),
+              title: Text('İlan Ver'),
+              onTap: () {
+                // Handle the action
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.search),
+              title: Text('Öğretmen Bul'),
+              onTap: () {
+                // Handle the action
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.group),
+              title: Text('Aile Girişi'),
+              onTap: () {
+                // Handle the action
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Öğretmen Girişi'),
+              onTap: () {
+                // Handle the action
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.contact_phone),
+              title: Text('İletişim'),
+              onTap: () {
+                // Handle the action
+              },
+            ),
+            Spacer(), // This will push the following ListTile to the bottom
+            ListTile(
+              leading: Icon(Icons.person_add),
+              title: Text('Üye Ol'),
+              onTap: () {
+                // Handle the action
+              },
+            ),
+          ],
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -56,22 +129,37 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('Öğretmen Arıyorum'),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                textStyle: TextStyle(fontSize: 18),
-              ),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('İş Arıyorum'),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                textStyle: TextStyle(fontSize: 18),
-              ),
+            Column(
+              children: [
+                SizedBox(
+                  width: 300,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => IlanVer()));
+                    },
+                    child: Text('Öğretmen Arıyorum'),
+                    style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                      textStyle: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                SizedBox(
+                  width: 300,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Text('İş Arıyorum'),
+                    style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                      textStyle: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 45),
             OutlinedButton(
