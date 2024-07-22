@@ -1,3 +1,5 @@
+import 'package:evde_bilgi/app_bar.dart';
+import 'package:evde_bilgi/ogretmen_bilgi.dart';
 import 'package:flutter/material.dart';
 
 class IlanVer extends StatelessWidget {
@@ -5,15 +7,7 @@ class IlanVer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
-      appBar: AppBar(
-        title: Text('EVDE BİLGİ'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {},
-          ),
-        ],
-      ),
+      appBar: EvdeBilgiAppBar(),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -33,7 +27,14 @@ class IlanVer extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CalismaAdresiScreen(),
+                    ),
+                  );
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
