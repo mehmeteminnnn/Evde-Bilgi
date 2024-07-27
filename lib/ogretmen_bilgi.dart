@@ -1,4 +1,5 @@
 import 'package:evde_bilgi/app_bar.dart';
+import 'package:evde_bilgi/is_ayr%C4%B1ntilari.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
@@ -138,8 +139,13 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
             Spacer(),
             ElevatedButton(
               onPressed: () {
-                // İleri butonuna basıldığında yapılacak işlemler
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => JobSelectionPage()));
               },
+              // İleri butonuna basıldığında yapılacak işlemler
+
               child: Text('İleri'),
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(
