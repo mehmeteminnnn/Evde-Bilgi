@@ -1,16 +1,42 @@
-# evde_bilgi
+# Aileler için Profesyonel Destek Uygulaması
 
-A new Flutter project.
+Bu mobil uygulama, ailelerin oyun ablası/abisi, gölge öğretmen, yaşam lideri ve evde bireysel destek hizmetleri sunan profesyonelleri bulmalarını sağlayan kapsamlı bir platformdur. 
 
-## Getting Started
+## Özellikler
 
-This project is a starting point for a Flutter application.
+- **Öğretmen Profilleri:** Aileler, öğretmen profillerini görüntüleyebilir veya ilan verebilirler.
+- **İlan Verme:** Aileler, ilan verebilmek için öncelikle bir form doldurur ve bu form yetkili kişi tarafından onaylanır.
+- **Erişim Paketleri:** Farklı erişim paketleri sunulur, bu paketler PDF formatında indirilebilir.
+- **Uygulama İçi Ödemeler:** Sanal POS veya anlaşmalı bankalar aracılığıyla gerçekleştirilir.
 
-A few resources to get you started if this is your first Flutter project:
+## Kullanıcı Panelleri
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Öğretmen Paneli
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. **Kayıt:** Öğretmenler, "Öğretmen Olarak Üye Ol" butonunu seçerek kayıt olurlar ve soruları yanıtlarlar. 
+   - İlgili tasarım sayfaları: 12 ve 15
+
+2. **Modüller:**
+   - İş İlanları (Sayfa 17-18-19-20)
+   - Mesajlar
+   - Özgeçmiş (Sayfa 21-22-23-24)
+   - Başvurularım
+   - Ayarlar
+
+### Aile Paneli
+
+1. **Modüller:**
+   - İş İlanları (Opsiyonel olarak çıkarılabilir)
+   - İlan Ver (Sayfa 5-6-7-8-9-10-11) => İlan vermeden önce ailelerin form doldurması gerekmektedir.
+   - Öğretmen Bul (Sayfa 25-26-27)
+   - İlanlarım
+   - Aday İşlemleri (Opsiyonel olarak çıkarılabilir)
+   - Mesajlarım
+   - Paketlerim
+   - Ayarlar
+
+## Kurulum ve Kullanım
+
+1. **Projeyi Klonlayın:**
+   ```bash
+   git clone https://github.com/mehmeteminnnn/aileler-icin-destek-uygulamasi.git
