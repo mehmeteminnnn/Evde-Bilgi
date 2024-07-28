@@ -1,4 +1,5 @@
 import 'package:evde_bilgi/app_bar.dart';
+import 'package:evde_bilgi/ihtiyac_detay.dart';
 import 'package:flutter/material.dart';
 
 class JobSelectionPage extends StatelessWidget {
@@ -61,6 +62,12 @@ class JobSelectionPage extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailPage(),
+                    ),
+                  );
                   // Next action
                 },
                 child: Text('İleri'),
