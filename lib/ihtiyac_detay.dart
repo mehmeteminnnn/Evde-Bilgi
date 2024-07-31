@@ -1,3 +1,4 @@
+import 'package:evde_bilgi/app_bar.dart';
 import 'package:evde_bilgi/maas_sayfa.dart';
 import 'package:flutter/material.dart';
 
@@ -5,16 +6,7 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Evde Bilgi'),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: Colors.black),
-          onPressed: () {},
-        ),
-      ),
+      appBar: EvdeBilgiAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -54,6 +46,7 @@ class DetailPage extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => SalaryPage()));
                 },
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
                   padding: EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),

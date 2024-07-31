@@ -60,22 +60,28 @@ class JobSelectionPage extends StatelessWidget {
             ),
             Spacer(),
             Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailPage(),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailPage(),
+                      ),
+                    );
+                    // Next action
+                  },
+                  child: Text('İleri'),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.orange,
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                  );
-                  // Next action
-                },
-                child: Text('İleri'),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  ),
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),
