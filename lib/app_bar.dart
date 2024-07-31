@@ -16,7 +16,6 @@ class EvdeBilgiAppBar extends StatelessWidget implements PreferredSizeWidget {
           );
         },
       ),
-      title: Text("cw"),
       centerTitle: true,
       backgroundColor: Colors.transparent,
     );

@@ -1,5 +1,6 @@
 import 'package:evde_bilgi/giris_ekranı_logo_widget.dart';
 import 'package:evde_bilgi/ilan_ver.dart';
+import 'package:evde_bilgi/uye_olma.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -163,7 +164,10 @@ class HomeScreen extends StatelessWidget {
             ),
             SizedBox(height: 45),
             OutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UyeOlma()));
+              },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
