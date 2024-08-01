@@ -1,3 +1,4 @@
+import 'package:evde_bilgi/aile_kayit.dart';
 import 'package:evde_bilgi/giris_ekranı_logo_widget.dart';
 import 'package:evde_bilgi/ilan_ver.dart';
 import 'package:evde_bilgi/uye_olma.dart';
@@ -151,7 +152,12 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   width: 300,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FamilyRegisterPage()));
+                    },
                     child: Text('İş Arıyorum'),
                     style: ElevatedButton.styleFrom(
                       padding:
