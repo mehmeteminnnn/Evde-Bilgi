@@ -1,20 +1,13 @@
 import 'package:evde_bilgi/app_bar.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
+class TeacherRegisterPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: FamilyRegisterPage(),
-    );
-  }
+  State<TeacherRegisterPage> createState() => _TeacherRegisterPageState();
 }
 
-class FamilyRegisterPage extends StatelessWidget {
+class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
+  bool isChecked = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,14 +16,16 @@ class FamilyRegisterPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Aile Kayıt',
+                'Öğretmen Kayıt',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 16),
               buildTextField('Adınız/Soyadınız'),
+              SizedBox(height: 16),
+              buildDropdown('Vatandaşlık'),
               SizedBox(height: 16),
               buildTextField('Cep Telefonu'),
               SizedBox(height: 16),
@@ -43,8 +38,12 @@ class FamilyRegisterPage extends StatelessWidget {
               Row(
                 children: [
                   Checkbox(
-                    value: false,
-                    onChanged: (bool? value) {},
+                    value: isChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isChecked = value ?? true;
+                      });
+                    },
                   ),
                   Expanded(
                     child: Text(
@@ -102,6 +101,29 @@ class FamilyRegisterPage extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
       ),
+    );
+  }
+
+  Widget buildDropdown(String label) {
+    return DropdownButtonFormField<String>(
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black),
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      items: <String>['Türkiye', 'Diğer']
+          .map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: (String? newValue) {},
     );
   }
 }

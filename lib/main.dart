@@ -1,6 +1,7 @@
 import 'package:evde_bilgi/aile_kayit.dart';
 import 'package:evde_bilgi/giris_ekranı_logo_widget.dart';
 import 'package:evde_bilgi/ilan_ver.dart';
+import 'package:evde_bilgi/ogretmen_kay%C4%B1t.dart';
 import 'package:evde_bilgi/uye_olma.dart';
 import 'package:flutter/material.dart';
 
@@ -99,6 +100,8 @@ class HomeScreen extends StatelessWidget {
               leading: Icon(Icons.person_add),
               title: Text('Üye Ol'),
               onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UyeOlma()));
                 // Handle the action
               },
             ),
@@ -156,7 +159,7 @@ class HomeScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => FamilyRegisterPage()));
+                              builder: (context) => TeacherRegisterPage()));
                     },
                     child: Text('İş Arıyorum'),
                     style: ElevatedButton.styleFrom(
