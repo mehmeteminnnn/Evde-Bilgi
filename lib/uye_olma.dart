@@ -1,4 +1,6 @@
+import 'package:evde_bilgi/aile_kayit.dart';
 import 'package:evde_bilgi/app_bar.dart';
+import 'package:evde_bilgi/ogretmen_kay%C4%B1t.dart';
 import 'package:flutter/material.dart';
 
 class UyeOlma extends StatelessWidget {
@@ -14,7 +16,12 @@ class UyeOlma extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FamilyRegisterPage()));
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 side: BorderSide(color: Colors.black),
@@ -32,7 +39,14 @@ class UyeOlma extends StatelessWidget {
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TeacherRegisterPage()));
+                }
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 side: BorderSide(color: Colors.black),
