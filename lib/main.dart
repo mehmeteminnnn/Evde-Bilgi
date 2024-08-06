@@ -2,6 +2,7 @@ import 'package:evde_bilgi/aile_kayit.dart';
 import 'package:evde_bilgi/giris_ekranı_logo_widget.dart';
 import 'package:evde_bilgi/ilan_ver.dart';
 import 'package:evde_bilgi/ogretmen_kay%C4%B1t.dart';
+import 'package:evde_bilgi/ozgecmis_ekranlari/ozgecmis_1.dart';
 import 'package:evde_bilgi/uye_olma.dart';
 import 'package:flutter/material.dart';
 
@@ -191,6 +192,15 @@ class HomeScreen extends StatelessWidget {
                 side: BorderSide(color: Colors.blue),
               ),
             ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => OzgecmisimEkrani1()));
+              },
+              child: Text('Deneme Butonu'),
+            )
           ],
         ),
       ),

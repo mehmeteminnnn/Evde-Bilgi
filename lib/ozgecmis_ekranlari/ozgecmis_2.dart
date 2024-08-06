@@ -1,6 +1,7 @@
+import 'package:evde_bilgi/ozgecmis_ekranlari/ozgecmis_3.dart';
 import 'package:flutter/material.dart';
 
-class OzgecmisimEkrani1 extends StatelessWidget {
+class OzgecmisimEkrani2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,42 +13,6 @@ class OzgecmisimEkrani1 extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(labelText: 'Konum'),
-              items: ['Türkiye', 'Diğer'].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {},
-            ),
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(labelText: 'İl Seçiniz'),
-              items: ['İstanbul', 'Ankara', 'İzmir'].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {},
-            ),
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(labelText: 'İlçe Seçiniz'),
-              items: ['Kadıköy', 'Çankaya', 'Konak'].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {},
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: 'Doğum Tarihi'),
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: 'Deneyim'),
-            ),
             Wrap(
               spacing: 8.0,
               children: [
@@ -68,9 +33,22 @@ class OzgecmisimEkrani1 extends StatelessWidget {
                 ChoiceChip(label: Text('Yatılı'), selected: false),
               ],
             ),
+            TextField(
+              decoration:
+                  InputDecoration(labelText: 'Minimum Ücret (TL saat başına)'),
+            ),
+            TextField(
+              decoration:
+                  InputDecoration(labelText: 'Maksimum aylık maaş (TL)'),
+            ),
+            TextField(
+              decoration: InputDecoration(
+                  labelText: 'İş deneyiminizi ve görevlerinizi tanımlayın.'),
+              maxLines: 3,
+            ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => OzgecmisimEkrani3()));},
               child: Text('Kaydet'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepOrange,

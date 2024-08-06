@@ -1,3 +1,4 @@
+import 'package:evde_bilgi/ozgecmis_ekranlari/ek_bilgi.dart';
 import 'package:flutter/material.dart';
 
 class OzgecmisimEkrani3 extends StatefulWidget {
@@ -184,6 +185,10 @@ class _EkBilgilerEkraniState extends State<OzgecmisimEkrani3> {
                 ),
                 TextButton(
                   onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EkBilgilerEkrani()));
                     // Kaydet butonu işlevi
                   },
                   style: TextButton.styleFrom(
