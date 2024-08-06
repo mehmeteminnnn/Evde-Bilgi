@@ -1,12 +1,21 @@
 import 'package:evde_bilgi/app_bar.dart';
 import 'package:evde_bilgi/is_ayr%C4%B1ntilari.dart';
+import 'package:evde_bilgi/models/il_model.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
-Future<List<dynamic>> loadJsonData() async {
-  String jsonString = await rootBundle.loadString('assets/data.json');
-  return jsonDecode(jsonString);
+Future<List<IlModel>> loadJsonData() async {
+  try {
+    String jsonString = await rootBundle.loadString('assets/data.json');
+    List<dynamic> jsonList = jsonDecode(jsonString);
+    return jsonList
+        .map((json) => IlModel.fromJson(json as Map<String, dynamic>))
+        .toList();
+  } catch (e) {
+    print('Error loading JSON data: $e');
+    return [];
+  }
 }
 
 class CalismaAdresiScreen extends StatefulWidget {
@@ -24,7 +33,7 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
   List<String> districts = [];
   List<String> neighborhoods = [];
 
-  List<dynamic> jsonData = [];
+  List<IlModel> jsonData = [];
 
   @override
   void initState() {
@@ -32,15 +41,34 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
     loadJsonData().then((data) {
       setState(() {
         jsonData = data;
-        cities = data.map<String>((city) => city['name'] as String).toList();
+        cities = data.map((il) => il.name).toList();
       });
     });
+  }
+
+  List<String> getNeighborhoods(String? selectedDistrict) {
+    List<String> neighborhoodList = [];
+    if (selectedCity != null && selectedDistrict != null) {
+      var cityData = jsonData.firstWhere(
+        (il) => il.name == selectedCity,
+        orElse: () => IlModel(name: '', counties: []),
+      );
+      for (var county in cityData.counties) {
+        var districtData = county.districts.firstWhere(
+          (district) => district.name == selectedDistrict,
+          orElse: () => District(name: '', neighborhoods: []),
+        );
+        neighborhoodList.addAll(
+            districtData.neighborhoods.map((neigh) => neigh.name).toList());
+      }
+    }
+    return neighborhoodList;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EvdeBilgiAppBar(),
+      appBar: AppBar(title: Text('Çalışma Adresi')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -78,12 +106,11 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
                 setState(() {
                   selectedCity = value;
                   var cityData = jsonData.firstWhere(
-                    (city) => city['name'] == value,
-                    orElse: () => {'counties': []}, // Boş county listesi döner
+                    (il) => il.name == value,
+                    orElse: () => IlModel(name: '', counties: []),
                   );
-                  districts = (cityData['counties'] as List<dynamic>)
-                      .map<String>((county) => county['name'] as String)
-                      .toList();
+                  districts =
+                      cityData.counties.map((county) => county.name).toList();
                   selectedDistrict = null;
                   selectedNeighborhood = null;
                   neighborhoods = [];
@@ -103,19 +130,7 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedDistrict = value;
-                  var cityData = jsonData.firstWhere(
-                    (city) => city['name'] == selectedCity,
-                    orElse: () => {'counties': []}, // Boş county listesi döner
-                  );
-                  var districtData =
-                      (cityData['counties'] as List<dynamic>).firstWhere(
-                    (county) => county['name'] == value,
-                    orElse: () =>
-                        {'districts': []}, // Boş district listesi döner
-                  );
-                  neighborhoods = (districtData['districts'] as List<dynamic>)
-                      .map<String>((district) => district['name'] as String)
-                      .toList();
+                  neighborhoods = getNeighborhoods(selectedDistrict);
                   selectedNeighborhood = null;
                 });
               },
@@ -144,12 +159,9 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
                     MaterialPageRoute(
                         builder: (context) => JobSelectionPage()));
               },
-              // İleri butonuna basıldığında yapılacak işlemler
-
               child: Text('İleri'),
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(
-                    double.infinity, 50), // Butonun genişliğini tam ekran yapar
+                minimumSize: Size(double.infinity, 50),
               ),
             ),
           ],
