@@ -1,5 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/app_bar.dart';
 import 'package:flutter/material.dart';
+
+final TextEditingController nameController = TextEditingController();
+final TextEditingController phoneController = TextEditingController();
+final TextEditingController emailController = TextEditingController();
+final TextEditingController passwordController = TextEditingController();
+final TextEditingController passwordController2 = TextEditingController();
+String? nationaility = "";
 
 class TeacherRegisterPage extends StatefulWidget {
   @override
@@ -8,6 +16,7 @@ class TeacherRegisterPage extends StatefulWidget {
 
 class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
   bool isChecked = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,17 +32,18 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 16),
-              buildTextField('Adınız/Soyadınız'),
+              buildTextField('Adınız/Soyadınız', nameController),
               SizedBox(height: 16),
               buildDropdown('Vatandaşlık'),
               SizedBox(height: 16),
-              buildTextField('Cep Telefonu'),
+              buildTextField('Cep Telefonu', phoneController),
               SizedBox(height: 16),
-              buildTextField('E-Posta'),
+              buildTextField('E-Posta', emailController),
               SizedBox(height: 16),
-              buildTextField('Şifre', isPassword: true),
+              buildTextField('Şifre', passwordController, isPassword: true),
               SizedBox(height: 16),
-              buildTextField('Şifre Tekrar', isPassword: true),
+              buildTextField('Şifre Tekrar', passwordController2,
+                  isPassword: true),
               SizedBox(height: 16),
               Row(
                 children: [
@@ -57,7 +67,9 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    saveDataToFirestoreTeacher();
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueGrey[800],
                     padding: EdgeInsets.symmetric(vertical: 16),
@@ -88,8 +100,10 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
     );
   }
 
-  Widget buildTextField(String label, {bool isPassword = false}) {
+  Widget buildTextField(String label, TextEditingController controller,
+      {bool isPassword = false}) {
     return TextField(
+      controller: controller,
       obscureText: isPassword,
       decoration: InputDecoration(
         labelText: label,
@@ -123,7 +137,23 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
           child: Text(value),
         );
       }).toList(),
-      onChanged: (String? newValue) {},
+      onChanged: (String? newValue) {
+        nationaility = newValue;
+      },
     );
+  }
+
+  Future<void> saveDataToFirestoreTeacher() async {
+    // Firestore bağlantısını kurun
+    final firestore = FirebaseFirestore.instance;
+
+    // Firestore'a veri ekleyin
+    await firestore.collection('ogretmen').add({
+      'name': nameController.text,
+      'phone': phoneController.text,
+      'email': emailController.text,
+      'password': passwordController.text,
+      "nationality": nationaility,
+    });
   }
 }

@@ -1,12 +1,16 @@
 import 'package:evde_bilgi/aile_kayit.dart';
+import 'package:evde_bilgi/firebase_options.dart';
 import 'package:evde_bilgi/giris_ekranı_logo_widget.dart';
 import 'package:evde_bilgi/ilan_ver.dart';
 import 'package:evde_bilgi/ogretmen_kay%C4%B1t.dart';
 import 'package:evde_bilgi/ozgecmis_ekranlari/ozgecmis_1.dart';
 import 'package:evde_bilgi/uye_olma.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
 }
 
