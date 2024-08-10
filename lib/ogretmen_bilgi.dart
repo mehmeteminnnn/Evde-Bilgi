@@ -1,4 +1,4 @@
-import 'package:evde_bilgi/app_bar.dart';
+import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/is_ayr%C4%B1ntilari.dart';
 import 'package:evde_bilgi/models/il_model.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +68,8 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Çalışma Adresi')),
+      backgroundColor: Colors.blue.shade100,
+      appBar: EvdeBilgiAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -96,9 +97,9 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
             DropdownButtonFormField<String>(
               value: selectedCity,
               items: cities
-                  .map((label) => DropdownMenuItem(
-                        child: Text(label),
-                        value: label,
+                  .map((sehir) => DropdownMenuItem(
+                        child: Text(sehir),
+                        value: sehir,
                       ))
                   .toList(),
               hint: Text('İl seçiniz'),

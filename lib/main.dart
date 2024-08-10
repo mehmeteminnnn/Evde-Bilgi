@@ -1,4 +1,6 @@
 import 'package:evde_bilgi/aile_kayit.dart';
+import 'package:evde_bilgi/appbarlar/app_bar.dart';
+import 'package:evde_bilgi/appbarlar/ogretmen_drawer.dart';
 import 'package:evde_bilgi/firebase_options.dart';
 import 'package:evde_bilgi/giris_ekranı_logo_widget.dart';
 import 'package:evde_bilgi/ilan_ver.dart';
@@ -45,74 +47,7 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
-      drawer: Drawer(
-        child: Column(
-          children: <Widget>[
-            DrawerHeader(
-              child: Image.asset('assets/logov3.png'),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Ana Sayfa'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.list),
-              title: Text('İş İlanları'),
-              onTap: () {
-                // Handle the action
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.add_box),
-              title: Text('İlan Ver'),
-              onTap: () {
-                // Handle the action
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.search),
-              title: Text('Öğretmen Bul'),
-              onTap: () {
-                // Handle the action
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.group),
-              title: Text('Aile Girişi'),
-              onTap: () {
-                // Handle the action
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Öğretmen Girişi'),
-              onTap: () {
-                // Handle the action
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.contact_phone),
-              title: Text('İletişim'),
-              onTap: () {
-                // Handle the action
-              },
-            ),
-            Spacer(), // This will push the following ListTile to the bottom
-            ListTile(
-              leading: Icon(Icons.person_add),
-              title: Text('Üye Ol'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => UyeOlma()));
-                // Handle the action
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: OgretmenDrawer(),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
@@ -178,10 +113,7 @@ class HomeScreen extends StatelessWidget {
             ),
             SizedBox(height: 45),
             OutlinedButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => UyeOlma()));
-              },
+              onPressed: () {},
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

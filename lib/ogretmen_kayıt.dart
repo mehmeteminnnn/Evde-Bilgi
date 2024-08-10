@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:evde_bilgi/app_bar.dart';
+import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:flutter/material.dart';
 
 final TextEditingController nameController = TextEditingController();
@@ -19,7 +19,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.blue.shade100,
       appBar: EvdeBilgiAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

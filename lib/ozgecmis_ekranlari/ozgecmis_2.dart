@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 class OzgecmisimEkrani2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
-        title: Text('Özgeçmişim'),
+        title: const Text('Özgeçmişim'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

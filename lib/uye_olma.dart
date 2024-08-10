@@ -1,5 +1,5 @@
 import 'package:evde_bilgi/aile_kayit.dart';
-import 'package:evde_bilgi/app_bar.dart';
+import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/ogretmen_kay%C4%B1t.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +9,7 @@ class UyeOlma extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue.shade100,
       appBar: EvdeBilgiAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

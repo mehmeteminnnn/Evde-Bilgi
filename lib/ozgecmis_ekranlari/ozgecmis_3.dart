@@ -17,7 +17,7 @@ class _EkBilgilerEkraniState extends State<OzgecmisimEkrani3> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
         title: Text('Ek Bilgiler'),
       ),

@@ -1,4 +1,4 @@
-import 'package:evde_bilgi/app_bar.dart';
+import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/ogretmen_bilgi.dart';
 import 'package:flutter/material.dart';
 

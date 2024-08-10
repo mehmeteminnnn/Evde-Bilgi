@@ -1,4 +1,4 @@
-import 'package:evde_bilgi/app_bar.dart';
+import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/ihtiyac_detay.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +6,7 @@ class JobSelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue.shade100,
       appBar: EvdeBilgiAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -73,7 +74,7 @@ class JobSelectionPage extends StatelessWidget {
                     // Next action
                   },
                   child: Text('İleri'),
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.orange,
+                  style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
