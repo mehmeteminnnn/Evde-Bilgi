@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
+import 'package:evde_bilgi/main.dart';
 import 'package:flutter/material.dart';
 
 final TextEditingController nameController = TextEditingController();
@@ -7,7 +8,7 @@ final TextEditingController phoneController = TextEditingController();
 final TextEditingController emailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
 final TextEditingController passwordController2 = TextEditingController();
-String? nationaility = "";
+String? nationality = "";
 
 class TeacherRegisterPage extends StatefulWidget {
   @override
@@ -16,10 +17,12 @@ class TeacherRegisterPage extends StatefulWidget {
 
 class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
   bool isChecked = false;
+  String? userId;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.blue.shade100,
+    return Scaffold(
+      backgroundColor: Colors.blue.shade100,
       appBar: EvdeBilgiAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -67,8 +70,23 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    saveDataToFirestoreTeacher();
+                  onPressed: () async {
+                    if (passwordController.text == passwordController2.text) {
+                      userId = await saveDataToFirestoreTeacher();
+                      if (userId != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomeScreen(uid: userId!),
+                          ),
+                        );
+                      }
+                    } else {
+                      // Şifreler uyuşmuyor, kullanıcıya bir hata mesajı gösterin
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Şifreler uyuşmuyor')),
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueGrey[800],
@@ -86,7 +104,10 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
               SizedBox(height: 16),
               Center(
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    // Kayıt olmadan giriş yapma işlevini burada düzenleyin.
+                    // Eğer mevcut bir kullanıcı giriş ekranı varsa, onu çağırabilirsiniz.
+                  },
                   child: Text(
                     'Zaten üye misiniz?',
                     style: TextStyle(fontSize: 16),
@@ -138,22 +159,24 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
         );
       }).toList(),
       onChanged: (String? newValue) {
-        nationaility = newValue;
+        nationality = newValue;
       },
     );
   }
 
-  Future<void> saveDataToFirestoreTeacher() async {
-    // Firestore bağlantısını kurun
+  Future<String?> saveDataToFirestoreTeacher() async {
     final firestore = FirebaseFirestore.instance;
 
-    // Firestore'a veri ekleyin
-    await firestore.collection('ogretmen').add({
+    // Firestore'a veri ekleyin ve belge ID'sini alın
+    DocumentReference docRef = await firestore.collection('ogretmen').add({
       'name': nameController.text,
       'phone': phoneController.text,
       'email': emailController.text,
-      'password': passwordController.text,
-      "nationality": nationaility,
+      'password': passwordController.text, // Şifreyi hashleyin
+      'nationality': nationality,
     });
+
+    String userId = docRef.id; // Belge ID'sini alın
+    return userId;
   }
 }

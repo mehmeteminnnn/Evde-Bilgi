@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class OgretmenDrawer extends StatefulWidget {
-  const OgretmenDrawer({super.key});
+  final String? uid;
+
+  OgretmenDrawer({Key? key, this.uid}) : super(key: key);
 
   @override
-  State<OgretmenDrawer> createState() => _OgretmenDrawerState();
+  _OgretmenDrawerState createState() => _OgretmenDrawerState();
 }
 
 class _OgretmenDrawerState extends State<OgretmenDrawer> {
@@ -167,7 +169,7 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
           FutureBuilder<DocumentSnapshot>(
             future: FirebaseFirestore.instance
                 .collection('ogretmen')
-                .doc('your-doc-id') // Öğretmen ID'si burada kullanılmalı
+                .doc(widget.uid) // Öğretmen ID'si burada kullanılmalı
                 .get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {

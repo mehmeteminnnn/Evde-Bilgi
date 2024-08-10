@@ -24,6 +24,7 @@ class SalaryPage extends StatelessWidget {
             ),
             SizedBox(height: 16),
             TextField(
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: 'Günlük Ücret',
                 border: OutlineInputBorder(),

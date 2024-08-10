@@ -27,6 +27,9 @@ class MyApp extends StatelessWidget {
 }
 
 class HomeScreen extends StatelessWidget {
+  final String? uid;
+
+  HomeScreen({this.uid});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +50,9 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
-      drawer: OgretmenDrawer(),
+      drawer: OgretmenDrawer(
+        uid: uid,
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
@@ -130,10 +135,8 @@ class HomeScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => OzgecmisimEkrani1()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UyeOlma()));
               },
               child: Text('Deneme Butonu'),
             )
