@@ -15,9 +15,29 @@ class FamilyRegisterPage extends StatefulWidget {
 }
 
 class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
+  bool isButtonEnabled() {
+    return nameController.text.isNotEmpty &&
+        phoneController.text.isNotEmpty &&
+        emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty &&
+        passwordController2.text.isNotEmpty &&
+        isChecked;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    nameController.addListener(() => setState(() {}));
+    phoneController.addListener(() => setState(() {}));
+    emailController.addListener(() => setState(() {}));
+    passwordController.addListener(() => setState(() {}));
+    passwordController2.addListener(() => setState(() {}));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.blue.shade100,
+    return Scaffold(
+      backgroundColor: Colors.blue.shade100,
       appBar: EvdeBilgiAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -30,15 +50,20 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 16),
-              buildTextField('Adınız/Soyadınız', nameController),
+              buildTextField(
+                  'Adınız/Soyadınız', nameController, TextInputType.name),
               SizedBox(height: 16),
-              buildTextField('Cep Telefonu', phoneController),
+              buildTextField(
+                  'Cep Telefonu', phoneController, TextInputType.phone),
               SizedBox(height: 16),
-              buildTextField('E-Posta', emailController),
+              buildTextField(
+                  'E-Posta', emailController, TextInputType.emailAddress),
               SizedBox(height: 16),
-              buildTextField('Şifre', passwordController, isPassword: true),
+              buildTextField('Şifre', passwordController, TextInputType.text,
+                  isPassword: true),
               SizedBox(height: 16),
-              buildTextField('Şifre Tekrar', passwordController2,
+              buildTextField(
+                  'Şifre Tekrar', passwordController2, TextInputType.text,
                   isPassword: true),
               SizedBox(height: 16),
               Row(
@@ -61,21 +86,22 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
               ),
               SizedBox(height: 16),
               SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: saveDataToFirestore,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueGrey[800],
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: isButtonEnabled() ? saveDataToFirestore : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueGrey[800],
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Text(
-                      'Üye Ol',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  )),
+                  ),
+                  child: Text(
+                    'Üye Ol',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
               SizedBox(height: 16),
               Center(
                 child: TextButton(
@@ -94,10 +120,12 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
   }
 
   Widget buildTextField(String label, TextEditingController controller,
+      TextInputType keyboardType,
       {bool isPassword = false}) {
     return TextField(
       controller: controller,
       obscureText: isPassword,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(
@@ -112,10 +140,8 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
   }
 
   Future<void> saveDataToFirestore() async {
-    // Firestore bağlantısını kurun
     final firestore = FirebaseFirestore.instance;
 
-    // Verileri bir haritaya dönüştürün
     Map<String, dynamic> userData = {
       'name': nameController.text,
       'phone': phoneController.text,
@@ -123,27 +149,26 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
       'password': passwordController.text,
     };
 
-    // Verileri Firestore'a yazın
-    if(passwordController.text == passwordController2.text){
-    await firestore.collection('aile').add(userData);}
-    else{
-       showDialog(
+    if (passwordController.text == passwordController2.text) {
+      await firestore.collection('aile').add(userData);
+    } else {
+      showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-           title: Text('Hata'),
-           content: Text('Şifreler uyuşmuyor.'),
-           actions: [
-            TextButton(
-              onPressed: () {
-               Navigator.of(context).pop();
-              },
-              child: Text('Tamam'),
-            ),
-           ],
+            title: Text('Hata'),
+            content: Text('Şifreler uyuşmuyor.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Tamam'),
+              ),
+            ],
           );
         },
-       );
+      );
     }
   }
 }

@@ -19,6 +19,16 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
   bool isChecked = false;
   String? userId;
 
+  bool isFormValid() {
+    return nameController.text.isNotEmpty &&
+        phoneController.text.isNotEmpty &&
+        emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty &&
+        passwordController2.text.isNotEmpty &&
+        nationality != null &&
+        isChecked;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,9 +49,11 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
               SizedBox(height: 16),
               buildDropdown('Vatandaşlık'),
               SizedBox(height: 16),
-              buildTextField('Cep Telefonu', phoneController),
+              buildTextField('Cep Telefonu', phoneController,
+                  keyboardType: TextInputType.phone),
               SizedBox(height: 16),
-              buildTextField('E-Posta', emailController),
+              buildTextField('E-Posta', emailController,
+                  keyboardType: TextInputType.emailAddress),
               SizedBox(height: 16),
               buildTextField('Şifre', passwordController, isPassword: true),
               SizedBox(height: 16),
@@ -54,7 +66,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                     value: isChecked,
                     onChanged: (bool? value) {
                       setState(() {
-                        isChecked = value ?? true;
+                        isChecked = value ?? false;
                       });
                     },
                   ),
@@ -70,24 +82,27 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () async {
-                    if (passwordController.text == passwordController2.text) {
-                      userId = await saveDataToFirestoreTeacher();
-                      if (userId != null) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomeScreen(uid: userId!),
-                          ),
-                        );
-                      }
-                    } else {
-                      // Şifreler uyuşmuyor, kullanıcıya bir hata mesajı gösterin
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Şifreler uyuşmuyor')),
-                      );
-                    }
-                  },
+                  onPressed: isFormValid()
+                      ? () async {
+                          if (passwordController.text ==
+                              passwordController2.text) {
+                            userId = await saveDataToFirestoreTeacher();
+                            if (userId != null) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      HomeScreen(uid: userId!),
+                                ),
+                              );
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Şifreler uyuşmuyor')),
+                            );
+                          }
+                        }
+                      : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueGrey[800],
                     padding: EdgeInsets.symmetric(vertical: 16),
@@ -122,10 +137,12 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
   }
 
   Widget buildTextField(String label, TextEditingController controller,
-      {bool isPassword = false}) {
+      {bool isPassword = false,
+      TextInputType keyboardType = TextInputType.text}) {
     return TextField(
       controller: controller,
       obscureText: isPassword,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(
@@ -136,6 +153,9 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
           borderRadius: BorderRadius.circular(8),
         ),
       ),
+      onChanged: (text) {
+        setState(() {}); // Butonun durumunu kontrol etmek için
+      },
     );
   }
 
@@ -159,7 +179,9 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
         );
       }).toList(),
       onChanged: (String? newValue) {
-        nationality = newValue;
+        setState(() {
+          nationality = newValue;
+        });
       },
     );
   }
@@ -167,7 +189,6 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
   Future<String?> saveDataToFirestoreTeacher() async {
     final firestore = FirebaseFirestore.instance;
 
-    // Firestore'a veri ekleyin ve belge ID'sini alın
     DocumentReference docRef = await firestore.collection('ogretmen').add({
       'name': nameController.text,
       'phone': phoneController.text,
@@ -176,7 +197,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
       'nationality': nationality,
     });
 
-    String userId = docRef.id; // Belge ID'sini alın
+    String userId = docRef.id;
     return userId;
   }
 }

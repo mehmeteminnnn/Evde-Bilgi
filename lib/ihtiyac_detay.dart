@@ -3,6 +3,8 @@ import 'package:evde_bilgi/maas_sayfa.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatelessWidget {
+  final controlller = TextEditingController();
+  final controlller2 = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,10 +22,13 @@ class DetailPage extends StatelessWidget {
             SizedBox(height: 8),
             Text(
               'İhtiyaçlarınızı detaylıca belirtiniz.',
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(
+                fontSize: 16,
+              ),
             ),
             SizedBox(height: 16),
             TextField(
+              controller: controlller,
               decoration: InputDecoration(
                 labelText: 'Başlık',
                 hintText: 'Örnek: Çocuğum İçin Gölge Öğretmen Arıyorum',
@@ -32,6 +37,7 @@ class DetailPage extends StatelessWidget {
             ),
             SizedBox(height: 16),
             TextField(
+              controller: controlller2,
               decoration: InputDecoration(
                 labelText: 'İlan Detayı Giriniz',
                 border: OutlineInputBorder(),
@@ -42,19 +48,22 @@ class DetailPage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SalaryPage()));
-                },
+                onPressed: isFormComplete()
+                    ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SalaryPage(),
+                          ),
+                        );
+                      }
+                    : null, // Form eksikse buton devre dışı kalır
+                child: Text('İleri'),
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                ),
-                child: Text(
-                  'İleri',
-                  style: TextStyle(fontSize: 18),
                 ),
               ),
             ),
@@ -62,5 +71,9 @@ class DetailPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool isFormComplete() {
+    return controlller.text.isNotEmpty && controlller2.text.isNotEmpty;
   }
 }

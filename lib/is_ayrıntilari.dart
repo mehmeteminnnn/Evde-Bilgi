@@ -2,7 +2,16 @@ import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/ihtiyac_detay.dart';
 import 'package:flutter/material.dart';
 
-class JobSelectionPage extends StatelessWidget {
+class JobSelectionPage extends StatefulWidget {
+  @override
+  _JobSelectionPageState createState() => _JobSelectionPageState();
+}
+
+class _JobSelectionPageState extends State<JobSelectionPage> {
+  List<String> selectedJobTypes = [];
+  TextEditingController hoursController = TextEditingController();
+  String? urgency;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,10 +45,15 @@ class JobSelectionPage extends StatelessWidget {
               style: TextStyle(fontSize: 16),
             ),
             TextField(
+              controller: hoursController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
               ),
+              onChanged: (value) {
+                setState(
+                    () {}); // TextField değiştiğinde buton durumu güncellenir
+              },
             ),
             SizedBox(height: 20),
             Text(
@@ -54,7 +68,11 @@ class JobSelectionPage extends StatelessWidget {
                   child: Text(value),
                 );
               }).toList(),
-              onChanged: (newValue) {},
+              onChanged: (newValue) {
+                setState(() {
+                  urgency = newValue;
+                });
+              },
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
               ),
@@ -64,15 +82,16 @@ class JobSelectionPage extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailPage(),
-                      ),
-                    );
-                    // Next action
-                  },
+                  onPressed: isFormComplete()
+                      ? () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailPage(),
+                            ),
+                          );
+                        }
+                      : null, // Form eksikse buton devre dışı kalır
                   child: Text('İleri'),
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 16),
@@ -90,11 +109,27 @@ class JobSelectionPage extends StatelessWidget {
   }
 
   Widget _buildJobTypeButton(String label) {
+    final isSelected = selectedJobTypes.contains(label);
     return OutlinedButton(
       onPressed: () {
-        // Job type selection action
+        setState(() {
+          if (isSelected) {
+            selectedJobTypes.remove(label);
+          } else {
+            selectedJobTypes.add(label);
+          }
+        });
       },
+      style: OutlinedButton.styleFrom(
+        backgroundColor: isSelected ? Colors.blue : null,
+      ),
       child: Text(label),
     );
+  }
+
+  bool isFormComplete() {
+    return selectedJobTypes.isNotEmpty &&
+        hoursController.text.isNotEmpty &&
+        urgency != null;
   }
 }

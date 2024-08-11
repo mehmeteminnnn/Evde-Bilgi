@@ -34,25 +34,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
-      appBar: AppBar(
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-                ;
-              },
-            );
-          },
-        ),
-        title: Text("cw"),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-      ),
-      drawer: OgretmenDrawer(
-        uid: uid,
-      ),
+      appBar: EvdeBilgiAppBar(),
+      drawer: EvdeBilgiDrawer(),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
