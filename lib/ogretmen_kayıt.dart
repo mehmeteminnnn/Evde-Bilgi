@@ -203,7 +203,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
       'password': passwordController.text, // Şifreyi hashleyin
       'nationality': nationality,
     });
-
+//
     String userId = docRef.id;
     return userId;
   }
