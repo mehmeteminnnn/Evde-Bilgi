@@ -46,6 +46,18 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
     });
   }
 
+  List<String> getDistricts(String? selectedCity) {
+    List<String> districtList = [];
+    if (selectedCity != null) {
+      var cityData = jsonData.firstWhere(
+        (il) => il.name == selectedCity,
+        orElse: () => IlModel(name: '', counties: []),
+      );
+      districtList = cityData.counties.map((county) => county.name).toList();
+    }
+    return districtList;
+  }
+
   List<String> getNeighborhoods(String? selectedDistrict) {
     List<String> neighborhoodList = [];
     if (selectedCity != null && selectedDistrict != null) {
@@ -54,12 +66,10 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
         orElse: () => IlModel(name: '', counties: []),
       );
       for (var county in cityData.counties) {
-        var districtData = county.districts.firstWhere(
-          (district) => district.name == selectedDistrict,
-          orElse: () => District(name: '', neighborhoods: []),
-        );
-        neighborhoodList.addAll(
-            districtData.neighborhoods.map((neigh) => neigh.name).toList());
+        if (county.name == selectedDistrict) {
+          neighborhoodList =
+              county.districts.map((district) => district.name).toList();
+        }
       }
     }
     return neighborhoodList;
@@ -106,12 +116,7 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedCity = value;
-                  var cityData = jsonData.firstWhere(
-                    (il) => il.name == value,
-                    orElse: () => IlModel(name: '', counties: []),
-                  );
-                  districts =
-                      cityData.counties.map((county) => county.name).toList();
+                  districts = getDistricts(value);
                   selectedDistrict = null;
                   selectedNeighborhood = null;
                   neighborhoods = [];
@@ -131,7 +136,7 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedDistrict = value;
-                  neighborhoods = getNeighborhoods(selectedDistrict);
+                  neighborhoods = getNeighborhoods(value);
                   selectedNeighborhood = null;
                 });
               },

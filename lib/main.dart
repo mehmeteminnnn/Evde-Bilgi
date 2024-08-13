@@ -1,3 +1,4 @@
+import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
 import 'package:evde_bilgi/aile_kayit.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/appbarlar/ogretmen_drawer.dart';
@@ -119,7 +120,7 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => UyeOlma()));
+                    MaterialPageRoute(builder: (context) => JobListingsPage()));
               },
               child: Text('Deneme Butonu'),
             )
