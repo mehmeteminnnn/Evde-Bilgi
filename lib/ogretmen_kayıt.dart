@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
+import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
+import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
 import 'package:evde_bilgi/main.dart';
 import 'package:flutter/material.dart';
 
@@ -88,13 +90,21 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                               passwordController2.text) {
                             userId = await saveDataToFirestoreTeacher();
                             if (userId != null) {
+                              // Form alanlarını temizleme
+                              setState(() {
+                                nameController.clear();
+                                phoneController.clear();
+                                emailController.clear();
+                                passwordController.clear();
+                                passwordController2.clear();
+                                nationality = "";
+                                isChecked = false;
+                              });
+
                               Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      HomeScreen(uid: userId!),
-                                ),
-                              );
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => JobListingsPage()));
                             }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -119,10 +129,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
               SizedBox(height: 16),
               Center(
                 child: TextButton(
-                  onPressed: () {
-                    // Kayıt olmadan giriş yapma işlevini burada düzenleyin.
-                    // Eğer mevcut bir kullanıcı giriş ekranı varsa, onu çağırabilirsiniz.
-                  },
+                  onPressed: () {},
                   child: Text(
                     'Zaten üye misiniz?',
                     style: TextStyle(fontSize: 16),
