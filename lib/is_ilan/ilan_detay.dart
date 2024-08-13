@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class JobDetailPage extends StatefulWidget {
   final String jobId;
@@ -124,9 +125,14 @@ class _JobDetailPageState extends State<JobDetailPage> {
           padding: const EdgeInsets.all(16.0),
           child: Table(
             children: [
-              _buildTableRow('Yayınlanma Tarihi', jobData['publishDate'] ?? ""),
+              _buildTableRow(
+                  'Yayınlanma Tarihi',
+                  DateFormat('dd/MM/yyyy')
+                          .format(jobData['publishDate'].toDate()) ??
+                      ""),
               _buildTableRow('Pozisyon', jobData['position'] ?? ""),
-              _buildTableRow('Telefon Numarası', jobData['phoneNumber'] ?? ""),
+              _buildTableRow(
+                  'Telefon Numarası', jobData['phoneNumber']?.toString() ?? ""),
               _buildTableRow('E-posta Adresi', jobData['email'] ?? ""),
               _buildTableRow('Web Sitesi', jobData['website'] ?? ""),
               _buildTableRow('Adres', jobData['address'] ?? ""),
