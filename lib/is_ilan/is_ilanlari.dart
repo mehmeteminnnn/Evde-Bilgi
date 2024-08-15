@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evde_bilgi/appbarlar/app_bar.dart';
+import 'package:evde_bilgi/appbarlar/ogretmen_drawer.dart';
 import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari_filtre.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +9,8 @@ class JobListingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('İş İlanları'),
-      ),
+      appBar: EvdeBilgiAppBar(),
+      drawer: OgretmenDrawer(),
       body: Stack(
         children: [
           StreamBuilder<QuerySnapshot>(
