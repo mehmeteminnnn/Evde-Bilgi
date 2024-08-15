@@ -117,13 +117,6 @@ class HomeScreen extends StatelessWidget {
                 side: BorderSide(color: Colors.blue),
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => JobListingsPage()));
-              },
-              child: Text('Deneme Butonu'),
-            )
           ],
         ),
       ),
