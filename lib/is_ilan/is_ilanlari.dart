@@ -6,11 +6,16 @@ import 'package:evde_bilgi/is_ilan/is_ilanlari_filtre.dart';
 import 'package:flutter/material.dart';
 
 class JobListingsPage extends StatelessWidget {
+  final String? id;
+
+  JobListingsPage({Key? key, this.id}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: EvdeBilgiAppBar(),
-      drawer: OgretmenDrawer(),
+      drawer: OgretmenDrawer(
+        uid: id,
+      ),
       body: Stack(
         children: [
           StreamBuilder<QuerySnapshot>(

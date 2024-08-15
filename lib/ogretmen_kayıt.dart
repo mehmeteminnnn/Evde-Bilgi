@@ -104,7 +104,9 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => JobListingsPage()));
+                                      builder: (context) => JobListingsPage(
+                                            id: userId,
+                                          )));
                             }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
