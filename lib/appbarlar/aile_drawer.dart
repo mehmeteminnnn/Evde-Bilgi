@@ -1,17 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
 import 'package:flutter/material.dart';
 
-class OgretmenDrawer extends StatefulWidget {
+class AileDrawer extends StatefulWidget {
   final String? uid;
 
-  OgretmenDrawer({Key? key, this.uid}) : super(key: key);
+  AileDrawer({Key? key, this.uid}) : super(key: key);
 
   @override
-  _OgretmenDrawerState createState() => _OgretmenDrawerState();
+  _AileDrawerState createState() => _AileDrawerState();
 }
 
-class _OgretmenDrawerState extends State<OgretmenDrawer> {
+class _AileDrawerState extends State<AileDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -56,12 +55,60 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => JobListingsPage()));
+                      // Handle the action
                     },
-                    // Handle the action
+                  ),
+                  ListTile(
+                    dense: true,
+                    leading: Icon(Icons.add_box, size: 20),
+                    title: Text(
+                      'İlan Ver',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    onTap: () {
+                      // Handle the action
+                    },
+                  ),
+                  ListTile(
+                    dense: true,
+                    leading: Icon(Icons.search, size: 20),
+                    title: Text(
+                      'Öğretmen Bul',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    onTap: () {
+                      // Handle the action
+                    },
+                  ),
+                  ListTile(
+                    dense: true,
+                    leading: Icon(Icons.folder_open, size: 20),
+                    title: Text(
+                      'İlanlarım',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    onTap: () {
+                      // Handle the action
+                    },
+                  ),
+                  ListTile(
+                    dense: true,
+                    leading: Icon(Icons.person, size: 20),
+                    title: Text(
+                      'Aday İşlemleri',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    onTap: () {
+                      // Handle the action
+                    },
                   ),
                   ListTile(
                     dense: true,
@@ -78,9 +125,22 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
                   ),
                   ListTile(
                     dense: true,
+                    leading: Icon(Icons.notifications, size: 20),
+                    title: Text(
+                      'Bildirimler',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    onTap: () {
+                      // Handle the action
+                    },
+                  ),
+                  ListTile(
+                    dense: true,
                     leading: Icon(Icons.card_membership, size: 20),
                     title: Text(
-                      'Başvurularım',
+                      'Paketlerim',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:

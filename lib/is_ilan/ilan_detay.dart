@@ -18,6 +18,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
       appBar: AppBar(
         title: Text('Evde Bilgi'),
       ),
+      
       body: FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
             .collection('ilanlar')

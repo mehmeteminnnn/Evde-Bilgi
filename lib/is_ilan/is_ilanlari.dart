@@ -3,18 +3,68 @@ import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/appbarlar/ogretmen_drawer.dart';
 import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari_filtre.dart';
+import 'package:evde_bilgi/ozgecmis_ekranlari/ozgecmis.dart';
 import 'package:flutter/material.dart';
 
-class JobListingsPage extends StatelessWidget {
+class JobListingsPage extends StatefulWidget {
   final String? id;
 
   JobListingsPage({Key? key, this.id}) : super(key: key);
+
+  @override
+  _JobListingsPageState createState() => _JobListingsPageState();
+}
+
+class _JobListingsPageState extends State<JobListingsPage> {
+  int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: EvdeBilgiAppBar(),
       drawer: OgretmenDrawer(
-        uid: id,
+        uid: widget.id,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'İş İlanları',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.message),
+            label: 'Mesajlar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Özgeçmişim',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.assignment),
+            label: 'Başvurularım',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+
+          if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => OzgecmisimEkrani(),
+              ),
+            );
+          }
+          // Diğer sekmeler için de benzer şekilde yönlendirme yapabilirsiniz
+        },
       ),
       body: Stack(
         children: [
@@ -68,7 +118,6 @@ class JobListingsPage extends StatelessWidget {
                                     ElevatedButton(
                                       onPressed: () {},
                                       // Başvuru işlemi
-
                                       child: Text('Şimdi Başvur'),
                                       style: ElevatedButton.styleFrom(
                                         foregroundColor: Colors.orange,
@@ -77,11 +126,12 @@ class JobListingsPage extends StatelessWidget {
                                     ElevatedButton(
                                       onPressed: () {
                                         Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    JobDetailPage(
-                                                        jobId: ilan.id)));
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                JobDetailPage(jobId: ilan.id),
+                                          ),
+                                        );
                                         // Görüntüle işlemi
                                       },
                                       child: Text('Görüntüle'),
@@ -109,11 +159,11 @@ class JobListingsPage extends StatelessWidget {
             right: 16,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => FilterPage()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FilterPage()),
+                );
               },
-              // Filtreleme işlemi
-
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
                 padding: EdgeInsets.symmetric(vertical: 16),
