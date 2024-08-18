@@ -1,3 +1,4 @@
+import 'package:evde_bilgi/ozgecmis_ekranlari/ek_bilgi.dart';
 import 'package:flutter/material.dart';
 
 class OzgecmisimEkrani extends StatefulWidget {
@@ -107,6 +108,10 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
             // Kaydet ve İptal Butonları
             ElevatedButton(
               onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EkBilgilerEkrani()));
                 // Seçilen pozisyonlar ve çalışma şekilleri ile ilgili işlemler burada yapılabilir.
                 // Örneğin, Firestore'a kaydetme gibi işlemler.
               },
