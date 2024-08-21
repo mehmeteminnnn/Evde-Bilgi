@@ -49,6 +49,13 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
     });
   }
 
+  bool _isFormComplete() {
+    return selectedCity != null &&
+        selectedDistrict != null &&
+        enteredNeighborhood != null &&
+        enteredNeighborhood!.isNotEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +92,9 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedCity = value;
+                  selectedDistrict = null; // İl seçildiğinde ilçe sıfırlanır
+                  districts = []; // İlçe listesini sıfırla
+                  enteredNeighborhood = null; // Mahalle sıfırlanır
                   _updateDistricts();
                 });
               },
@@ -101,6 +111,8 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
               onChanged: (value) {
                 setState(() {
                   selectedDistrict = value;
+                  enteredNeighborhood =
+                      null; // İlçe değiştiğinde mahalle sıfırlanır
                 });
               },
             ),
@@ -112,13 +124,16 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
                   enteredNeighborhood = value;
                 });
               },
+              enabled: selectedCity != null && selectedDistrict != null,
             ),
             Spacer(),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Scaffold()));
-              },
+              onPressed: _isFormComplete()
+                  ? () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Scaffold()));
+                    }
+                  : null, // Tüm alanlar doldurulmamışsa buton pasif olur
               child: Text('İleri'),
               style: ElevatedButton.styleFrom(
                   minimumSize: Size(double.infinity, 50)),
