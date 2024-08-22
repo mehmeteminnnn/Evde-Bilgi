@@ -2,7 +2,41 @@ import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/ilan_haz%C4%B1r.dart';
 import 'package:flutter/material.dart';
 
-class SalaryPage extends StatelessWidget {
+class SalaryPage extends StatefulWidget {
+  @override
+  _SalaryPageState createState() => _SalaryPageState();
+}
+
+class _SalaryPageState extends State<SalaryPage> {
+  final TextEditingController _salaryController = TextEditingController();
+  bool _isNegotiable = false; // Checkbox durumu
+  bool _isButtonActive = false; // Butonun aktif olup olmadığını kontrol eder
+
+  @override
+  void initState() {
+    super.initState();
+    _salaryController.addListener(_onTextChanged);
+  }
+
+  void _onTextChanged() {
+    setState(() {
+      _isButtonActive = _salaryController.text.isNotEmpty || _isNegotiable;
+    });
+  }
+
+  void _onCheckboxChanged(bool? value) {
+    setState(() {
+      _isNegotiable = value ?? false;
+      _isButtonActive = _salaryController.text.isNotEmpty || _isNegotiable;
+    });
+  }
+
+  @override
+  void dispose() {
+    _salaryController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +58,7 @@ class SalaryPage extends StatelessWidget {
             ),
             SizedBox(height: 16),
             TextField(
+              controller: _salaryController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: 'Günlük Ücret',
@@ -34,8 +69,8 @@ class SalaryPage extends StatelessWidget {
             Row(
               children: [
                 Checkbox(
-                  value: false,
-                  onChanged: (bool? value) {},
+                  value: _isNegotiable,
+                  onChanged: _onCheckboxChanged,
                 ),
                 Text('Ücret karşılıklı görüşülecektir'),
               ],
@@ -44,10 +79,16 @@ class SalaryPage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SuccessPage()));
-                },
+                onPressed: _isButtonActive
+                    ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SuccessPage(),
+                          ),
+                        );
+                      }
+                    : null, // Eğer form tamamlanmadıysa buton devre dışı kalır
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(

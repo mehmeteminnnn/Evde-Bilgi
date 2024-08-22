@@ -2,9 +2,37 @@ import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/maas_sayfa.dart';
 import 'package:flutter/material.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
+  @override
+  _DetailPageState createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
   final controlller = TextEditingController();
   final controlller2 = TextEditingController();
+  bool isButtonActive = false;
+
+  @override
+  void initState() {
+    super.initState();
+    controlller.addListener(_onTextChanged);
+    controlller2.addListener(_onTextChanged);
+  }
+
+  void _onTextChanged() {
+    setState(() {
+      isButtonActive =
+          controlller.text.isNotEmpty && controlller2.text.isNotEmpty;
+    });
+  }
+
+  @override
+  void dispose() {
+    controlller.dispose();
+    controlller2.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +76,7 @@ class DetailPage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: isFormComplete()
+                onPressed: isButtonActive
                     ? () {
                         Navigator.push(
                           context,
@@ -57,7 +85,7 @@ class DetailPage extends StatelessWidget {
                           ),
                         );
                       }
-                    : null, // Form eksikse buton devre dışı kalır
+                    : null,
                 child: Text('İleri'),
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16),
@@ -71,9 +99,5 @@ class DetailPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  bool isFormComplete() {
-    return controlller.text.isNotEmpty && controlller2.text.isNotEmpty;
   }
 }
