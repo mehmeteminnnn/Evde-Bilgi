@@ -3,6 +3,9 @@ import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:flutter/material.dart';
 
 class TeacherListPage extends StatelessWidget {
+  final String? id;
+
+  TeacherListPage({Key? key, this.id}) : super(key: key);
   final List<Map<String, String>> teachers = [
     {
       'name': 'İrem K.',
@@ -31,7 +34,9 @@ class TeacherListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: EvdeBilgiAppBar(),
-      drawer: AileDrawer(),
+      drawer: AileDrawer(
+        uid: id,
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

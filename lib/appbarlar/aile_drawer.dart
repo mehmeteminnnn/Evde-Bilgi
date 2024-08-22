@@ -168,7 +168,7 @@ class _AileDrawerState extends State<AileDrawer> {
           ),
           FutureBuilder<DocumentSnapshot>(
             future: FirebaseFirestore.instance
-                .collection('ogretmen')
+                .collection('aile')
                 .doc(widget.uid) // Öğretmen ID'si burada kullanılmalı
                 .get(),
             builder: (context, snapshot) {

@@ -1,4 +1,5 @@
 import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
+import 'package:evde_bilgi/ogretmen_listeleri.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -35,7 +36,7 @@ class _AileGirisEkraniState extends State<AileGirisEkrani> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => JobListingsPage(
+              builder: (context) => TeacherListPage(
                 id: userId,
               ),
             )); // İstediğiniz yere yönlendirme yapabilirsiniz

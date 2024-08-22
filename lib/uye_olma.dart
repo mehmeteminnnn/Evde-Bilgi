@@ -1,6 +1,6 @@
-import 'package:evde_bilgi/aile_kayit.dart';
+import 'package:evde_bilgi/kayit_sayfalari/aile_kayit.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
-import 'package:evde_bilgi/ogretmen_kay%C4%B1t.dart';
+import 'package:evde_bilgi/kayit_sayfalari/ogretmen_kay%C4%B1t.dart';
 import 'package:flutter/material.dart';
 
 class UyeOlma extends StatelessWidget {
