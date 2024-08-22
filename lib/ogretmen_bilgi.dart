@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:evde_bilgi/is_ayr%C4%B1ntilari.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
@@ -130,8 +131,10 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
             ElevatedButton(
               onPressed: _isFormComplete()
                   ? () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Scaffold()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => JobSelectionPage()));
                     }
                   : null, // Tüm alanlar doldurulmamışsa buton pasif olur
               child: Text('İleri'),

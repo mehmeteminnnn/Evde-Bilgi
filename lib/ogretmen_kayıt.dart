@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
+import 'package:evde_bilgi/giris_sayfalari/ogretmen_giris.dart';
 import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
 import 'package:evde_bilgi/main.dart';
@@ -131,7 +132,12 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
               SizedBox(height: 16),
               Center(
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OgretmenGirisEkrani()));
+                  },
                   child: Text(
                     'Zaten üye misiniz?',
                     style: TextStyle(fontSize: 16),

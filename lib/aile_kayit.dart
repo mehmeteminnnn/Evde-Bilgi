@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
+import 'package:evde_bilgi/giris_sayfalari/aile_girisi.dart';
+import 'package:evde_bilgi/ogretmen_listeleri.dart';
 import 'package:flutter/material.dart';
 
 final TextEditingController nameController = TextEditingController();
@@ -88,7 +90,15 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: isButtonEnabled() ? saveDataToFirestore : null,
+                  onPressed: isButtonEnabled()
+                      ? () async {
+                          await saveDataToFirestore();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TeacherListPage()));
+                        }
+                      : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueGrey[800],
                     padding: EdgeInsets.symmetric(vertical: 16),
@@ -105,7 +115,12 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
               SizedBox(height: 16),
               Center(
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AileGirisEkrani()));
+                  },
                   child: Text(
                     'Zaten üye misiniz?',
                     style: TextStyle(fontSize: 16),
