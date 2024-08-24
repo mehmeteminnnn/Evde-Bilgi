@@ -37,6 +37,16 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
   }
 
   @override
+  void dispose() {
+    nameController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    passwordController2.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
@@ -92,11 +102,32 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
                 child: ElevatedButton(
                   onPressed: isButtonEnabled()
                       ? () async {
-                          await saveDataToFirestore();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TeacherListPage()));
+                          if (passwordController.text ==
+                              passwordController2.text) {
+                            await saveDataToFirestore();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TeacherListPage()));
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Hata'),
+                                  content: Text('Şifreler uyuşmuyor.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Tamam'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
@@ -164,26 +195,6 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
       'password': passwordController.text,
     };
 
-    if (passwordController.text == passwordController2.text) {
-      await firestore.collection('aile').add(userData);
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Hata'),
-            content: Text('Şifreler uyuşmuyor.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('Tamam'),
-              ),
-            ],
-          );
-        },
-      );
-    }
+    await firestore.collection('aile').add(userData);
   }
 }

@@ -18,7 +18,6 @@ class _JobDetailPageState extends State<JobDetailPage> {
       appBar: AppBar(
         title: Text('Evde Bilgi'),
       ),
-      
       body: FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
             .collection('ilanlar')
@@ -231,14 +230,6 @@ class _JobDetailPageState extends State<JobDetailPage> {
             onPressed: () {},
             child: Text('Şimdi Başvur'),
             style: ElevatedButton.styleFrom(foregroundColor: Colors.red),
-          ),
-          IconButton(
-            icon: Icon(Icons.bookmark),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: () {},
           ),
         ],
       ),
