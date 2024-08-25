@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evde_bilgi/ilan_ver.dart';
+import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
+import 'package:evde_bilgi/ogretmen_listeleri.dart';
 import 'package:flutter/material.dart';
 
 class AileDrawer extends StatefulWidget {
@@ -55,7 +58,10 @@ class _AileDrawerState extends State<AileDrawer> {
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
-                      // Handle the action
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => JobListingsPage()));
                     },
                   ),
                   ListTile(
@@ -68,7 +74,8 @@ class _AileDrawerState extends State<AileDrawer> {
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
-                      // Handle the action
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => IlanVer()));
                     },
                   ),
                   ListTile(
@@ -81,7 +88,12 @@ class _AileDrawerState extends State<AileDrawer> {
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
-                      // Handle the action
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TeacherListPage(
+                                    id: widget.uid,
+                                  )));
                     },
                   ),
                   ListTile(
@@ -169,7 +181,7 @@ class _AileDrawerState extends State<AileDrawer> {
           FutureBuilder<DocumentSnapshot>(
             future: FirebaseFirestore.instance
                 .collection('aile')
-                .doc(widget.uid) // Öğretmen ID'si burada kullanılmalı
+                .doc(widget.uid) // Kullanıcının UID'sini alıyoruz
                 .get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {

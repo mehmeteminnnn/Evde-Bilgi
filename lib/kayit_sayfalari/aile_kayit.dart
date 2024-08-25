@@ -4,12 +4,11 @@ import 'package:evde_bilgi/giris_sayfalari/aile_girisi.dart';
 import 'package:evde_bilgi/ogretmen_listeleri.dart';
 import 'package:flutter/material.dart';
 
-final TextEditingController nameController = TextEditingController();
-final TextEditingController phoneController = TextEditingController();
-final TextEditingController emailController = TextEditingController();
-final TextEditingController passwordController = TextEditingController();
-final TextEditingController passwordController2 = TextEditingController();
-var isChecked = false;
+final TextEditingController familyNameController = TextEditingController();
+final TextEditingController familyPhoneController = TextEditingController();
+final TextEditingController familyEmailController = TextEditingController();
+final TextEditingController familyPasswordController = TextEditingController();
+final TextEditingController familyPasswordController2 = TextEditingController();
 
 class FamilyRegisterPage extends StatefulWidget {
   @override
@@ -17,33 +16,16 @@ class FamilyRegisterPage extends StatefulWidget {
 }
 
 class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
-  bool isButtonEnabled() {
-    return nameController.text.isNotEmpty &&
-        phoneController.text.isNotEmpty &&
-        emailController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty &&
-        passwordController2.text.isNotEmpty &&
+  bool isChecked = false;
+  String? familyId;
+
+  bool isFormValid() {
+    return familyNameController.text.isNotEmpty &&
+        familyPhoneController.text.isNotEmpty &&
+        familyEmailController.text.isNotEmpty &&
+        familyPasswordController.text.isNotEmpty &&
+        familyPasswordController2.text.isNotEmpty &&
         isChecked;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    nameController.addListener(() => setState(() {}));
-    phoneController.addListener(() => setState(() {}));
-    emailController.addListener(() => setState(() {}));
-    passwordController.addListener(() => setState(() {}));
-    passwordController2.addListener(() => setState(() {}));
-  }
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    phoneController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    passwordController2.dispose();
-    super.dispose();
   }
 
   @override
@@ -55,27 +37,25 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Aile Kayıt',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 16),
-              buildTextField(
-                  'Adınız/Soyadınız', nameController, TextInputType.name),
+              buildTextField('Adınız/Soyadınız', familyNameController),
               SizedBox(height: 16),
-              buildTextField(
-                  'Cep Telefonu', phoneController, TextInputType.phone),
+              buildTextField('Cep Telefonu', familyPhoneController,
+                  keyboardType: TextInputType.phone),
               SizedBox(height: 16),
-              buildTextField(
-                  'E-Posta', emailController, TextInputType.emailAddress),
+              buildTextField('E-Posta', familyEmailController,
+                  keyboardType: TextInputType.emailAddress),
               SizedBox(height: 16),
-              buildTextField('Şifre', passwordController, TextInputType.text,
+              buildTextField('Şifre', familyPasswordController,
                   isPassword: true),
               SizedBox(height: 16),
-              buildTextField(
-                  'Şifre Tekrar', passwordController2, TextInputType.text,
+              buildTextField('Şifre Tekrar', familyPasswordController2,
                   isPassword: true),
               SizedBox(height: 16),
               Row(
@@ -84,7 +64,7 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
                     value: isChecked,
                     onChanged: (bool? value) {
                       setState(() {
-                        isChecked = value!;
+                        isChecked = value ?? false;
                       });
                     },
                   ),
@@ -100,32 +80,34 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: isButtonEnabled()
+                  onPressed: isFormValid()
                       ? () async {
-                          if (passwordController.text ==
-                              passwordController2.text) {
-                            await saveDataToFirestore();
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => TeacherListPage()));
+                          if (familyPasswordController.text ==
+                              familyPasswordController2.text) {
+                            familyId = await saveDataToFirestoreFamily();
+                            if (familyId != null) {
+                              setState(() {
+                                familyNameController.clear();
+                                familyPhoneController.clear();
+                                familyEmailController.clear();
+                                familyPasswordController.clear();
+                                familyPasswordController2.clear();
+                                isChecked = false;
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => TeacherListPage(
+                                            id: familyId,
+                                          )));
+                              // Kayıt başarılı olduğunda yapılacak işlemler
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Aile kaydı başarılı!')),
+                              );
+                            }
                           } else {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('Hata'),
-                                  content: Text('Şifreler uyuşmuyor.'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('Tamam'),
-                                    ),
-                                  ],
-                                );
-                              },
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Şifreler uyuşmuyor')),
                             );
                           }
                         }
@@ -166,8 +148,8 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
   }
 
   Widget buildTextField(String label, TextEditingController controller,
-      TextInputType keyboardType,
-      {bool isPassword = false}) {
+      {bool isPassword = false,
+      TextInputType keyboardType = TextInputType.text}) {
     return TextField(
       controller: controller,
       obscureText: isPassword,
@@ -182,19 +164,23 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
           borderRadius: BorderRadius.circular(8),
         ),
       ),
+      onChanged: (text) {
+        setState(() {}); // Butonun durumunu kontrol etmek için
+      },
     );
   }
 
-  Future<void> saveDataToFirestore() async {
+  Future<String?> saveDataToFirestoreFamily() async {
     final firestore = FirebaseFirestore.instance;
 
-    Map<String, dynamic> userData = {
-      'name': nameController.text,
-      'phone': phoneController.text,
-      'email': emailController.text,
-      'password': passwordController.text,
-    };
+    DocumentReference docRef = await firestore.collection('aile').add({
+      'name': familyNameController.text,
+      'phone': familyPhoneController.text,
+      'email': familyEmailController.text,
+      'password': familyPasswordController.text, // Şifreyi hashleyin
+    });
 
-    await firestore.collection('aile').add(userData);
+    String familyId = docRef.id;
+    return familyId;
   }
 }
