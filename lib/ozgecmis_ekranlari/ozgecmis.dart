@@ -1,14 +1,18 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OzgecmisimEkrani extends StatefulWidget {
+  final String? teacherId; // Öğretmen ID'si
+
+  OzgecmisimEkrani({required this.teacherId}); // Constructor ile ID almak
+
   @override
   _OzgecmisimEkraniState createState() => _OzgecmisimEkraniState();
 }
 
 class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
-  // Çalışmak istediğiniz pozisyonlar
   List<String> pozisyonlar = [
     'Gölge Öğretmen',
     'Oyun Ablası/Abisi',
@@ -17,7 +21,6 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
   ];
   List<bool> seciliPozisyonlar = [false, false, false, false];
 
-  // Çalışma şekli
   List<String> calismaSekilleri = [
     'Tam zamanlı',
     'Yarı zamanlı',
@@ -35,16 +38,20 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
     false
   ];
 
-  // İl ve İlçe bilgileri
-  String? selectedCity;
-  String? selectedDistrict;
+  String? selectedCityName;
+  String? selectedDistrictName;
 
   List<dynamic> cities = [];
   List<dynamic> districts = [];
 
-  // Deneyim
   String? selectedExperience;
   List<String> experienceOptions = ['0-1 yıl', '1-5 yıl', '5+ yıl'];
+
+  TextEditingController _minSalaryController = TextEditingController();
+  TextEditingController _maxSalaryController = TextEditingController();
+  TextEditingController _experienceDescriptionController =
+      TextEditingController();
+  TextEditingController _dobController = TextEditingController();
 
   @override
   void initState() {
@@ -53,30 +60,84 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
   }
 
   Future<void> _loadCities() async {
-    // İl JSON dosyasını oku
     String cityJson = await rootBundle.loadString('assets/il.json');
     List<Map<String, dynamic>> cityList =
         List<Map<String, dynamic>>.from(jsonDecode(cityJson));
 
-    // Şehirleri alfabetik sıraya göre sıralayın
     cityList.sort((a, b) => a['name'].compareTo(b['name']));
 
     setState(() {
       cities = cityList;
+      if (cities.isNotEmpty) {
+        selectedCityName = cities.first['name']; // İlk şehir seçili olacak
+      }
     });
+    _updateDistricts();
   }
 
   Future<void> _updateDistricts() async {
-    // İlçe JSON dosyasını oku
     String districtJson = await rootBundle.loadString('assets/ilce.json');
     List<dynamic> allDistricts = jsonDecode(districtJson);
 
-    // Seçili şehre ait ilçeleri filtrele
     setState(() {
       districts = allDistricts
-          .where((district) => district['il_id'] == selectedCity)
+          .where((district) =>
+              district['il_id'].toString() ==
+              cities
+                  .firstWhere((city) => city['name'] == selectedCityName)['id'])
           .toList();
+      if (districts.isNotEmpty) {
+        selectedDistrictName =
+            districts.first['name']; // İlk ilçe seçili olacak
+      }
     });
+  }
+
+  Future<void> _updateTeacher() async {
+    if (selectedCityName == null || selectedDistrictName == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Şehir ve ilçe seçiminizi yapmalısınız!')),
+      );
+      return;
+    }
+
+    try {
+      String? teacherId = widget.teacherId; // Öğretmen ID'sini al
+
+      await FirebaseFirestore.instance
+          .collection('ogretmen')
+          .doc(teacherId)
+          .update({
+        'selectedCity': selectedCityName,
+        'selectedDistrict': selectedDistrictName,
+        'selectedExperience': selectedExperience,
+        'pozisyonlar': pozisyonlar
+            .asMap()
+            .entries
+            .where((entry) => seciliPozisyonlar[entry.key])
+            .map((entry) => entry.value)
+            .toList(),
+        'calismaSekilleri': calismaSekilleri
+            .asMap()
+            .entries
+            .where((entry) => seciliCalismaSekilleri[entry.key])
+            .map((entry) => entry.value)
+            .toList(),
+        'minSalary': _minSalaryController.text,
+        'maxSalary': _maxSalaryController.text,
+        'experienceDescription': _experienceDescriptionController.text,
+        'dob': _dobController.text,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Veriler başarıyla güncellendi!')),
+      );
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Veri güncelleme hatası!')),
+      );
+    }
   }
 
   @override
@@ -91,8 +152,6 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Konum ve İl Seçimi
-            _buildDropdown('Ülke Seçiniz', ['Türkiye']),
             _buildCityDropdown(),
             _buildDistrictDropdown(),
             _buildDatePicker(context, 'Doğum Tarihi'),
@@ -142,19 +201,15 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
               ).toList(),
             ),
             SizedBox(height: 20),
-
-            // İkinci Sayfa İçeriği
-            _buildTextField('Minimum aylık maaş (TL)'),
-            _buildTextField('Maksimum aylık maaş (TL)'),
+            _buildTextField('Minimum aylık maaş (TL)',
+                controller: _minSalaryController),
+            _buildTextField('Maksimum aylık maaş (TL)',
+                controller: _maxSalaryController),
             _buildTextField('İş deneyiminizi ve görevlerinizi tanımlayın.',
-                maxLines: 3),
+                maxLines: 3, controller: _experienceDescriptionController),
             SizedBox(height: 20),
-
-            // Kaydet ve İptal Butonları
             ElevatedButton(
-              onPressed: () {
-                // İleri butonuna tıklandığında yapılacak işlemler
-              },
+              onPressed: _updateTeacher,
               child: Text('Kaydet'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepOrange,
@@ -172,7 +227,6 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
     );
   }
 
-  // Şehir Dropdown'ı oluşturan fonksiyon
   Widget _buildCityDropdown() {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -198,26 +252,24 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
             borderSide: BorderSide.none,
           ),
         ),
-        value: selectedCity,
+        value: selectedCityName,
         items: cities.map<DropdownMenuItem<String>>((city) {
           return DropdownMenuItem<String>(
             child: Text(city['name']),
-            value: city['id'].toString(),
+            value: city['name'],
           );
         }).toList(),
         onChanged: (value) {
           setState(() {
-            selectedCity = value;
-            selectedDistrict = null; // İl seçildiğinde ilçe sıfırlanır
-            districts = []; // İlçe listesini sıfırla
-            _updateDistricts();
+            selectedCityName = value;
+            selectedDistrictName = null; // Seçili ilçeyi sıfırla
+            _updateDistricts(); // İlçeleri güncelle
           });
         },
       ),
     );
   }
 
-  // İlçe Dropdown'ı oluşturan fonksiyon
   Widget _buildDistrictDropdown() {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -243,23 +295,54 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
             borderSide: BorderSide.none,
           ),
         ),
-        value: selectedDistrict,
+        value: selectedDistrictName,
         items: districts.map<DropdownMenuItem<String>>((district) {
           return DropdownMenuItem<String>(
             child: Text(district['name']),
-            value: district['id'].toString(),
+            value: district['name'],
           );
         }).toList(),
         onChanged: (value) {
           setState(() {
-            selectedDistrict = value;
+            selectedDistrictName = value;
           });
         },
       ),
     );
   }
 
-  // Deneyim Dropdown'ı oluşturan fonksiyon
+  Widget _buildTextField(String labelText,
+      {int maxLines = 1, TextEditingController? controller}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: TextFormField(
+        maxLines: maxLines,
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: labelText,
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding:
+              EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildExperienceDropdown() {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -275,7 +358,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
       ),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
-          labelText: 'Deneyim',
+          labelText: 'Deneyim Seviyesi',
           filled: true,
           fillColor: Colors.white,
           contentPadding:
@@ -301,37 +384,6 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
     );
   }
 
-  // Metin alanı oluşturan fonksiyon
-  Widget _buildTextField(String labelText, {int maxLines = 1}) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: TextFormField(
-        maxLines: maxLines,
-        decoration: InputDecoration(
-          labelText: labelText,
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildDatePicker(BuildContext context, String labelText) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -346,7 +398,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
         ],
       ),
       child: TextFormField(
-        readOnly: true, // Kullanıcı manuel olarak tarih giremez
+        controller: _dobController,
         decoration: InputDecoration(
           labelText: labelText,
           filled: true,
@@ -357,69 +409,21 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide.none,
           ),
-          suffixIcon: Icon(Icons.calendar_today), // Takvim simgesi
         ),
+        readOnly: true,
         onTap: () async {
-          // Takvim gösterme işlemi
-          DateTime? selectedDate = await showDatePicker(
+          DateTime? pickedDate = await showDatePicker(
             context: context,
             initialDate: DateTime.now(),
-            firstDate: DateTime(1900), // En erken seçilebilecek tarih
-            lastDate: DateTime.now(), // En geç seçilebilecek tarih (bugün)
+            firstDate: DateTime(1900),
+            lastDate: DateTime.now(),
           );
-
-          if (selectedDate != null) {
-            // Seçilen tarihi göster
+          if (pickedDate != null) {
             setState(() {
               _dobController.text =
-                  "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
+                  '${pickedDate.day}/${pickedDate.month}/${pickedDate.year}';
             });
           }
-        },
-        controller:
-            _dobController, // Tarih değerini göstermek için bir TextEditingController
-      ),
-    );
-  }
-
-  TextEditingController _dobController = TextEditingController();
-  // Genel Dropdown yapısı oluşturan fonksiyon
-  Widget _buildDropdown(String labelText, List<String> items) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: labelText,
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
-          ),
-        ),
-        value: items.isNotEmpty ? items.first : null,
-        items: items.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (String? newValue) {
-          setState(() {
-            // Güncelleme işlemi
-          });
         },
       ),
     );

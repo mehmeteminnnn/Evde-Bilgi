@@ -59,7 +59,9 @@ class _JobListingsPageState extends State<JobListingsPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => OzgecmisimEkrani(),
+                builder: (context) => OzgecmisimEkrani(
+                  teacherId: widget.id,
+                ),
               ),
             );
           }
