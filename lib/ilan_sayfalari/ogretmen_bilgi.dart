@@ -13,8 +13,9 @@ class CalismaAdresiScreen extends StatefulWidget {
 
 class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
   String selectedCountry = 'Türkiye';
-  String? selectedCity;
-  String? selectedDistrict;
+  String? selectedCityId;
+  //String? selectedCity2;
+  String? selectedDistrictId;
   String? enteredNeighborhood;
 
   List<dynamic> cities = [];
@@ -48,14 +49,14 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
     // Seçili şehre ait ilçeleri filtrele
     setState(() {
       districts = allDistricts
-          .where((district) => district['il_id'] == selectedCity)
+          .where((district) => district['il_id'] == selectedCityId)
           .toList();
     });
   }
 
   bool _isFormComplete() {
-    return selectedCity != null &&
-        selectedDistrict != null &&
+    return selectedCityId != null &&
+        selectedDistrictId != null &&
         enteredNeighborhood != null &&
         enteredNeighborhood!.isNotEmpty;
   }
@@ -87,7 +88,7 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
             ),
             SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              value: selectedCity,
+              value: selectedCityId,
               items: cities.map<DropdownMenuItem<String>>((city) {
                 return DropdownMenuItem<String>(
                     child: Text(city['name']), value: city['id'].toString());
@@ -95,8 +96,10 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
               hint: Text('İl seçiniz'),
               onChanged: (value) {
                 setState(() {
-                  selectedCity = value;
-                  selectedDistrict = null; // İl seçildiğinde ilçe sıfırlanır
+                  ();
+                  selectedCityId = value; // İl id'sini sakla
+                  selectedDistrictId = null;
+                  selectedDistrictId = null; // İl seçildiğinde ilçe sıfırlanır
                   districts = []; // İlçe listesini sıfırla
                   enteredNeighborhood = null; // Mahalle sıfırlanır
                   _updateDistricts();
@@ -105,7 +108,7 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
             ),
             SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              value: selectedDistrict,
+              value: selectedDistrictId,
               items: districts.map<DropdownMenuItem<String>>((district) {
                 return DropdownMenuItem<String>(
                     child: Text(district['name']),
@@ -114,7 +117,7 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
               hint: Text('İlçe seçiniz'),
               onChanged: (value) {
                 setState(() {
-                  selectedDistrict = value;
+                  selectedDistrictId = value;
                   enteredNeighborhood =
                       null; // İlçe değiştiğinde mahalle sıfırlanır
                 });
@@ -128,14 +131,18 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
                   enteredNeighborhood = value;
                 });
               },
-              enabled: selectedCity != null && selectedDistrict != null,
+              enabled: selectedCityId != null && selectedDistrictId != null,
             ),
             Spacer(),
             ElevatedButton(
               onPressed: _isFormComplete()
                   ? () {
-                      widget.jobModel.city = selectedCity!;
-                      widget.jobModel.district = selectedDistrict!;
+                      widget.jobModel.city = cities.firstWhere((city) =>
+                          city['id'].toString() == selectedCityId)['name'];
+                      widget.jobModel.district = districts.firstWhere(
+                          (district) =>
+                              district['id'].toString() ==
+                              selectedDistrictId)['name'];
                       widget.jobModel.neighborhood = enteredNeighborhood!;
                       Navigator.push(
                           context,
