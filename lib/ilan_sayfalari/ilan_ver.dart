@@ -1,8 +1,16 @@
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
-import 'package:evde_bilgi/ogretmen_bilgi.dart';
+import 'package:evde_bilgi/ilan_sayfalari/ogretmen_bilgi.dart';
+import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:flutter/material.dart';
 
-class IlanVer extends StatelessWidget {
+class IlanVer extends StatefulWidget {
+   final JobModel jobModel;
+   IlanVer({required this.jobModel});
+  @override
+  State<IlanVer> createState() => _IlanVerState();
+}
+
+class _IlanVerState extends State<IlanVer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,11 +35,11 @@ class IlanVer extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () {widget.jobModel.position = "Gölge Öğretmen";
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CalismaAdresiScreen(),
+                      builder: (context) => CalismaAdresiScreen(jobModel: widget.jobModel,),
                     ),
                   );
                 },
@@ -56,11 +64,11 @@ class IlanVer extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () {widget.jobModel.position = "Özel Eğitim";
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CalismaAdresiScreen(),
+                      builder: (context) => CalismaAdresiScreen(jobModel: widget.jobModel),
                     ),
                   );
                 },
@@ -85,11 +93,11 @@ class IlanVer extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () {widget.jobModel.position = "Oyun Ablası / Abisi";
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CalismaAdresiScreen(),
+                      builder: (context) => CalismaAdresiScreen(jobModel: widget.jobModel),
                     ),
                   );
                 },
@@ -114,11 +122,11 @@ class IlanVer extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () {widget.jobModel.position = "Yaşam Koçu";
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CalismaAdresiScreen(),
+                      builder: (context) => CalismaAdresiScreen(jobModel: widget.jobModel),
                     ),
                   );
                 },

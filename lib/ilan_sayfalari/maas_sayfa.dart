@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/ilan_haz%C4%B1r.dart';
+import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:flutter/material.dart';
 
 class SalaryPage extends StatefulWidget {
+  final JobModel jobModel;
+  SalaryPage({required this.jobModel});
   @override
   _SalaryPageState createState() => _SalaryPageState();
 }
@@ -79,16 +83,27 @@ class _SalaryPageState extends State<SalaryPage> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: _isButtonActive
-                    ? () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SuccessPage(),
-                          ),
-                        );
-                      }
-                    : null, // Eğer form tamamlanmadıysa buton devre dışı kalır
+                
+onPressed: _isButtonActive
+    ? () {
+        // Eğer maaş belirtildiyse onu kullan, belirtilmediyse "Ücret karşılıklı görüşülecektir" seçeneği işaretlenmişse salary "" olacak
+        widget.jobModel.salary = _isNegotiable ? "" : _salaryController.text.trim();
+        widget.jobModel.isNegotiable = _isNegotiable;
+
+        // Firestore'a veriyi kaydetme
+        FirebaseFirestore.instance.collection('ilanlar').add(widget.jobModel.toMap()).then((_) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SuccessPage(),
+            ),
+          );
+        }).catchError((error) {
+          // Eğer Firestore'a veri kaydedilirken bir hata oluşursa
+          print("Veri kaydedilirken hata oluştu: $error");
+        });
+      }
+    : null, // Eğer form tamamlanmadıysa buton devre dışı kalır
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(

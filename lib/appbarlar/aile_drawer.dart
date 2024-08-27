@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:evde_bilgi/ilan_ver.dart';
+import 'package:evde_bilgi/ilan_sayfalari/ilan_ver.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
+import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:evde_bilgi/ogretmen_listeleri.dart';
 import 'package:flutter/material.dart';
 
@@ -75,7 +76,7 @@ class _AileDrawerState extends State<AileDrawer> {
                         EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => IlanVer()));
+                          MaterialPageRoute(builder: (context) => IlanVer(jobModel: JobModel(),)));
                     },
                   ),
                   ListTile(

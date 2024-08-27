@@ -1,6 +1,7 @@
 import 'package:evde_bilgi/giris_sayfalari/aile_girisi.dart';
 import 'package:evde_bilgi/giris_sayfalari/ogretmen_giris.dart';
-import 'package:evde_bilgi/ilan_ver.dart';
+import 'package:evde_bilgi/ilan_sayfalari/ilan_ver.dart';
+import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:evde_bilgi/uye_olma.dart';
 import 'package:flutter/material.dart';
 
@@ -63,7 +64,11 @@ class _EvdeBilgiDrawerState extends State<EvdeBilgiDrawer> {
             title: Text('İlan Ver'),
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => IlanVer()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => IlanVer(
+                            jobModel: JobModel(),
+                          )));
             },
           ),
           ListTile(

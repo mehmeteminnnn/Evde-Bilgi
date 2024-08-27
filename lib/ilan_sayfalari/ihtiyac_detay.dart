@@ -1,8 +1,12 @@
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
-import 'package:evde_bilgi/maas_sayfa.dart';
+import 'package:evde_bilgi/ilan_sayfalari/maas_sayfa.dart';
+import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatefulWidget {
+  final JobModel jobModel;
+
+  DetailPage({required this.jobModel});
   @override
   _DetailPageState createState() => _DetailPageState();
 }
@@ -78,10 +82,13 @@ class _DetailPageState extends State<DetailPage> {
               child: ElevatedButton(
                 onPressed: isButtonActive
                     ? () {
+                        widget.jobModel.title = controlller.text;
+                        widget.jobModel.details = controlller2.text;
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SalaryPage(),
+                            builder: (context) =>
+                                SalaryPage(jobModel: widget.jobModel),
                           ),
                         );
                       }

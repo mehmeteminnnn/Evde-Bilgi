@@ -1,9 +1,12 @@
 import 'dart:convert';
-import 'package:evde_bilgi/is_ayr%C4%B1ntilari.dart';
+import 'package:evde_bilgi/ilan_sayfalari/is_ayr%C4%B1ntilari.dart';
+import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class CalismaAdresiScreen extends StatefulWidget {
+  final JobModel jobModel;
+  CalismaAdresiScreen({required this.jobModel});
   @override
   _CalismaAdresiScreenState createState() => _CalismaAdresiScreenState();
 }
@@ -131,10 +134,14 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
             ElevatedButton(
               onPressed: _isFormComplete()
                   ? () {
+                      widget.jobModel.city = selectedCity!;
+                      widget.jobModel.district = selectedDistrict!;
+                      widget.jobModel.neighborhood = enteredNeighborhood!;
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => JobSelectionPage()));
+                              builder: (context) =>
+                                  JobSelectionPage(jobModel: widget.jobModel)));
                     }
                   : null, // Tüm alanlar doldurulmamışsa buton pasif olur
               child: Text('İleri'),

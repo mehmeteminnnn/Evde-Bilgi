@@ -1,8 +1,11 @@
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
-import 'package:evde_bilgi/ihtiyac_detay.dart';
+import 'package:evde_bilgi/ilan_sayfalari/ihtiyac_detay.dart';
+import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:flutter/material.dart';
 
 class JobSelectionPage extends StatefulWidget {
+  final JobModel jobModel;
+  JobSelectionPage({required this.jobModel});
   @override
   _JobSelectionPageState createState() => _JobSelectionPageState();
 }
@@ -84,10 +87,16 @@ class _JobSelectionPageState extends State<JobSelectionPage> {
                 child: ElevatedButton(
                   onPressed: isFormComplete()
                       ? () {
+                          widget.jobModel.jobTypes = selectedJobTypes;
+                          widget.jobModel.hoursPerDay =
+                              hoursController.text.trim();
+                          widget.jobModel.urgency = urgency!;
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DetailPage(),
+                              builder: (context) => DetailPage(
+                                jobModel: widget.jobModel,
+                              ),
                             ),
                           );
                         }

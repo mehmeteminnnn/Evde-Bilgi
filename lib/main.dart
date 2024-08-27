@@ -4,8 +4,9 @@ import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/appbarlar/aile_drawer.dart';
 import 'package:evde_bilgi/firebase_options.dart';
 import 'package:evde_bilgi/giris_ekranı_logo_widget.dart';
-import 'package:evde_bilgi/ilan_ver.dart';
+import 'package:evde_bilgi/ilan_sayfalari/ilan_ver.dart';
 import 'package:evde_bilgi/kayit_sayfalari/ogretmen_kay%C4%B1t.dart';
+import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:evde_bilgi/ozgecmis_ekranlari/ozgecmis.dart';
 import 'package:evde_bilgi/uye_olma.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -70,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => IlanVer()));
+                          MaterialPageRoute(builder: (context) => IlanVer(jobModel: JobModel(),)));
                     },
                     child: Text('Öğretmen Arıyorum'),
                     style: ElevatedButton.styleFrom(
