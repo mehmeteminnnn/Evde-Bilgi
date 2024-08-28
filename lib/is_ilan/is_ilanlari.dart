@@ -103,7 +103,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(ilan['detail']),
+                                Text(ilan['details'] ?? ""),
                                 SizedBox(height: 8),
                                 Text(
                                   '${ilan['salary']} TL',

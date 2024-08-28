@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/ilan_haz%C4%B1r.dart';
@@ -83,27 +85,33 @@ class _SalaryPageState extends State<SalaryPage> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                
-onPressed: _isButtonActive
-    ? () {
-        // Eğer maaş belirtildiyse onu kullan, belirtilmediyse "Ücret karşılıklı görüşülecektir" seçeneği işaretlenmişse salary "" olacak
-        widget.jobModel.salary = _isNegotiable ? "" : _salaryController.text.trim();
-        widget.jobModel.isNegotiable = _isNegotiable;
+                onPressed: _isButtonActive
+                    ? () {
+                        // Eğer maaş belirtildiyse onu kullan, belirtilmediyse "Ücret karşılıklı görüşülecektir" seçeneği işaretlenmişse salary "" olacak
+                        widget.jobModel.salary =
+                            _isNegotiable ? "" : _salaryController.text.trim();
+                        widget.jobModel.isNegotiable = _isNegotiable;
+                        widget.jobModel.publishDate = Timestamp.now();
 
-        // Firestore'a veriyi kaydetme
-        FirebaseFirestore.instance.collection('ilanlar').add(widget.jobModel.toMap()).then((_) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SuccessPage(),
-            ),
-          );
-        }).catchError((error) {
-          // Eğer Firestore'a veri kaydedilirken bir hata oluşursa
-          print("Veri kaydedilirken hata oluştu: $error");
-        });
-      }
-    : null, // Eğer form tamamlanmadıysa buton devre dışı kalır
+                        // Firestore'a veriyi kaydetme
+                        FirebaseFirestore.instance
+                            .collection('ilanlar')
+                            .add(
+                              widget.jobModel.toMap(),
+                            )
+                            .then((_) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SuccessPage(),
+                            ),
+                          );
+                        }).catchError((error) {
+                          // Eğer Firestore'a veri kaydedilirken bir hata oluşursa
+                          print("Veri kaydedilirken hata oluştu: $error");
+                        });
+                      }
+                    : null, // Eğer form tamamlanmadıysa buton devre dışı kalır
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(

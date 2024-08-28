@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/ilan_sayfalari/ilan_ver.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
+import 'package:evde_bilgi/mesajlar.dart';
 import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:evde_bilgi/ogretmen_listeleri.dart';
 import 'package:flutter/material.dart';
@@ -75,8 +76,12 @@ class _AileDrawerState extends State<AileDrawer> {
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => IlanVer(jobModel: JobModel(),)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => IlanVer(
+                                    jobModel: JobModel(),
+                                  )));
                     },
                   ),
                   ListTile(
@@ -133,8 +138,14 @@ class _AileDrawerState extends State<AileDrawer> {
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
-                      // Handle the action
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MessagesPage(
+                                    messages: ["Mesaj 1", "Mesaj 2"],
+                                  )));
                     },
+                    // Handle the action
                   ),
                   ListTile(
                     dense: true,

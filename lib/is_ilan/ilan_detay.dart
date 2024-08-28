@@ -47,7 +47,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
                         style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
                       Text(
-                        jobData['location'] ?? "",
+                        jobData['city'] ?? "",
                         style: TextStyle(color: Colors.white),
                       ),
                       SizedBox(height: 10),
@@ -64,7 +64,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
                 ),
                 _buildInfoBox(jobData),
                 SizedBox(
-                  child: _buildBox('İş Tanımı', jobData['detail']),
+                  child: _buildBox('İş Tanımı', jobData['details'] ?? ""),
                   width: double.infinity,
                 ),
                 SizedBox(
@@ -114,6 +114,19 @@ class _JobDetailPageState extends State<JobDetailPage> {
   }
 
   Widget _buildInfoBox(Map<String, dynamic> jobData) {
+    String publishDateText;
+
+    if (jobData['publishDate'] != null) {
+      try {
+        publishDateText =
+            DateFormat('dd/MM/yyyy').format(jobData['publishDate'].toDate());
+      } catch (e) {
+        publishDateText = 'Belirtilmemiş';
+      }
+    } else {
+      publishDateText = 'Belirtilmemiş';
+    }
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
@@ -125,17 +138,16 @@ class _JobDetailPageState extends State<JobDetailPage> {
           padding: const EdgeInsets.all(16.0),
           child: Table(
             children: [
+              _buildTableRow('Yayınlanma Tarihi', publishDateText),
               _buildTableRow(
-                  'Yayınlanma Tarihi',
-                  DateFormat('dd/MM/yyyy')
-                          .format(jobData['publishDate'].toDate()) ??
-                      ""),
-              _buildTableRow('Pozisyon', jobData['position'] ?? ""),
+                  'Pozisyon', jobData['position'] ?? 'Belirtilmemiş'),
+              _buildTableRow('Telefon Numarası',
+                  jobData['phoneNumber']?.toString() ?? 'Belirtilmemiş'),
               _buildTableRow(
-                  'Telefon Numarası', jobData['phoneNumber']?.toString() ?? ""),
-              _buildTableRow('E-posta Adresi', jobData['email'] ?? ""),
-              _buildTableRow('Web Sitesi', jobData['website'] ?? ""),
-              _buildTableRow('Adres', jobData['address'] ?? ""),
+                  'E-posta Adresi', jobData['email'] ?? 'Belirtilmemiş'),
+              _buildTableRow(
+                  'Web Sitesi', jobData['website'] ?? 'Belirtilmemiş'),
+              _buildTableRow('Adres', jobData['address'] ?? 'Belirtilmemiş'),
             ],
           ),
         ),
@@ -143,7 +155,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
     );
   }
 
-  TableRow _buildTableRow(String label, String value) {
+  TableRow _buildTableRow(String label, dynamic value) {
     return TableRow(
       children: [
         Padding(
@@ -152,7 +164,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
         ),
         Padding(
           padding: const EdgeInsets.all(4.0),
-          child: Text(value),
+          child: Text(value?.toString() ?? 'Belirtilmemiş'),
         ),
       ],
     );

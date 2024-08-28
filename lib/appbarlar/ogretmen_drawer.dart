@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
+import 'package:evde_bilgi/mesajlar.dart';
 import 'package:flutter/material.dart';
 
 class OgretmenDrawer extends StatefulWidget {
@@ -73,8 +74,14 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
-                      // Handle the action
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MessagesPage(
+                                    messages: ["Mesaj 1", "Mesaj 2"],
+                                  )));
                     },
+                    // Handle the action
                   ),
                   ListTile(
                     dense: true,

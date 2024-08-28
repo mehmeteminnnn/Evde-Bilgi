@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class JobModel {
   List<String> jobTypes;
   String hoursPerDay;
@@ -10,8 +12,10 @@ class JobModel {
   String city;
   String district;
   String neighborhood;
+  Timestamp publishDate;
 
   JobModel({
+    Timestamp? publishDate,
     this.jobTypes = const [],
     this.hoursPerDay = '',
     this.urgency = '',
@@ -23,7 +27,8 @@ class JobModel {
     this.district = '',
     this.neighborhood = '',
     this.position = '',
-  });
+  }) : this.publishDate = publishDate ??
+            Timestamp.now(); // Varsayılan olarak şu anki zaman atanıyor.
 
   // This method converts JobModel to a Map for saving to Firestore.
   Map<String, dynamic> toMap() {
@@ -39,6 +44,7 @@ class JobModel {
       'city': city,
       'district': district,
       'neighborhood': neighborhood,
+      'publishDate': publishDate,
     };
   }
 
@@ -56,6 +62,7 @@ class JobModel {
       city: map['city'] ?? '',
       district: map['district'] ?? '',
       neighborhood: map['neighborhood'] ?? '',
+      publishDate: map['publishDate'] ?? '',
     );
   }
 }
