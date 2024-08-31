@@ -21,7 +21,8 @@ class UyeOlma extends StatelessWidget {
               context,
               'AİLE OLARAK ÜYE OL',
               FamilyRegisterPage(),
-              Icons.family_restroom, // Aile ikonu
+              Icons.family_restroom,
+              // Aile ikonu
             ),
             SizedBox(height: 16),
             // Öğretmen olarak üye ol butonu
@@ -56,9 +57,10 @@ class UyeOlma extends StatelessWidget {
         elevation: 5,
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
         side: BorderSide(color: Colors.blue.shade300, width: 2),
-        minimumSize: Size(double.infinity, 60), // Butonları büyütme
+        minimumSize: Size(double.infinity, 100),
+        // Butonları büyütme
       ),
-      icon: Icon(icon, size: 24),
+      icon: Icon(icon, size: 35),
       label: Expanded(
         child: Text(
           text,

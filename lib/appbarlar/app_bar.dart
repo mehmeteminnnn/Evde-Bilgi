@@ -89,7 +89,7 @@ class _EvdeBilgiDrawerState extends State<EvdeBilgiDrawer> {
           ),
           ListTile(
             leading: Icon(Icons.person),
-            title: Text('Öğretmen Girişi'),
+            title: Text('Uzman Girişi'),
             onTap: () {
               Navigator.push(
                   context,
