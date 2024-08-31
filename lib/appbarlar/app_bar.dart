@@ -73,7 +73,7 @@ class _EvdeBilgiDrawerState extends State<EvdeBilgiDrawer> {
           ),
           ListTile(
             leading: Icon(Icons.search),
-            title: Text('Öğretmen Bul'),
+            title: Text('Uzman Bul'),
             onTap: () {
               // Handle the action
             },

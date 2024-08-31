@@ -64,7 +64,7 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
-        title: Text('Öğretmen Girişi'),
+        title: Text('Uzman Girişi'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

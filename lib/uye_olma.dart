@@ -27,7 +27,7 @@ class UyeOlma extends StatelessWidget {
             // Öğretmen olarak üye ol butonu
             _buildElevatedButton(
               context,
-              'ÖĞRETMEN OLARAK ÜYE OL',
+              'UZMAN OLARAK ÜYE OL',
               TeacherRegisterPage(),
               Icons.school, // Öğretmen ikonu
             ),

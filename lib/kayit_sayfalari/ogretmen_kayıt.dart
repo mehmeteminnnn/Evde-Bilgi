@@ -44,7 +44,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Öğretmen Kayıt',
+                'Uzman Kayıt',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 16),

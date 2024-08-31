@@ -63,7 +63,9 @@ class _AileDrawerState extends State<AileDrawer> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => JobListingsPage()));
+                              builder: (context) => JobListingsPage(
+                                    id: widget.uid,
+                                  )));
                     },
                   ),
                   ListTile(
