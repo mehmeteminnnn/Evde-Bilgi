@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -103,11 +104,22 @@ class _FilterPageState extends State<FilterPage> {
 
     QuerySnapshot querySnapshot = await query.get();
 
-    setState(() {
-      filteredJobs = querySnapshot.docs.map((doc) {
-        return doc.data() as Map<String, dynamic>;
-      }).toList();
-    });
+    List<Map<String, dynamic>> filteredJobs = querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+      return {
+        'id': doc.id,
+        'title': data.containsKey('title') ? data['title'] : '',
+        'details': data.containsKey('details') ? data['details'] : '',
+        'salary': data.containsKey('salary') ? data['salary'] : '',
+        'selectedCity':
+            data.containsKey('selectedCity') ? data['selectedCity'] : '',
+        'position': data.containsKey('position') ? data['position'] : '',
+        'jobTypes': data.containsKey('jobTypes') ? data['jobTypes'] : [],
+      };
+    }).toList();
+
+    Navigator.pop(context, filteredJobs);
   }
 
   Widget buildJobList() {
@@ -115,11 +127,67 @@ class _FilterPageState extends State<FilterPage> {
         ? ListView.builder(
             itemCount: filteredJobs.length,
             itemBuilder: (context, index) {
-              var job = filteredJobs[index];
-              return ListTile(
-                title: Text(job['position'] ?? "Pozisyon bilgisi yok"),
-                subtitle: Text(
-                    '${job['selectedCity'] ?? "Şehir bilgisi yok"} - ${job['jobTypes'] != null ? job['jobTypes'].join(", ") : "Çalışma şekli bilgisi yok"}'),
+              var ilan = filteredJobs[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blue),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListTile(
+                        title: Text(ilan['title'] ?? "Başlık bilgisi yok"),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(ilan['details'] ?? ""),
+                            SizedBox(height: 8),
+                            Text(
+                              '${ilan['salary'] ?? "Ücret bilgisi yok"} TL',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.red,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  child: Text('Şimdi Başvur'),
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.orange,
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            JobDetailPage(jobId: ilan['id']),
+                                      ),
+                                    );
+                                  },
+                                  child: Text('Görüntüle'),
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.blueGrey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               );
             },
           )

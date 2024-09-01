@@ -17,6 +17,7 @@ class JobListingsPage extends StatefulWidget {
 
 class _JobListingsPageState extends State<JobListingsPage> {
   int _selectedIndex = 0;
+  List<Map<String, dynamic>> filteredJobs = [];
 
   @override
   Widget build(BuildContext context) {
@@ -65,106 +66,176 @@ class _JobListingsPageState extends State<JobListingsPage> {
               ),
             );
           }
-          // Diğer sekmeler için de benzer şekilde yönlendirme yapabilirsiniz
         },
       ),
       body: Stack(
         children: [
-          StreamBuilder<QuerySnapshot>(
-            stream:
-                FirebaseFirestore.instance.collection('ilanlar').snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(child: Text('Bir hata oluştu.'));
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
+          filteredJobs.isEmpty
+              ? StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('ilanlar')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Bir hata oluştu.'));
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
 
-              final data = snapshot.data!;
+                    final data = snapshot.data!;
 
-              return ListView.builder(
-                itemCount: data.size,
-                itemBuilder: (context, index) {
-                  var ilan = data.docs[index];
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue),
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListTile(
-                            title: Text(ilan['title']),
-                            subtitle: Column(
+                    return ListView.builder(
+                      itemCount: data.size,
+                      itemBuilder: (context, index) {
+                        var ilan = data.docs[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.blue),
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(ilan['details'] ?? ""),
-                                SizedBox(height: 8),
-                                Text(
-                                  '${ilan['salary']} TL',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: Colors.red,
+                                ListTile(
+                                  title: Text(ilan['title']),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(ilan['details'] ?? ""),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        '${ilan['salary']} TL',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: () {},
+                                            child: Text('Şimdi Başvur'),
+                                            style: ElevatedButton.styleFrom(
+                                              foregroundColor: Colors.orange,
+                                            ),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      JobDetailPage(
+                                                          jobId: ilan.id),
+                                                ),
+                                              );
+                                            },
+                                            child: Text('Görüntüle'),
+                                            style: ElevatedButton.styleFrom(
+                                              foregroundColor: Colors.blueGrey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 8),
+                                    ],
                                   ),
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () {},
-                                      // Başvuru işlemi
-                                      child: Text('Şimdi Başvur'),
-                                      style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.orange,
-                                      ),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                JobDetailPage(jobId: ilan.id),
-                                          ),
-                                        );
-                                        // Görüntüle işlemi
-                                      },
-                                      child: Text('Görüntüle'),
-                                      style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.blueGrey,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 8),
                               ],
                             ),
                           ),
-                        ],
+                        );
+                      },
+                    );
+                  },
+                )
+              : ListView.builder(
+                  itemCount: filteredJobs.length,
+                  itemBuilder: (context, index) {
+                    var job = filteredJobs[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.blue),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        child: ListTile(
+                          title: Text(job['title']),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(job['details'] ?? ""),
+                              SizedBox(height: 8),
+                              Text(
+                                '${job['salary']} TL',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    child: Text('Şimdi Başvur'),
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.orange,
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => JobDetailPage(
+                                            jobId: job['id'],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Text('Görüntüle'),
+                                    style: ElevatedButton.styleFrom(
+                                      foregroundColor: Colors.blueGrey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 8),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
+                    );
+                  },
+                ),
           Positioned(
             bottom: 16,
             left: 16,
             right: 16,
             child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                final result = await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => FilterPage()),
                 );
+                if (result != null && result is List<Map<String, dynamic>>) {
+                  setState(() {
+                    filteredJobs = result;
+                  });
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
