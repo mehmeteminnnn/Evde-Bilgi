@@ -14,7 +14,7 @@ class _FilterPageState extends State<FilterPage> {
   String? selectedWorkType;
 
   List<String> cities = [];
-  List<DocumentSnapshot> filteredJobs = [];
+  List<Map<String, dynamic>> filteredJobs = [];
 
   @override
   void initState() {
@@ -53,13 +53,14 @@ class _FilterPageState extends State<FilterPage> {
               });
             }),
             SizedBox(height: 16),
-            buildDropdown('Pozisyonlar', ['Gölge Öğretmen', 'Diğer'], (value) {
+            buildDropdown('Pozisyon', ['Gölge Öğretmen', 'Diğer'], (value) {
               setState(() {
                 selectedPosition = value;
               });
             }),
             SizedBox(height: 16),
-            buildDropdown('Çalışma Şekli', ['Part Time', 'Full Time'], (value) {
+            buildDropdown('Çalışma Şekli',
+                ['Tam zamanlı', 'Yarı zamanlı', 'Geçici', 'Yatılı'], (value) {
               setState(() {
                 selectedWorkType = value;
               });
@@ -79,19 +80,7 @@ class _FilterPageState extends State<FilterPage> {
             ),
             SizedBox(height: 32),
             Expanded(
-              child: filteredJobs.isNotEmpty
-                  ? ListView.builder(
-                      itemCount: filteredJobs.length,
-                      itemBuilder: (context, index) {
-                        var job = filteredJobs[index];
-                        return ListTile(
-                          title: Text(job['position']) ?? Text("data"),
-                          subtitle:
-                              Text('${job['location']} - ${job['jobType']}'),
-                        );
-                      },
-                    )
-                  : Center(child: Text('Eşleşen ilan bulunamadı')),
+              child: buildJobList(),
             ),
           ],
         ),
@@ -103,19 +92,38 @@ class _FilterPageState extends State<FilterPage> {
     Query query = FirebaseFirestore.instance.collection('ilanlar');
 
     if (selectedCity != null) {
-      query = query.where('city', isEqualTo: selectedCity);
+      query = query.where('selectedCity', isEqualTo: selectedCity);
     }
     if (selectedPosition != null) {
       query = query.where('position', isEqualTo: selectedPosition);
     }
     if (selectedWorkType != null) {
-      query = query.where('jobType', isEqualTo: selectedWorkType);
+      query = query.where('jobTypes', arrayContains: selectedWorkType);
     }
 
     QuerySnapshot querySnapshot = await query.get();
+
     setState(() {
-      filteredJobs = querySnapshot.docs;
+      filteredJobs = querySnapshot.docs.map((doc) {
+        return doc.data() as Map<String, dynamic>;
+      }).toList();
     });
+  }
+
+  Widget buildJobList() {
+    return filteredJobs.isNotEmpty
+        ? ListView.builder(
+            itemCount: filteredJobs.length,
+            itemBuilder: (context, index) {
+              var job = filteredJobs[index];
+              return ListTile(
+                title: Text(job['position'] ?? "Pozisyon bilgisi yok"),
+                subtitle: Text(
+                    '${job['selectedCity'] ?? "Şehir bilgisi yok"} - ${job['jobTypes'] != null ? job['jobTypes'].join(", ") : "Çalışma şekli bilgisi yok"}'),
+              );
+            },
+          )
+        : Center(child: Text('Eşleşen ilan bulunamadı'));
   }
 
   Widget buildDropdown(

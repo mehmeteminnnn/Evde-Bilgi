@@ -70,8 +70,12 @@ class HomeScreen extends StatelessWidget {
                   width: 300,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => IlanVer(jobModel: JobModel(),)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => IlanVer(
+                                    jobModel: JobModel(),
+                                  )));
                     },
                     child: Text('Uzman Arıyorum'),
                     style: ElevatedButton.styleFrom(
