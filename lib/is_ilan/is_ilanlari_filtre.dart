@@ -33,6 +33,9 @@ class _FilterPageState extends State<FilterPage> {
       return data['name'] as String;
     }).toList();
 
+    // Alfabetik olarak sırala
+    cityList.sort((a, b) => a.compareTo(b));
+
     setState(() {
       cities = cityList;
     });
