@@ -23,7 +23,23 @@ class _JobListingsPageState extends State<JobListingsPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showResumeReminder(context);
+      _checkSelectedCity();
+    });
+  }
+
+  void _checkSelectedCity() {
+    FirebaseFirestore.instance
+        .collection('ogretmen')
+        .doc(widget.id)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        var userData = documentSnapshot.data() as Map<String, dynamic>;
+        if (!userData.containsKey('selectedCity') ||
+            userData['selectedCity'] == null) {
+          _showResumeReminder(context);
+        }
+      }
     });
   }
 
@@ -34,7 +50,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
         return AlertDialog(
           title: Text('Özgeçmiş Uyarısı'),
           content: Text(
-            'Lütfen özgeçmişinizi doldurun. Özgeçmişlerini doldurmayan adaylar ailelerimize görünmeyecek.',
+            'Lütfen özgeçmişinizi doldurun. Özgeçmişlerini doldurmayan adaylar ailelerimize görünmeyecektir.',
           ),
           actions: <Widget>[
             TextButton(
