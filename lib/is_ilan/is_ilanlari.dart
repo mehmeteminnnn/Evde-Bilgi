@@ -20,6 +20,36 @@ class _JobListingsPageState extends State<JobListingsPage> {
   List<Map<String, dynamic>> filteredJobs = [];
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showResumeReminder(context);
+    });
+  }
+
+  void _showResumeReminder(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Özgeçmiş Uyarısı'),
+          content: Text(
+            'Lütfen özgeçmişinizi doldurun. Özgeçmişlerini doldurmayan adaylar ailelerimize görünmeyecek.',
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Tamam'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: EvdeBilgiAppBar(),

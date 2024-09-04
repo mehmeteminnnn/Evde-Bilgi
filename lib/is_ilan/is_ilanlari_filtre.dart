@@ -3,6 +3,7 @@ import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:turkish/turkish.dart';
 
 class FilterPage extends StatefulWidget {
   @override
@@ -33,8 +34,8 @@ class _FilterPageState extends State<FilterPage> {
       return data['name'] as String;
     }).toList();
 
-    // Alfabetik olarak sırala
-    cityList.sort((a, b) => a.compareTo(b));
+    // Türkçe karakterlere uygun şekilde alfabetik olarak sırala
+    cityList.sort((a, b) => turkish.comparator(a, b));
 
     setState(() {
       cities = cityList;
