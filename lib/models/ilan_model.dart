@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class JobModel {
   List<String> jobTypes;
   String hoursPerDay;
-  String urgency;
+  List<String> workingDays; // Yeni eklenen alan
   String title;
   String details;
   String salary;
@@ -18,7 +18,7 @@ class JobModel {
     Timestamp? publishDate,
     this.jobTypes = const [],
     this.hoursPerDay = '',
-    this.urgency = '',
+    this.workingDays = const [], // Yeni eklenen alan için varsayılan değer
     this.title = '',
     this.details = '',
     this.salary = '',
@@ -35,7 +35,7 @@ class JobModel {
     return {
       'jobTypes': jobTypes,
       'hoursPerDay': hoursPerDay,
-      'urgency': urgency,
+      'workingDays': workingDays, // Yeni eklenen alan
       'title': title,
       'details': details,
       'salary': salary,
@@ -53,7 +53,8 @@ class JobModel {
     return JobModel(
       jobTypes: List<String>.from(map['jobTypes']),
       hoursPerDay: map['hoursPerDay'] ?? '',
-      urgency: map['urgency'] ?? '',
+      workingDays:
+          List<String>.from(map['workingDays'] ?? []), // Yeni eklenen alan
       title: map['title'] ?? '',
       details: map['details'] ?? '',
       salary: map['salary'] ?? '',

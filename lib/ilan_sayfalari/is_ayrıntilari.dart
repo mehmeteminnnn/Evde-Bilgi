@@ -13,7 +13,19 @@ class JobSelectionPage extends StatefulWidget {
 class _JobSelectionPageState extends State<JobSelectionPage> {
   List<String> selectedJobTypes = [];
   TextEditingController hoursController = TextEditingController();
-  String? urgency;
+  List<String> selectedDays = [];
+  bool anyDay = false;
+
+  final List<String> daysOfWeek = [
+    'Pazartesi',
+    'Salı',
+    'Çarşamba',
+    'Perşembe',
+    'Cuma',
+    'Cumartesi',
+    'Pazar',
+    'Fark etmez'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -60,25 +72,13 @@ class _JobSelectionPageState extends State<JobSelectionPage> {
             ),
             SizedBox(height: 20),
             Text(
-              'Ne kadar acil ihtiyacınız var?',
+              'Haftanın hangi günleri çalışmak istersiniz?',
               style: TextStyle(fontSize: 16),
             ),
-            DropdownButtonFormField<String>(
-              items: <String>['Hemen', '1 hafta içinde', '2 hafta içinde']
-                  .map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  urgency = newValue;
-                });
-              },
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-              ),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: daysOfWeek.map((day) => _buildDayButton(day)).toList(),
             ),
             Spacer(),
             Center(
@@ -90,7 +90,8 @@ class _JobSelectionPageState extends State<JobSelectionPage> {
                           widget.jobModel.jobTypes = selectedJobTypes;
                           widget.jobModel.hoursPerDay =
                               hoursController.text.trim();
-                          widget.jobModel.urgency = urgency!;
+                          widget.jobModel.workingDays =
+                              anyDay ? ['Fark etmez'] : selectedDays;
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -136,9 +137,39 @@ class _JobSelectionPageState extends State<JobSelectionPage> {
     );
   }
 
+  Widget _buildDayButton(String day) {
+    final isSelected = selectedDays.contains(day);
+    final isAnyDaySelected = day == 'Fark etmez';
+
+    return OutlinedButton(
+      onPressed: () {
+        setState(() {
+          if (isAnyDaySelected) {
+            anyDay = !anyDay;
+            if (anyDay) {
+              selectedDays.clear();
+            }
+          } else {
+            if (anyDay) return; // Fark etmez seçiliyse diğer günler seçilemez
+            if (isSelected) {
+              selectedDays.remove(day);
+            } else {
+              selectedDays.add(day);
+            }
+          }
+        });
+      },
+      style: OutlinedButton.styleFrom(
+        backgroundColor:
+            isSelected || (isAnyDaySelected && anyDay) ? Colors.blue : null,
+      ),
+      child: Text(day),
+    );
+  }
+
   bool isFormComplete() {
     return selectedJobTypes.isNotEmpty &&
         hoursController.text.isNotEmpty &&
-        urgency != null;
+        (anyDay || selectedDays.isNotEmpty);
   }
 }
