@@ -72,13 +72,18 @@ class _JobDetailPageState extends State<JobDetailPage> {
                   width: double.infinity,
                 ),
                 SizedBox(
-                  child:
-                      _buildBox('Çalışma Günü', jobData['workingDays'] ?? ''),
+                  child: _buildBox(
+                    'Çalışma Günü',
+                    jobData['workingDays'] != null &&
+                            jobData['workingDays'].isNotEmpty
+                        ? (jobData['workingDays'] as List<dynamic>).join(', ')
+                        : 'Belirtilmemiş',
+                  ),
                   width: double.infinity,
                 ),
                 SizedBox(
                   child: _buildBox(
-                      'Çalışma Saati(Günlük)', jobData['workingHours'] ?? ''),
+                      'Çalışma Saati(Günlük)', jobData['hoursPerDay'] ?? ''),
                   width: double.infinity,
                 ),
                 _buildActionButtons(),
