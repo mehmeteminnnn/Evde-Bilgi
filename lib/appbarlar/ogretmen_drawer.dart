@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
+import 'package:evde_bilgi/main.dart';
 import 'package:evde_bilgi/mesajlar.dart';
 import 'package:flutter/material.dart';
 
@@ -150,6 +151,23 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
               }
 
               return Text("Kullanıcı bulunamadı.");
+            },
+          ),
+          ListTile(
+            dense: true,
+            leading: Icon(Icons.exit_to_app, size: 20, color: Colors.red),
+            title: Text(
+              'Çıkış Yap',
+              style: TextStyle(fontSize: 14, color: Colors.red),
+            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        HomeScreen()), // HomeScreen'e yönlendirme
+              );
             },
           ),
         ],
