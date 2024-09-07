@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/giris_sayfalari/ogretmen_giris.dart';
@@ -5,6 +6,8 @@ import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
 import 'package:evde_bilgi/main.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 final TextEditingController nameController = TextEditingController();
 final TextEditingController phoneController = TextEditingController();
@@ -21,6 +24,8 @@ class TeacherRegisterPage extends StatefulWidget {
 class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
   bool isChecked = false;
   String? userId;
+  File? _image;
+  final picker = ImagePicker();
 
   bool isFormValid() {
     return nameController.text.isNotEmpty &&
@@ -30,6 +35,15 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
         passwordController2.text.isNotEmpty &&
         nationality != null &&
         isChecked;
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await picker.pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
   }
 
   @override
@@ -63,6 +77,10 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
               buildTextField('Şifre Tekrar', passwordController2,
                   isPassword: true),
               SizedBox(height: 16),
+
+              // Fotoğraf yükleme kısmı
+              buildImagePicker(),
+              SizedBox(height: 16),
               Row(
                 children: [
                   Checkbox(
@@ -89,8 +107,9 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                       ? () async {
                           if (passwordController.text ==
                               passwordController2.text) {
-                            userId = await saveDataToFirestoreTeacher();
-                            if (userId != null) {
+                            String? newUserId =
+                                await saveDataToFirestoreTeacher();
+                            if (newUserId != null) {
                               // Form alanlarını temizleme
                               setState(() {
                                 nameController.clear();
@@ -100,13 +119,14 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                                 passwordController2.clear();
                                 nationality = "";
                                 isChecked = false;
+                                _image = null;
                               });
 
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => JobListingsPage(
-                                            id: userId,
+                                            id: newUserId, // Yeni userId'yi kullan
                                           )));
                             }
                           } else {
@@ -169,7 +189,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
         ),
       ),
       onChanged: (text) {
-        setState(() {}); // Butonun durumunu kontrol etmek için
+        setState(() {});
       },
     );
   }
@@ -201,18 +221,91 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
     );
   }
 
-  Future<String?> saveDataToFirestoreTeacher() async {
-    final firestore = FirebaseFirestore.instance;
+  Widget buildImagePicker() {
+    return Container(
+      width: double.infinity, // TextField'larla aynı genişlikte
+      padding: EdgeInsets.symmetric(vertical: 16.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _image == null
+              ? ElevatedButton(
+                  onPressed: () => _pickImage(ImageSource.gallery),
+                  child: Text('Fotoğraf Yükle'),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(200, 50),
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.blueGrey[800],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                  ),
+                )
+              : Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.file(
+                        _image!,
+                        height: 150,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _image = null;
+                        });
+                      },
+                      child: Text('Fotoğrafı Sil'),
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.redAccent,
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+        ],
+      ),
+    );
+  }
 
-    DocumentReference docRef = await firestore.collection('ogretmen').add({
-      'name': nameController.text,
-      'phone': phoneController.text,
-      'email': emailController.text,
-      'password': passwordController.text, // Şifreyi hashleyin
-      'nationality': nationality,
-    });
-//
-    String userId = docRef.id;
-    return userId;
+  Future<String?> saveDataToFirestoreTeacher() async {
+    try {
+      final CollectionReference teachers =
+          FirebaseFirestore.instance.collection('teachers');
+      final Reference storageReference = FirebaseStorage.instance
+          .ref()
+          .child('teacher_images/${nameController.text}.jpg');
+
+      if (_image != null) {
+        final UploadTask uploadTask = storageReference.putFile(_image!);
+        await uploadTask;
+      }
+
+      DocumentReference documentRef = await teachers.add({
+        'name': nameController.text,
+        'phone': phoneController.text,
+        'email': emailController.text,
+        'password': passwordController.text,
+        'nationality': nationality,
+        'image_url': await storageReference.getDownloadURL(),
+      });
+
+      return documentRef.id;
+    } catch (e) {
+      print("Error saving data to Firestore: $e");
+      return null;
+    }
   }
 }
