@@ -32,7 +32,7 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
             backgroundColor: Colors.green,
           ),
         );
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => JobListingsPage(

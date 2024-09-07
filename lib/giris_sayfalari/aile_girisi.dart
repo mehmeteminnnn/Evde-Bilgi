@@ -33,7 +33,7 @@ class _AileGirisEkraniState extends State<AileGirisEkrani> {
             backgroundColor: Colors.green,
           ),
         );
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => TeacherListPage(
