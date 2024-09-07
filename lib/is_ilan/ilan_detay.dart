@@ -68,11 +68,6 @@ class _JobDetailPageState extends State<JobDetailPage> {
                   width: double.infinity,
                 ),
                 SizedBox(
-                  child: _buildBox(
-                      'İş Becerileri', jobData['skills']?.join('\n') ?? ''),
-                  width: double.infinity,
-                ),
-                SizedBox(
                   child: _buildBox('Maaş', '${jobData['salary']} TL'),
                   width: double.infinity,
                 ),
@@ -82,12 +77,8 @@ class _JobDetailPageState extends State<JobDetailPage> {
                   width: double.infinity,
                 ),
                 SizedBox(
-                  child:
-                      _buildBox('Çalışma Saati', jobData['workingHours'] ?? ''),
-                  width: double.infinity,
-                ),
-                SizedBox(
-                  child: _buildSimilarJobsSection(jobData['similarJobs'] ?? []),
+                  child: _buildBox(
+                      'Çalışma Saati(Günlük)', jobData['workingHours'] ?? ''),
                   width: double.infinity,
                 ),
                 _buildActionButtons(),
@@ -140,13 +131,13 @@ class _JobDetailPageState extends State<JobDetailPage> {
             children: [
               _buildTableRow('Yayınlanma Tarihi', publishDateText),
               _buildTableRow(
+                  'Ad-Soyad', jobData['namesurname'] ?? 'Belirtilmemiş'),
+              _buildTableRow(
                   'Pozisyon', jobData['position'] ?? 'Belirtilmemiş'),
               _buildTableRow('Telefon Numarası',
                   jobData['phoneNumber']?.toString() ?? 'Belirtilmemiş'),
               _buildTableRow(
                   'E-posta Adresi', jobData['email'] ?? 'Belirtilmemiş'),
-              _buildTableRow(
-                  'Web Sitesi', jobData['website'] ?? 'Belirtilmemiş'),
               _buildTableRow('Adres', jobData['address'] ?? 'Belirtilmemiş'),
             ],
           ),
@@ -187,44 +178,6 @@ class _JobDetailPageState extends State<JobDetailPage> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               SizedBox(height: 8),
               Text(content),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSimilarJobsSection(List<dynamic> similarJobs) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        elevation: 3,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Benzer İşler',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
-              for (var job in similarJobs)
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  elevation: 2,
-                  child: ListTile(
-                    title: Text(job['title']),
-                    subtitle: Text(job['salary']),
-                    trailing: ElevatedButton(
-                      onPressed: () {},
-                      child: Text('Şimdi Başvur'),
-                    ),
-                  ),
-                ),
             ],
           ),
         ),
