@@ -197,9 +197,18 @@ class _JobDetailPageState extends State<JobDetailPage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              // Şimdi Başvur butonuna tıklama işlevi
+            },
             child: Text('Şimdi Başvur'),
             style: ElevatedButton.styleFrom(foregroundColor: Colors.red),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // Mesaj Gönder butonuna tıklama işlevi
+            },
+            child: Text('Mesaj Gönder'),
+            style: ElevatedButton.styleFrom(foregroundColor: Colors.blue),
           ),
         ],
       ),

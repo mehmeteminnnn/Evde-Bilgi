@@ -2,14 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/appbarlar/ogretmen_drawer.dart';
 import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
-import 'package:evde_bilgi/is_ilan/is_ilanlari_filtre.dart';
 import 'package:evde_bilgi/ozgecmis_ekranlari/ozgecmis.dart';
 import 'package:flutter/material.dart';
 
 class JobListingsPage extends StatefulWidget {
   final String? id;
 
-  JobListingsPage({Key? key, this.id}) : super(key: key);
+  const JobListingsPage({Key? key, this.id}) : super(key: key);
 
   @override
   _JobListingsPageState createState() => _JobListingsPageState();
@@ -163,30 +162,70 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                         ),
                                       ),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          ElevatedButton(
-                                            onPressed: () {},
-                                            child: Text('Şimdi Başvur'),
-                                            style: ElevatedButton.styleFrom(
-                                              foregroundColor: Colors.orange,
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              onPressed: () {},
+                                              child: Text('Şimdi Başvur'),
+                                              style: ElevatedButton.styleFrom(
+                                                foregroundColor: Colors.orange,
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 16),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      JobDetailPage(
-                                                          jobId: ilan.id),
+                                          SizedBox(width: 8),
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        JobDetailPage(
+                                                            jobId: ilan.id),
+                                                  ),
+                                                );
+                                              },
+                                              child: Text('Mesaj Gönder'),
+                                              style: ElevatedButton.styleFrom(
+                                                foregroundColor: Colors.blue,
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 16),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
                                                 ),
-                                              );
-                                            },
-                                            child: Text('Görüntüle'),
-                                            style: ElevatedButton.styleFrom(
-                                              foregroundColor: Colors.blueGrey,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 8),
+                                          Expanded(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        JobDetailPage(
+                                                            jobId: ilan.id),
+                                                  ),
+                                                );
+                                              },
+                                              child: Text('Görüntüle'),
+                                              style: ElevatedButton.styleFrom(
+                                                foregroundColor: Colors.green,
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 16),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -231,30 +270,70 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                 ),
                               ),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    child: Text('Şimdi Başvur'),
-                                    style: ElevatedButton.styleFrom(
-                                      foregroundColor: Colors.orange,
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () {},
+                                      child: Text('Şimdi Başvur'),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blueGrey,
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 16),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => JobDetailPage(
-                                            jobId: job['id'],
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => JobDetailPage(
+                                              jobId: job['id'],
+                                            ),
                                           ),
+                                        );
+                                      },
+                                      child: Text('Mesaj Gönder'),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blueGrey,
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 16),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                         ),
-                                      );
-                                    },
-                                    child: Text('Görüntüle'),
-                                    style: ElevatedButton.styleFrom(
-                                      foregroundColor: Colors.blueGrey,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => JobDetailPage(
+                                              jobId: job['id'],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Text('Görüntüle'),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blueGrey,
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 16),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -267,35 +346,6 @@ class _JobListingsPageState extends State<JobListingsPage> {
                     );
                   },
                 ),
-          Positioned(
-            bottom: 16,
-            left: 16,
-            right: 16,
-            child: ElevatedButton(
-              onPressed: () async {
-                final result = await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FilterPage()),
-                );
-                if (result != null && result is List<Map<String, dynamic>>) {
-                  setState(() {
-                    filteredJobs = result;
-                  });
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                padding: EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Text(
-                'Filtrele',
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-          ),
         ],
       ),
     );
