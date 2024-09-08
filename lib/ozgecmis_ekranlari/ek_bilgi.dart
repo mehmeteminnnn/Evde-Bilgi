@@ -19,7 +19,7 @@ class _EkBilgilerEkraniState extends State<EkBilgilerEkrani> {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
-        title: Text('Ek Bilgiler'),
+        title: const Text('Ek Bilgiler'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -88,7 +88,7 @@ class _EkBilgilerEkraniState extends State<EkBilgilerEkrani> {
                   (newValue) {}),
               _buildTextField('Katıldığınız Kurslar'),
               _buildTextField('Konuştuğunuz Diller'),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -116,7 +116,7 @@ class _EkBilgilerEkraniState extends State<EkBilgilerEkrani> {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 1,
             blurRadius: 5,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -126,7 +126,7 @@ class _EkBilgilerEkraniState extends State<EkBilgilerEkrani> {
           filled: true,
           fillColor: Colors.white,
           contentPadding:
-              EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+              const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide.none,
@@ -146,7 +146,7 @@ class _EkBilgilerEkraniState extends State<EkBilgilerEkrani> {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 1,
             blurRadius: 5,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -157,7 +157,7 @@ class _EkBilgilerEkraniState extends State<EkBilgilerEkrani> {
           filled: true,
           fillColor: Colors.white,
           contentPadding:
-              EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+              const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide.none,
@@ -179,14 +179,14 @@ class _EkBilgilerEkraniState extends State<EkBilgilerEkrani> {
       onPressed: onPressed,
       style: TextButton.styleFrom(
         backgroundColor: color,
-        padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 24.0),
+        padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 24.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
       child: Text(
         text,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }

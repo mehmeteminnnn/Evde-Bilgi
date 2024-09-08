@@ -92,6 +92,7 @@ class _JobSelectionPageState extends State<JobSelectionPage> {
                               hoursController.text.trim();
                           widget.jobModel.workingDays =
                               anyDay ? ['Fark etmez'] : selectedDays;
+                          print(widget.jobModel.userId);
                           Navigator.push(
                             context,
                             MaterialPageRoute(

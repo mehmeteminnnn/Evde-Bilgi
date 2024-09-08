@@ -49,14 +49,12 @@ class _DetailPageState extends State<DetailPage> {
           children: [
             const Text(
               'İhtiyaçlarınızı Detaylandırınız',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             const Text(
               'İhtiyaçlarınızı detaylıca belirtiniz.',
-              style: TextStyle(
-                fontSize: 16,
-              ),
+              style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 16),
             TextField(
@@ -82,13 +80,16 @@ class _DetailPageState extends State<DetailPage> {
               child: ElevatedButton(
                 onPressed: isButtonActive
                     ? () {
+                        print(widget.jobModel.userId);
                         widget.jobModel.title = controlller.text;
                         widget.jobModel.details = controlller2.text;
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                SalaryPage(jobModel: widget.jobModel),
+                            builder: (context) => SalaryPage(
+                              jobModel: widget.jobModel,
+                            ),
                           ),
                         );
                       }

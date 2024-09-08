@@ -70,14 +70,15 @@ class HomeScreen extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => IlanVer(
                                     jobModel: JobModel(),
+                                    userId: "",
                                   )));
                     },
-                    child: const Text('Uzman Arıyorum'),
                     style: ElevatedButton.styleFrom(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32, vertical: 12),
                       textStyle: const TextStyle(fontSize: 18),
                     ),
+                    child: const Text('Uzman Arıyorum'),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -90,12 +91,12 @@ class HomeScreen extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => TeacherRegisterPage()));
                     },
-                    child: const Text('İş Arıyorum'),
                     style: ElevatedButton.styleFrom(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32, vertical: 12),
                       textStyle: const TextStyle(fontSize: 18),
                     ),
+                    child: const Text('İş Arıyorum'),
                   ),
                 ),
               ],
@@ -103,6 +104,12 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 45),
             OutlinedButton(
               onPressed: () {},
+              style: OutlinedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                textStyle: const TextStyle(fontSize: 18),
+                side: const BorderSide(color: Colors.blue),
+              ),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -110,11 +117,6 @@ class HomeScreen extends StatelessWidget {
                   SizedBox(width: 8),
                   Icon(Icons.arrow_forward),
                 ],
-              ),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                textStyle: const TextStyle(fontSize: 18),
-                side: const BorderSide(color: Colors.blue),
               ),
             ),
           ],

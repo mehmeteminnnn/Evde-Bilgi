@@ -79,11 +79,13 @@ class _AileDrawerState extends State<AileDrawer> {
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
+                      print(widget.uid);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => IlanVer(
                                     jobModel: JobModel(),
+                                    userId: widget.uid!,
                                   )));
                     },
                   ),
@@ -239,7 +241,8 @@ class _AileDrawerState extends State<AileDrawer> {
               'Çıkış Yap',
               style: TextStyle(fontSize: 14, color: Colors.red),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
             onTap: () {
               Navigator.pushReplacement(
                 context,

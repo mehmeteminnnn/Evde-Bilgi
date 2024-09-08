@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/appbarlar/ogretmen_drawer.dart';
 import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
+import 'package:evde_bilgi/mesaj_gonder.dart';
 import 'package:evde_bilgi/ozgecmis_ekranlari/ozgecmis.dart';
 import 'package:flutter/material.dart';
 
@@ -77,20 +78,20 @@ class _JobListingsPageState extends State<JobListingsPage> {
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-        items: [
-          const BottomNavigationBarItem(
+        items: const [
+          BottomNavigationBarItem(
             icon: Icon(Icons.list),
             label: 'İş İlanları',
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.message),
             label: 'Mesajlar',
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Özgeçmişim',
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.assignment),
             label: 'Başvurularım',
           ),
@@ -166,16 +167,17 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                           Expanded(
                                             child: ElevatedButton(
                                               onPressed: () {},
-                                              child: const Text('Şimdi Başvur'),
                                               style: ElevatedButton.styleFrom(
                                                 foregroundColor: Colors.orange,
-                                                padding: const EdgeInsets.symmetric(
-                                                    vertical: 16),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                 ),
                                               ),
+                                              child: const Text('Şimdi Başvur'),
                                             ),
                                           ),
                                           const SizedBox(width: 8),
@@ -186,21 +188,25 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        JobDetailPage(
-                                                            jobId: ilan.id),
+                                                        SendMessagePage(
+                                                      jobId: ilan.id,
+                                                      senderId: widget.id!,
+                                                    ),
                                                   ),
                                                 );
                                               },
-                                              child: const Text('Mesaj Gönder'),
                                               style: ElevatedButton.styleFrom(
-                                                foregroundColor: Colors.blue,
-                                                padding: const EdgeInsets.symmetric(
-                                                    vertical: 16),
+                                                foregroundColor:
+                                                    Colors.blueGrey,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                 ),
                                               ),
+                                              child: const Text('Mesaj Gönder'),
                                             ),
                                           ),
                                           const SizedBox(width: 8),
@@ -212,20 +218,22 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         JobDetailPage(
-                                                            jobId: ilan.id),
+                                                      jobId: ilan.id,
+                                                    ),
                                                   ),
                                                 );
                                               },
-                                              child: const Text('Görüntüle'),
                                               style: ElevatedButton.styleFrom(
                                                 foregroundColor: Colors.green,
-                                                padding: const EdgeInsets.symmetric(
-                                                    vertical: 16),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                 ),
                                               ),
+                                              child: const Text('Görüntüle'),
                                             ),
                                           ),
                                         ],
@@ -274,16 +282,16 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                   Expanded(
                                     child: ElevatedButton(
                                       onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blueGrey,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 16),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
                                       child: const Text('Şimdi Başvur'),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.blueGrey,
-                                        padding:
-                                            const EdgeInsets.symmetric(vertical: 16),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
@@ -291,24 +299,24 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                     child: ElevatedButton(
                                       onPressed: () {
                                         Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => JobDetailPage(
-                                              jobId: job['id'],
-                                            ),
-                                          ),
-                                        );
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SendMessagePage(
+                                                      jobId: job["id"],
+                                                      senderId: widget.id!,
+                                                    )));
                                       },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.blueGrey,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 16),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
                                       child: const Text('Mesaj Gönder'),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.blueGrey,
-                                        padding:
-                                            const EdgeInsets.symmetric(vertical: 16),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
@@ -319,21 +327,21 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => JobDetailPage(
-                                              jobId: job['id'],
+                                              jobId: job["id"],
                                             ),
                                           ),
                                         );
                                       },
-                                      child: const Text('Görüntüle'),
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.blueGrey,
-                                        padding:
-                                            const EdgeInsets.symmetric(vertical: 16),
+                                        backgroundColor: Colors.green,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 16),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(8),
                                         ),
                                       ),
+                                      child: const Text('Görüntüle'),
                                     ),
                                   ),
                                 ],

@@ -47,6 +47,7 @@ class _AyarlarPageState extends State<AyarlarPage> {
           .doc(widget.uid)
           .update({'email': _emailController.text});
       ScaffoldMessenger.of(context).showSnackBar(
+        // ignore: unnecessary_const
         const SnackBar(content: const Text('E-posta başarıyla güncellendi.')),
       );
     } catch (e) {

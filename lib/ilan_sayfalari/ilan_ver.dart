@@ -4,8 +4,9 @@ import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:flutter/material.dart';
 
 class IlanVer extends StatefulWidget {
-   final JobModel jobModel;
-   IlanVer({required this.jobModel});
+  final JobModel jobModel;
+  final String userId; // Kullanıcı ID'si eklenir
+  IlanVer({required this.jobModel, required this.userId});
   @override
   State<IlanVer> createState() => _IlanVerState();
 }
@@ -35,11 +36,15 @@ class _IlanVerState extends State<IlanVer> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                onPressed: () {widget.jobModel.position = "Gölge Öğretmen";
+                onPressed: () {
+                  widget.jobModel.position = "Gölge Öğretmen";
+                  widget.jobModel.userId = widget.userId;
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CalismaAdresiScreen(jobModel: widget.jobModel,),
+                      builder: (context) => CalismaAdresiScreen(
+                        jobModel: widget.jobModel,
+                      ),
                     ),
                   );
                 },
@@ -64,11 +69,14 @@ class _IlanVerState extends State<IlanVer> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                onPressed: () {widget.jobModel.position = "Özel Eğitim";
+                onPressed: () {
+                  widget.jobModel.position = "Özel Eğitim";
+                  widget.jobModel.userId = widget.userId;
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CalismaAdresiScreen(jobModel: widget.jobModel),
+                      builder: (context) =>
+                          CalismaAdresiScreen(jobModel: widget.jobModel),
                     ),
                   );
                 },
@@ -93,11 +101,15 @@ class _IlanVerState extends State<IlanVer> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                onPressed: () {widget.jobModel.position = "Oyun Ablası / Abisi";
+                onPressed: () {
+                  print(widget.userId);
+                  widget.jobModel.position = "Oyun Ablası / Abisi";
+                  widget.jobModel.userId = widget.userId;
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CalismaAdresiScreen(jobModel: widget.jobModel),
+                      builder: (context) =>
+                          CalismaAdresiScreen(jobModel: widget.jobModel),
                     ),
                   );
                 },
@@ -122,11 +134,14 @@ class _IlanVerState extends State<IlanVer> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                onPressed: () {widget.jobModel.position = "Yaşam Koçu";
+                onPressed: () {
+                  widget.jobModel.position = "Yaşam Koçu";
+                  widget.jobModel.userId = widget.userId;
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CalismaAdresiScreen(jobModel: widget.jobModel),
+                      builder: (context) =>
+                          CalismaAdresiScreen(jobModel: widget.jobModel),
                     ),
                   );
                 },

@@ -91,8 +91,8 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
                   labelText: 'E-posta',
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 12.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -122,8 +122,8 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
                   labelText: 'Şifre',
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 12.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -137,7 +137,6 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
             // Giriş Butonu
             ElevatedButton(
               onPressed: _girisYap,
-              child: const Text('Giriş Yap'),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.green,
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -145,6 +144,7 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
+              child: const Text('Giriş Yap'),
             ),
 
             // İptal Butonu

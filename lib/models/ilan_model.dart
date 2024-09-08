@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class JobModel {
   List<String> jobTypes;
   String hoursPerDay;
-  List<String> workingDays; // Yeni eklenen alan
+  List<String> workingDays;
   String title;
   String details;
   String salary;
@@ -13,29 +13,30 @@ class JobModel {
   String district;
   String neighborhood;
   Timestamp publishDate;
+  String userId; // Yeni eklenen alan
 
   JobModel({
     Timestamp? publishDate,
     this.jobTypes = const [],
     this.hoursPerDay = '',
-    this.workingDays = const [], // Yeni eklenen alan için varsayılan değer
+    this.workingDays = const [],
     this.title = '',
     this.details = '',
     this.salary = '',
     this.isNegotiable = false,
+    this.position = '',
     this.city = '',
     this.district = '',
     this.neighborhood = '',
-    this.position = '',
-  }) : this.publishDate = publishDate ??
-            Timestamp.now(); // Varsayılan olarak şu anki zaman atanıyor.
+    this.userId = '', // Varsayılan değer
+  }) : this.publishDate = publishDate ?? Timestamp.now();
 
-  // This method converts JobModel to a Map for saving to Firestore.
+  // Bu method JobModel'i Firestore'a kaydedilmek üzere Map'e dönüştürür.
   Map<String, dynamic> toMap() {
     return {
       'jobTypes': jobTypes,
       'hoursPerDay': hoursPerDay,
-      'workingDays': workingDays, // Yeni eklenen alan
+      'workingDays': workingDays,
       'title': title,
       'details': details,
       'salary': salary,
@@ -45,16 +46,16 @@ class JobModel {
       'district': district,
       'neighborhood': neighborhood,
       'publishDate': publishDate,
+      'userId': userId,
     };
   }
 
-  // This factory method converts Firestore data to JobModel.
+  // Bu factory method Firestore verilerini JobModel'e dönüştürür.
   factory JobModel.fromMap(Map<String, dynamic> map) {
     return JobModel(
-      jobTypes: List<String>.from(map['jobTypes']),
+      jobTypes: List<String>.from(map['jobTypes'] ?? []),
       hoursPerDay: map['hoursPerDay'] ?? '',
-      workingDays:
-          List<String>.from(map['workingDays'] ?? []), // Yeni eklenen alan
+      workingDays: List<String>.from(map['workingDays'] ?? []),
       title: map['title'] ?? '',
       details: map['details'] ?? '',
       salary: map['salary'] ?? '',
@@ -63,7 +64,8 @@ class JobModel {
       city: map['city'] ?? '',
       district: map['district'] ?? '',
       neighborhood: map['neighborhood'] ?? '',
-      publishDate: map['publishDate'] ?? '',
+      publishDate: map['publishDate'] ?? Timestamp.now(),
+      userId: map['userId'] ?? '', // Varsayılan değer
     );
   }
 }

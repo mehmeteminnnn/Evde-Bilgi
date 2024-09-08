@@ -73,7 +73,6 @@ class _FilterPageState extends State<FilterPage> {
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: _applyFilters,
-              child: const Text('Filtreyi Uygula'),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.blue,
@@ -82,6 +81,7 @@ class _FilterPageState extends State<FilterPage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
+              child: const Text('Filtreyi Uygula'),
             ),
             const SizedBox(height: 32),
             Expanded(
@@ -163,10 +163,10 @@ class _FilterPageState extends State<FilterPage> {
                               children: [
                                 ElevatedButton(
                                   onPressed: () {},
-                                  child: const Text('Şimdi Başvur'),
                                   style: ElevatedButton.styleFrom(
                                     foregroundColor: Colors.orange,
                                   ),
+                                  child: const Text('Şimdi Başvur'),
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
@@ -178,10 +178,10 @@ class _FilterPageState extends State<FilterPage> {
                                       ),
                                     );
                                   },
-                                  child: const Text('Görüntüle'),
                                   style: ElevatedButton.styleFrom(
                                     foregroundColor: Colors.blueGrey,
                                   ),
+                                  child: const Text('Görüntüle'),
                                 ),
                               ],
                             ),

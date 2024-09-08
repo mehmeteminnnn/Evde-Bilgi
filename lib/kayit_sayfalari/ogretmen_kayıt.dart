@@ -270,7 +270,6 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
           _image == null
               ? ElevatedButton(
                   onPressed: () => _pickImage(ImageSource.gallery),
-                  child: const Text('Fotoğraf Yükle'),
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(200, 50),
                     backgroundColor: Colors.white,
@@ -279,6 +278,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
+                  child: const Text('Fotoğraf Yükle'),
                 )
               : Image.file(
                   _image!,
@@ -289,7 +289,6 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
           if (_image != null)
             ElevatedButton(
               onPressed: () => setState(() => _image = null),
-              child: const Text('Fotoğrafı Kaldır'),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(200, 50),
                 backgroundColor: Colors.white,
@@ -298,6 +297,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
+              child: const Text('Fotoğrafı Kaldır'),
             ),
         ],
       ),

@@ -67,7 +67,7 @@ class _EvdeBilgiDrawerState extends State<EvdeBilgiDrawer> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => IlanVer(
-                            jobModel: JobModel(),
+                            jobModel: JobModel(),userId: "",
                           )));
             },
           ),

@@ -81,7 +81,8 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
             DropdownButtonFormField<String>(
               value: selectedCountry,
               items: [
-                const DropdownMenuItem(child: Text('Türkiye'), value: 'Türkiye'),
+                const DropdownMenuItem(
+                    value: 'Türkiye', child: Text('Türkiye')),
               ],
               hint: const Text('Ülke seçiniz'),
               onChanged: null,
@@ -91,7 +92,7 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
               value: selectedCityId,
               items: cities.map<DropdownMenuItem<String>>((city) {
                 return DropdownMenuItem<String>(
-                    child: Text(city['name']), value: city['id'].toString());
+                    value: city['id'].toString(), child: Text(city['name']));
               }).toList(),
               hint: const Text('İl seçiniz'),
               onChanged: (value) {
@@ -111,8 +112,8 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
               value: selectedDistrictId,
               items: districts.map<DropdownMenuItem<String>>((district) {
                 return DropdownMenuItem<String>(
-                    child: Text(district['name']),
-                    value: district['id'].toString());
+                    value: district['id'].toString(),
+                    child: Text(district['name']));
               }).toList(),
               hint: const Text('İlçe seçiniz'),
               onChanged: (value) {
@@ -125,7 +126,8 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
             ),
             const SizedBox(height: 16),
             TextFormField(
-              decoration: const InputDecoration(hintText: 'Mahalle adını giriniz'),
+              decoration:
+                  const InputDecoration(hintText: 'Mahalle adını giriniz'),
               onChanged: (value) {
                 setState(() {
                   enteredNeighborhood = value;
@@ -144,16 +146,18 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
                               district['id'].toString() ==
                               selectedDistrictId)['name'];
                       widget.jobModel.neighborhood = enteredNeighborhood!;
+                      print(widget.jobModel.userId);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
                                   JobSelectionPage(jobModel: widget.jobModel)));
                     }
-                  : null, // Tüm alanlar doldurulmamışsa buton pasif olur
-              child: const Text('İleri'),
+                  : null,
               style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50)),
+                  minimumSize: const Size(double.infinity,
+                      50)), // Tüm alanlar doldurulmamışsa buton pasif olur
+              child: const Text('İleri'),
             ),
           ],
         ),

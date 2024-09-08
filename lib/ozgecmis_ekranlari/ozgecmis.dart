@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class OzgecmisimEkrani extends StatefulWidget {
   final String? teacherId; // Öğretmen ID'si
 
-  OzgecmisimEkrani({required this.teacherId}); // Constructor ile ID almak
+  const OzgecmisimEkrani({required this.teacherId}); // Constructor ile ID almak
 
   @override
   _OzgecmisimEkraniState createState() => _OzgecmisimEkraniState();
@@ -47,11 +47,11 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
   String? selectedExperience;
   List<String> experienceOptions = ['0-1 yıl', '1-5 yıl', '5+ yıl'];
 
-  TextEditingController _minSalaryController = TextEditingController();
-  TextEditingController _maxSalaryController = TextEditingController();
-  TextEditingController _experienceDescriptionController =
+  final TextEditingController _minSalaryController = TextEditingController();
+  final TextEditingController _maxSalaryController = TextEditingController();
+  final TextEditingController _experienceDescriptionController =
       TextEditingController();
-  TextEditingController _dobController = TextEditingController();
+  final TextEditingController _dobController = TextEditingController();
 
   @override
   void initState() {
@@ -210,10 +210,10 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _updateTeacher,
-              child: const Text('Kaydet'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepOrange,
               ),
+              child: const Text('Kaydet'),
             ),
             TextButton(
               onPressed: () {
@@ -255,8 +255,8 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
         value: selectedCityName,
         items: cities.map<DropdownMenuItem<String>>((city) {
           return DropdownMenuItem<String>(
-            child: Text(city['name']),
             value: city['name'],
+            child: Text(city['name']),
           );
         }).toList(),
         onChanged: (value) {
@@ -298,8 +298,8 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
         value: selectedDistrictName,
         items: districts.map<DropdownMenuItem<String>>((district) {
           return DropdownMenuItem<String>(
-            child: Text(district['name']),
             value: district['name'],
+            child: Text(district['name']),
           );
         }).toList(),
         onChanged: (value) {
@@ -371,8 +371,8 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
         value: selectedExperience,
         items: experienceOptions.map<DropdownMenuItem<String>>((experience) {
           return DropdownMenuItem<String>(
-            child: Text(experience),
             value: experience,
+            child: Text(experience),
           );
         }).toList(),
         onChanged: (value) {
