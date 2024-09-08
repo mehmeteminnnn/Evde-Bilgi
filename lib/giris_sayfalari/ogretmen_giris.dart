@@ -27,7 +27,7 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
         // Giriş başarılı
         String userId = querySnapshot.docs.first.id;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Giriş başarılı!'),
             backgroundColor: Colors.green,
           ),
@@ -42,7 +42,7 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
       } else {
         // Giriş başarısız
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('E-posta veya şifre hatalı!'),
             backgroundColor: Colors.red,
           ),
@@ -64,7 +64,7 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
-        title: Text('Uzman Girişi'),
+        title: const Text('Uzman Girişi'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -81,7 +81,7 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 1,
                     blurRadius: 5,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -92,7 +92,7 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
                   filled: true,
                   fillColor: Colors.white,
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+                      const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -101,7 +101,7 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
                 keyboardType: TextInputType.emailAddress,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Şifre Giriş Alanı
             Container(
@@ -112,7 +112,7 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 1,
                     blurRadius: 5,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -123,7 +123,7 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
                   filled: true,
                   fillColor: Colors.white,
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+                      const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -132,15 +132,15 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
                 obscureText: true,
               ),
             ),
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
 
             // Giriş Butonu
             ElevatedButton(
               onPressed: _girisYap,
-              child: Text('Giriş Yap'),
+              child: const Text('Giriş Yap'),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.green,
-                padding: EdgeInsets.symmetric(vertical: 16.0),
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -153,7 +153,7 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
                 _emailController.clear();
                 _passwordController.clear();
               },
-              child: Text('İptal'),
+              child: const Text('İptal'),
             ),
           ],
         ),

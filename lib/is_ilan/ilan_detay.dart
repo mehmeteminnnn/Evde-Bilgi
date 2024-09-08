@@ -16,7 +16,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Evde Bilgi'),
+        title: const Text('Evde Bilgi'),
       ),
       body: FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
@@ -25,10 +25,10 @@ class _JobDetailPageState extends State<JobDetailPage> {
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data == null) {
-            return Center(child: Text('İlan bulunamadı'));
+            return const Center(child: Text('İlan bulunamadı'));
           }
 
           var jobData = snapshot.data!.data() as Map<String, dynamic>;
@@ -38,19 +38,19 @@ class _JobDetailPageState extends State<JobDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   color: Colors.blue,
                   child: Column(
                     children: [
                       Text(
                         jobData['title'],
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                        style: const TextStyle(fontSize: 20, color: Colors.white),
                       ),
                       Text(
                         jobData['city'] ?? "",
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -97,14 +97,14 @@ class _JobDetailPageState extends State<JobDetailPage> {
 
   Widget _buildTag(String text) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 4),
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         text,
-        style: TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.black),
       ),
     );
   }
@@ -156,7 +156,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
       children: [
         Padding(
           padding: const EdgeInsets.all(4.0),
-          child: Text(label, style: TextStyle(fontWeight: FontWeight.bold)),
+          child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
         ),
         Padding(
           padding: const EdgeInsets.all(4.0),
@@ -180,8 +180,8 @@ class _JobDetailPageState extends State<JobDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(title,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
               Text(content),
             ],
           ),
@@ -200,14 +200,14 @@ class _JobDetailPageState extends State<JobDetailPage> {
             onPressed: () {
               // Şimdi Başvur butonuna tıklama işlevi
             },
-            child: Text('Şimdi Başvur'),
+            child: const Text('Şimdi Başvur'),
             style: ElevatedButton.styleFrom(foregroundColor: Colors.red),
           ),
           ElevatedButton(
             onPressed: () {
               // Mesaj Gönder butonuna tıklama işlevi
             },
-            child: Text('Mesaj Gönder'),
+            child: const Text('Mesaj Gönder'),
             style: ElevatedButton.styleFrom(foregroundColor: Colors.blue),
           ),
         ],

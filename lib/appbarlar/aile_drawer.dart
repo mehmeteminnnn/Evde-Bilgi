@@ -24,7 +24,7 @@ class _AileDrawerState extends State<AileDrawer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
                 vertical: 15,
                 horizontal: 0), // Sağdan soldan padding'i kaldırıyoruz
             alignment: Alignment.center, // Ortalanmış hale getiriyoruz
@@ -40,26 +40,26 @@ class _AileDrawerState extends State<AileDrawer> {
                 children: <Widget>[
                   ListTile(
                     dense: true,
-                    leading: Icon(Icons.home, size: 20),
-                    title: Text(
+                    leading: const Icon(Icons.home, size: 20),
+                    title: const Text(
                       'Ana Sayfa',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       Navigator.pop(context);
                     },
                   ),
                   ListTile(
                     dense: true,
-                    leading: Icon(Icons.list, size: 20),
-                    title: Text(
+                    leading: const Icon(Icons.list, size: 20),
+                    title: const Text(
                       'İş İlanları',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -71,13 +71,13 @@ class _AileDrawerState extends State<AileDrawer> {
                   ),
                   ListTile(
                     dense: true,
-                    leading: Icon(Icons.add_box, size: 20),
-                    title: Text(
+                    leading: const Icon(Icons.add_box, size: 20),
+                    title: const Text(
                       'İlan Ver',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -89,13 +89,13 @@ class _AileDrawerState extends State<AileDrawer> {
                   ),
                   ListTile(
                     dense: true,
-                    leading: Icon(Icons.search, size: 20),
-                    title: Text(
+                    leading: const Icon(Icons.search, size: 20),
+                    title: const Text(
                       'Öğretmen Bul',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -107,39 +107,39 @@ class _AileDrawerState extends State<AileDrawer> {
                   ),
                   ListTile(
                     dense: true,
-                    leading: Icon(Icons.folder_open, size: 20),
-                    title: Text(
+                    leading: const Icon(Icons.folder_open, size: 20),
+                    title: const Text(
                       'İlanlarım',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       // Handle the action
                     },
                   ),
                   ListTile(
                     dense: true,
-                    leading: Icon(Icons.person, size: 20),
-                    title: Text(
+                    leading: const Icon(Icons.person, size: 20),
+                    title: const Text(
                       'Aday İşlemleri',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       // Handle the action
                     },
                   ),
                   ListTile(
                     dense: true,
-                    leading: Icon(Icons.message, size: 20),
-                    title: Text(
+                    leading: const Icon(Icons.message, size: 20),
+                    title: const Text(
                       'Mesajlarım',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -152,39 +152,39 @@ class _AileDrawerState extends State<AileDrawer> {
                   ),
                   ListTile(
                     dense: true,
-                    leading: Icon(Icons.notifications, size: 20),
-                    title: Text(
+                    leading: const Icon(Icons.notifications, size: 20),
+                    title: const Text(
                       'Bildirimler',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       // Handle the action
                     },
                   ),
                   ListTile(
                     dense: true,
-                    leading: Icon(Icons.card_membership, size: 20),
-                    title: Text(
+                    leading: const Icon(Icons.card_membership, size: 20),
+                    title: const Text(
                       'Paketlerim',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       // Handle the action
                     },
                   ),
                   ListTile(
                     dense: true,
-                    leading: Icon(Icons.settings, size: 20),
-                    title: Text(
+                    leading: const Icon(Icons.settings, size: 20),
+                    title: const Text(
                       'Ayarlar',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       // Handle the action
                     },
@@ -200,7 +200,7 @@ class _AileDrawerState extends State<AileDrawer> {
                 .get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               }
 
               if (snapshot.hasError) {
@@ -213,15 +213,15 @@ class _AileDrawerState extends State<AileDrawer> {
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
                     children: [
-                      CircleAvatar(
+                      const CircleAvatar(
                         radius: 16, // Avatar boyutunu küçültüyoruz
                         child:
                             Icon(Icons.person, size: 16), // Icon'u küçültüyoruz
                       ),
-                      SizedBox(width: 5),
+                      const SizedBox(width: 5),
                       Text(
                         userData['name'] ?? 'Bilinmeyen Kullanıcı',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 14), // Yazı boyutunu küçültüyoruz
                       ),
                     ],
@@ -229,17 +229,17 @@ class _AileDrawerState extends State<AileDrawer> {
                 );
               }
 
-              return Text("Kullanıcı bulunamadı.");
+              return const Text("Kullanıcı bulunamadı.");
             },
           ),
           ListTile(
             dense: true,
-            leading: Icon(Icons.exit_to_app, size: 20, color: Colors.red),
-            title: Text(
+            leading: const Icon(Icons.exit_to_app, size: 20, color: Colors.red),
+            title: const Text(
               'Çıkış Yap',
               style: TextStyle(fontSize: 14, color: Colors.red),
             ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
             onTap: () {
               Navigator.pushReplacement(
                 context,

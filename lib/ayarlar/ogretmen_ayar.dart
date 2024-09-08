@@ -47,7 +47,7 @@ class _AyarlarPageState extends State<AyarlarPage> {
           .doc(widget.uid)
           .update({'email': _emailController.text});
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('E-posta başarıyla güncellendi.')),
+        const SnackBar(content: const Text('E-posta başarıyla güncellendi.')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -64,7 +64,7 @@ class _AyarlarPageState extends State<AyarlarPage> {
           .doc(widget.uid)
           .update({'password': _passwordController.text});
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Şifre başarıyla güncellendi.')),
+        const SnackBar(content: Text('Şifre başarıyla güncellendi.')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -90,7 +90,7 @@ class _AyarlarPageState extends State<AyarlarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ayarlar'),
+        title: const Text('Ayarlar'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -98,34 +98,34 @@ class _AyarlarPageState extends State<AyarlarPage> {
           children: [
             // Profil fotoğrafı güncelleme
             _image == null
-                ? Icon(Icons.account_circle, size: 100)
+                ? const Icon(Icons.account_circle, size: 100)
                 : Image.file(_image!, height: 100, width: 100),
             ElevatedButton(
               onPressed: _updateProfileImage,
-              child: Text('Profil Fotoğrafını Güncelle'),
+              child: const Text('Profil Fotoğrafını Güncelle'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // E-posta güncelleme
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: 'Yeni E-posta'),
+              decoration: const InputDecoration(labelText: 'Yeni E-posta'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _updateEmail,
-              child: Text('E-postayı Güncelle'),
+              child: const Text('E-postayı Güncelle'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Şifre güncelleme
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Yeni Şifre'),
+              decoration: const InputDecoration(labelText: 'Yeni Şifre'),
               obscureText: true,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _updatePassword,
-              child: Text('Şifreyi Güncelle'),
+              child: const Text('Şifreyi Güncelle'),
             ),
           ],
         ),

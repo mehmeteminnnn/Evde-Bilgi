@@ -46,7 +46,7 @@ class _FilterPageState extends State<FilterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Filtreler'),
+        title: const Text('Filtreler'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -57,33 +57,33 @@ class _FilterPageState extends State<FilterPage> {
                 selectedCity = value;
               });
             }),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             buildDropdown('Pozisyon', ['Gölge Öğretmen', 'Diğer'], (value) {
               setState(() {
                 selectedPosition = value;
               });
             }),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             buildDropdown('Çalışma Şekli',
                 ['Tam zamanlı', 'Yarı zamanlı', 'Geçici', 'Yatılı'], (value) {
               setState(() {
                 selectedWorkType = value;
               });
             }),
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
             ElevatedButton(
               onPressed: _applyFilters,
-              child: Text('Filtreyi Uygula'),
+              child: const Text('Filtreyi Uygula'),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
             ),
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
             Expanded(
               child: buildJobList(),
             ),
@@ -149,10 +149,10 @@ class _FilterPageState extends State<FilterPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(ilan['details'] ?? ""),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             Text(
                               '${ilan['salary'] ?? "Ücret bilgisi yok"} TL',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                                 color: Colors.red,
@@ -163,7 +163,7 @@ class _FilterPageState extends State<FilterPage> {
                               children: [
                                 ElevatedButton(
                                   onPressed: () {},
-                                  child: Text('Şimdi Başvur'),
+                                  child: const Text('Şimdi Başvur'),
                                   style: ElevatedButton.styleFrom(
                                     foregroundColor: Colors.orange,
                                   ),
@@ -178,14 +178,14 @@ class _FilterPageState extends State<FilterPage> {
                                       ),
                                     );
                                   },
-                                  child: Text('Görüntüle'),
+                                  child: const Text('Görüntüle'),
                                   style: ElevatedButton.styleFrom(
                                     foregroundColor: Colors.blueGrey,
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                           ],
                         ),
                       ),
@@ -195,7 +195,7 @@ class _FilterPageState extends State<FilterPage> {
               );
             },
           )
-        : Center(child: Text('Eşleşen ilan bulunamadı'));
+        : const Center(child: Text('Eşleşen ilan bulunamadı'));
   }
 
   Widget buildDropdown(

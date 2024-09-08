@@ -33,7 +33,7 @@ class TeacherListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EvdeBilgiAppBar(),
+      appBar: const EvdeBilgiAppBar(),
       drawer: AileDrawer(
         uid: id,
       ),
@@ -46,11 +46,11 @@ class TeacherListPage extends StatelessWidget {
           ),
         ),
         child: ListView.builder(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           itemCount: teachers.length,
           itemBuilder: (context, index) {
             return Card(
-              margin: EdgeInsets.only(bottom: 16.0),
+              margin: const EdgeInsets.only(bottom: 16.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -70,30 +70,30 @@ class TeacherListPage extends StatelessWidget {
                             color: Colors.grey[700],
                           ),
                         ),
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               teachers[index]['name']!,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(height: 4),
+                            const SizedBox(height: 4),
                             Row(
                               children: [
-                                Icon(Icons.location_on, size: 16),
-                                SizedBox(width: 4),
+                                const Icon(Icons.location_on, size: 16),
+                                const SizedBox(width: 4),
                                 Text(teachers[index]['location']!),
                               ],
                             ),
-                            SizedBox(height: 4),
+                            const SizedBox(height: 4),
                             Row(
                               children: [
-                                Icon(Icons.cake, size: 16),
-                                SizedBox(width: 4),
+                                const Icon(Icons.cake, size: 16),
+                                const SizedBox(width: 4),
                                 Text(teachers[index]['birthdate']!),
                               ],
                             ),
@@ -101,10 +101,10 @@ class TeacherListPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Text(
                       teachers[index]['description']!,
-                      style: TextStyle(fontSize: 14),
+                      style: const TextStyle(fontSize: 14),
                     ),
                     Align(
                       alignment: Alignment.centerRight,
@@ -112,7 +112,7 @@ class TeacherListPage extends StatelessWidget {
                         onPressed: () {
                           // Detay sayfasına gitme kodu buraya gelecek
                         },
-                        child: Text(
+                        child: const Text(
                           'Devamını Oku >>',
                           style: TextStyle(color: Colors.blue),
                         ),

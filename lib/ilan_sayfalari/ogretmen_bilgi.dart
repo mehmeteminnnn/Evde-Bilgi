@@ -65,35 +65,35 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
-      appBar: AppBar(title: Text('Evde Bilgi')),
+      appBar: AppBar(title: const Text('Evde Bilgi')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Çalışma Adresi',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
-            Text('Aradığınız kişi nerede çalışacaksa seçebilirsiniz.'),
-            SizedBox(height: 16),
+            const SizedBox(height: 8),
+            const Text('Aradığınız kişi nerede çalışacaksa seçebilirsiniz.'),
+            const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               value: selectedCountry,
               items: [
-                DropdownMenuItem(child: Text('Türkiye'), value: 'Türkiye'),
+                const DropdownMenuItem(child: Text('Türkiye'), value: 'Türkiye'),
               ],
-              hint: Text('Ülke seçiniz'),
+              hint: const Text('Ülke seçiniz'),
               onChanged: null,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               value: selectedCityId,
               items: cities.map<DropdownMenuItem<String>>((city) {
                 return DropdownMenuItem<String>(
                     child: Text(city['name']), value: city['id'].toString());
               }).toList(),
-              hint: Text('İl seçiniz'),
+              hint: const Text('İl seçiniz'),
               onChanged: (value) {
                 setState(() {
                   ();
@@ -106,7 +106,7 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
                 });
               },
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               value: selectedDistrictId,
               items: districts.map<DropdownMenuItem<String>>((district) {
@@ -114,7 +114,7 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
                     child: Text(district['name']),
                     value: district['id'].toString());
               }).toList(),
-              hint: Text('İlçe seçiniz'),
+              hint: const Text('İlçe seçiniz'),
               onChanged: (value) {
                 setState(() {
                   selectedDistrictId = value;
@@ -123,9 +123,9 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
                 });
               },
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextFormField(
-              decoration: InputDecoration(hintText: 'Mahalle adını giriniz'),
+              decoration: const InputDecoration(hintText: 'Mahalle adını giriniz'),
               onChanged: (value) {
                 setState(() {
                   enteredNeighborhood = value;
@@ -133,7 +133,7 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
               },
               enabled: selectedCityId != null && selectedDistrictId != null,
             ),
-            Spacer(),
+            const Spacer(),
             ElevatedButton(
               onPressed: _isFormComplete()
                   ? () {
@@ -151,9 +151,9 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
                                   JobSelectionPage(jobModel: widget.jobModel)));
                     }
                   : null, // Tüm alanlar doldurulmamışsa buton pasif olur
-              child: Text('İleri'),
+              child: const Text('İleri'),
               style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50)),
+                  minimumSize: const Size(double.infinity, 50)),
             ),
           ],
         ),

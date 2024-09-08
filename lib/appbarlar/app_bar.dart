@@ -14,7 +14,7 @@ class EvdeBilgiAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: Builder(
         builder: (BuildContext context) {
           return IconButton(
-            icon: Icon(Icons.menu),
+            icon: const Icon(Icons.menu),
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
@@ -26,7 +26,7 @@ class EvdeBilgiAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class EvdeBilgiDrawer extends StatefulWidget {
@@ -46,22 +46,22 @@ class _EvdeBilgiDrawerState extends State<EvdeBilgiDrawer> {
             child: Image.asset('assets/logov3.png'),
           ),
           ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Ana Sayfa'),
+            leading: const Icon(Icons.home),
+            title: const Text('Ana Sayfa'),
             onTap: () {
               Navigator.pop(context);
             },
           ),
           ListTile(
-            leading: Icon(Icons.list),
-            title: Text('İş İlanları'),
+            leading: const Icon(Icons.list),
+            title: const Text('İş İlanları'),
             onTap: () {
               // Handle the action
             },
           ),
           ListTile(
-            leading: Icon(Icons.add_box),
-            title: Text('İlan Ver'),
+            leading: const Icon(Icons.add_box),
+            title: const Text('İlan Ver'),
             onTap: () {
               Navigator.push(
                   context,
@@ -73,17 +73,17 @@ class _EvdeBilgiDrawerState extends State<EvdeBilgiDrawer> {
           ),
 
           ListTile(
-            leading: Icon(Icons.group),
-            title: Text('Aile Girişi'),
+            leading: const Icon(Icons.group),
+            title: const Text('Aile Girişi'),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AileGirisEkrani()));
+                  MaterialPageRoute(builder: (context) => const AileGirisEkrani()));
             },
             // Handle the action
           ),
           ListTile(
-            leading: Icon(Icons.person),
-            title: Text('Uzman Girişi'),
+            leading: const Icon(Icons.person),
+            title: const Text('Uzman Girişi'),
             onTap: () {
               Navigator.push(
                   context,
@@ -93,19 +93,19 @@ class _EvdeBilgiDrawerState extends State<EvdeBilgiDrawer> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.contact_phone),
-            title: Text('İletişim'),
+            leading: const Icon(Icons.contact_phone),
+            title: const Text('İletişim'),
             onTap: () {
               // Handle the action
             },
           ),
-          Spacer(), // This will push the following ListTile to the bottom
+          const Spacer(), // This will push the following ListTile to the bottom
           ListTile(
-            leading: Icon(Icons.person_add),
-            title: Text('Üye Ol'),
+            leading: const Icon(Icons.person_add),
+            title: const Text('Üye Ol'),
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => UyeOlma()));
+                  context, MaterialPageRoute(builder: (context) => const UyeOlma()));
               // Handle the action
             },
           ),

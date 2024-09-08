@@ -41,42 +41,42 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
-      appBar: EvdeBilgiAppBar(),
+      appBar: const EvdeBilgiAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'İhtiyaçlarınızı Detaylandırınız',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
-            Text(
+            const SizedBox(height: 8),
+            const Text(
               'İhtiyaçlarınızı detaylıca belirtiniz.',
               style: TextStyle(
                 fontSize: 16,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: controlller,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Başlık',
                 hintText: 'Örnek: Çocuğum İçin Gölge Öğretmen Arıyorum',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: controlller2,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'İlan Detayı Giriniz',
                 border: OutlineInputBorder(),
               ),
               maxLines: 6,
             ),
-            Spacer(),
+            const Spacer(),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -93,9 +93,9 @@ class _DetailPageState extends State<DetailPage> {
                         );
                       }
                     : null,
-                child: Text('İleri'),
+                child: const Text('İleri'),
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),

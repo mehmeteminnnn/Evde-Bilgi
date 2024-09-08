@@ -15,22 +15,22 @@ class _IlanVerState extends State<IlanVer> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
-      appBar: EvdeBilgiAppBar(),
+      appBar: const EvdeBilgiAppBar(),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Kime ihtiyacınız var?',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),
-                  side: BorderSide(color: Colors.blue),
+                  minimumSize: const Size(double.infinity, 50),
+                  side: const BorderSide(color: Colors.blue),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -43,7 +43,7 @@ class _IlanVerState extends State<IlanVer> {
                     ),
                   );
                 },
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(Icons.person, color: Colors.blue, size: 30),
@@ -55,11 +55,11 @@ class _IlanVerState extends State<IlanVer> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),
-                  side: BorderSide(color: Colors.blue),
+                  minimumSize: const Size(double.infinity, 50),
+                  side: const BorderSide(color: Colors.blue),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -72,7 +72,7 @@ class _IlanVerState extends State<IlanVer> {
                     ),
                   );
                 },
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(Icons.book, color: Colors.blue, size: 30),
@@ -84,11 +84,11 @@ class _IlanVerState extends State<IlanVer> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),
-                  side: BorderSide(color: Colors.blue),
+                  minimumSize: const Size(double.infinity, 50),
+                  side: const BorderSide(color: Colors.blue),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -101,7 +101,7 @@ class _IlanVerState extends State<IlanVer> {
                     ),
                   );
                 },
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(Icons.child_care, color: Colors.blue, size: 30),
@@ -113,11 +113,11 @@ class _IlanVerState extends State<IlanVer> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),
-                  side: BorderSide(color: Colors.blue),
+                  minimumSize: const Size(double.infinity, 50),
+                  side: const BorderSide(color: Colors.blue),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -130,7 +130,7 @@ class _IlanVerState extends State<IlanVer> {
                     ),
                   );
                 },
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Icon(Icons.pending, color: Colors.blue, size: 30),

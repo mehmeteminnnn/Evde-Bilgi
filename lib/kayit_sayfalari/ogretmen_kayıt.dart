@@ -88,37 +88,37 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
-      appBar: EvdeBilgiAppBar(),
+      appBar: const EvdeBilgiAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Uzman Kayıt',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               buildTextField('Adınız/Soyadınız', nameController),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               buildDropdown('Vatandaşlık'),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               buildTextField('Cep Telefonu', phoneController,
                   keyboardType: TextInputType.phone),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               buildTextField('E-Posta', emailController,
                   keyboardType: TextInputType.emailAddress),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               buildTextField('Şifre', passwordController, isPassword: true),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               buildTextField('Şifre Tekrar', passwordController2,
                   isPassword: true),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Fotoğraf yükleme kısmı
               buildImagePicker(),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 children: [
                   Checkbox(
@@ -129,7 +129,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                       });
                     },
                   ),
-                  Expanded(
+                  const Expanded(
                     child: Text(
                       'Kullanıcı Sözleşmesi ve Gizlilik Politikasını okudum ve kabul ediyorum.',
                       style: TextStyle(fontSize: 14),
@@ -137,7 +137,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -166,25 +166,25 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                                         )));
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Kayıt işlemi başarısız')),
+                              const SnackBar(content: Text('Kayıt işlemi başarısız')),
                             );
                           }
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueGrey[800],
-                    padding: EdgeInsets.symmetric(vertical: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Üye Ol',
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Center(
                 child: TextButton(
                   onPressed: () {
@@ -193,7 +193,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                         MaterialPageRoute(
                             builder: (context) => OgretmenGirisEkrani()));
                   },
-                  child: Text(
+                  child: const Text(
                     'Zaten üye misiniz?',
                     style: TextStyle(fontSize: 16),
                   ),
@@ -219,7 +219,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
           borderRadius: BorderRadius.circular(8),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
+          borderSide: const BorderSide(color: Colors.black),
           borderRadius: BorderRadius.circular(8),
         ),
       ),
@@ -237,7 +237,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
           borderRadius: BorderRadius.circular(8),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
+          borderSide: const BorderSide(color: Colors.black),
           borderRadius: BorderRadius.circular(8),
         ),
       ),
@@ -259,7 +259,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
   Widget buildImagePicker() {
     return Container(
       width: double.infinity, // TextField'larla aynı genişlikte
-      padding: EdgeInsets.symmetric(vertical: 16.0),
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.grey),
@@ -270,9 +270,9 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
           _image == null
               ? ElevatedButton(
                   onPressed: () => _pickImage(ImageSource.gallery),
-                  child: Text('Fotoğraf Yükle'),
+                  child: const Text('Fotoğraf Yükle'),
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(200, 50),
+                    minimumSize: const Size(200, 50),
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.blueGrey[800],
                     shape: RoundedRectangleBorder(
@@ -285,13 +285,13 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                   width: 100,
                   height: 100,
                 ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           if (_image != null)
             ElevatedButton(
               onPressed: () => setState(() => _image = null),
-              child: Text('Fotoğrafı Kaldır'),
+              child: const Text('Fotoğrafı Kaldır'),
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(200, 50),
+                minimumSize: const Size(200, 50),
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.blueGrey[800],
                 shape: RoundedRectangleBorder(

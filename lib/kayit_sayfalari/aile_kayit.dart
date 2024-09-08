@@ -32,32 +32,32 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
-      appBar: EvdeBilgiAppBar(),
+      appBar: const EvdeBilgiAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Aile Kayıt',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               buildTextField('Adınız/Soyadınız', familyNameController),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               buildTextField('Cep Telefonu', familyPhoneController,
                   keyboardType: TextInputType.phone),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               buildTextField('E-Posta', familyEmailController,
                   keyboardType: TextInputType.emailAddress),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               buildTextField('Şifre', familyPasswordController,
                   isPassword: true),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               buildTextField('Şifre Tekrar', familyPasswordController2,
                   isPassword: true),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 children: [
                   Checkbox(
@@ -68,7 +68,7 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
                       });
                     },
                   ),
-                  Expanded(
+                  const Expanded(
                     child: Text(
                       'Kullanıcı Sözleşmesi ve Gizlilik Politikasını okudum ve kabul ediyorum.',
                       style: TextStyle(fontSize: 14),
@@ -76,7 +76,7 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -102,39 +102,39 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
                                           )));
                               // Kayıt başarılı olduğunda yapılacak işlemler
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Aile kaydı başarılı!')),
+                                const SnackBar(content: Text('Aile kaydı başarılı!')),
                               );
                             }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Şifreler uyuşmuyor')),
+                              const SnackBar(content: Text('Şifreler uyuşmuyor')),
                             );
                           }
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueGrey[800],
-                    padding: EdgeInsets.symmetric(vertical: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Üye Ol',
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Center(
                 child: TextButton(
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AileGirisEkrani()));
+                            builder: (context) => const AileGirisEkrani()));
                   },
-                  child: Text(
+                  child: const Text(
                     'Zaten üye misiniz?',
                     style: TextStyle(fontSize: 16),
                   ),
@@ -160,7 +160,7 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
           borderRadius: BorderRadius.circular(8),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
+          borderSide: const BorderSide(color: Colors.black),
           borderRadius: BorderRadius.circular(8),
         ),
       ),

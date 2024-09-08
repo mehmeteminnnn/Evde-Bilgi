@@ -31,17 +31,17 @@ class _JobSelectionPageState extends State<JobSelectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
-      appBar: EvdeBilgiAppBar(),
+      appBar: const EvdeBilgiAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
+            const Text(
               'İş Türü*',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -54,15 +54,15 @@ class _JobSelectionPageState extends State<JobSelectionPage> {
                 _buildJobTypeButton('Yatılı'),
               ],
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Günlük kaç saat?',
               style: TextStyle(fontSize: 16),
             ),
             TextField(
               controller: hoursController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
               ),
               onChanged: (value) {
@@ -70,8 +70,8 @@ class _JobSelectionPageState extends State<JobSelectionPage> {
                     () {}); // TextField değiştiğinde buton durumu güncellenir
               },
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Haftanın hangi günleri çalışmak istersiniz?',
               style: TextStyle(fontSize: 16),
             ),
@@ -80,7 +80,7 @@ class _JobSelectionPageState extends State<JobSelectionPage> {
               runSpacing: 8,
               children: daysOfWeek.map((day) => _buildDayButton(day)).toList(),
             ),
-            Spacer(),
+            const Spacer(),
             Center(
               child: SizedBox(
                 width: double.infinity,
@@ -102,9 +102,9 @@ class _JobSelectionPageState extends State<JobSelectionPage> {
                           );
                         }
                       : null, // Form eksikse buton devre dışı kalır
-                  child: Text('İleri'),
+                  child: const Text('İleri'),
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),

@@ -47,8 +47,8 @@ class _JobListingsPageState extends State<JobListingsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Özgeçmiş Uyarısı'),
-          content: Text(
+          title: const Text('Özgeçmiş Uyarısı'),
+          content: const Text(
             'Lütfen özgeçmişinizi doldurun. Özgeçmişlerini doldurmayan adaylar ailelerimize görünmeyecektir.',
           ),
           actions: <Widget>[
@@ -56,7 +56,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Tamam'),
+              child: const Text('Tamam'),
             ),
           ],
         );
@@ -67,7 +67,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EvdeBilgiAppBar(),
+      appBar: const EvdeBilgiAppBar(),
       drawer: OgretmenDrawer(
         uid: widget.id,
       ),
@@ -76,21 +76,21 @@ class _JobListingsPageState extends State<JobListingsPage> {
         backgroundColor: Colors.white,
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
-        selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
         items: [
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.list),
             label: 'İş İlanları',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.message),
             label: 'Mesajlar',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Özgeçmişim',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.assignment),
             label: 'Başvurularım',
           ),
@@ -122,10 +122,10 @@ class _JobListingsPageState extends State<JobListingsPage> {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
-                      return Center(child: Text('Bir hata oluştu.'));
+                      return const Center(child: Text('Bir hata oluştu.'));
                     }
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
 
                     final data = snapshot.data!;
@@ -152,10 +152,10 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(ilan['details'] ?? ""),
-                                      SizedBox(height: 8),
+                                      const SizedBox(height: 8),
                                       Text(
                                         '${ilan['salary']} TL',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
                                           color: Colors.red,
@@ -166,10 +166,10 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                           Expanded(
                                             child: ElevatedButton(
                                               onPressed: () {},
-                                              child: Text('Şimdi Başvur'),
+                                              child: const Text('Şimdi Başvur'),
                                               style: ElevatedButton.styleFrom(
                                                 foregroundColor: Colors.orange,
-                                                padding: EdgeInsets.symmetric(
+                                                padding: const EdgeInsets.symmetric(
                                                     vertical: 16),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
@@ -178,7 +178,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(width: 8),
+                                          const SizedBox(width: 8),
                                           Expanded(
                                             child: ElevatedButton(
                                               onPressed: () {
@@ -191,10 +191,10 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                                   ),
                                                 );
                                               },
-                                              child: Text('Mesaj Gönder'),
+                                              child: const Text('Mesaj Gönder'),
                                               style: ElevatedButton.styleFrom(
                                                 foregroundColor: Colors.blue,
-                                                padding: EdgeInsets.symmetric(
+                                                padding: const EdgeInsets.symmetric(
                                                     vertical: 16),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
@@ -203,7 +203,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(width: 8),
+                                          const SizedBox(width: 8),
                                           Expanded(
                                             child: ElevatedButton(
                                               onPressed: () {
@@ -216,10 +216,10 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                                   ),
                                                 );
                                               },
-                                              child: Text('Görüntüle'),
+                                              child: const Text('Görüntüle'),
                                               style: ElevatedButton.styleFrom(
                                                 foregroundColor: Colors.green,
-                                                padding: EdgeInsets.symmetric(
+                                                padding: const EdgeInsets.symmetric(
                                                     vertical: 16),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
@@ -230,7 +230,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 8),
+                                      const SizedBox(height: 8),
                                     ],
                                   ),
                                 ),
@@ -260,10 +260,10 @@ class _JobListingsPageState extends State<JobListingsPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(job['details'] ?? ""),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               Text(
                                 '${job['salary']} TL',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                   color: Colors.red,
@@ -274,11 +274,11 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                   Expanded(
                                     child: ElevatedButton(
                                       onPressed: () {},
-                                      child: Text('Şimdi Başvur'),
+                                      child: const Text('Şimdi Başvur'),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.blueGrey,
                                         padding:
-                                            EdgeInsets.symmetric(vertical: 16),
+                                            const EdgeInsets.symmetric(vertical: 16),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(8),
@@ -286,7 +286,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 8),
+                                  const SizedBox(width: 8),
                                   Expanded(
                                     child: ElevatedButton(
                                       onPressed: () {
@@ -299,11 +299,11 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                           ),
                                         );
                                       },
-                                      child: Text('Mesaj Gönder'),
+                                      child: const Text('Mesaj Gönder'),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.blueGrey,
                                         padding:
-                                            EdgeInsets.symmetric(vertical: 16),
+                                            const EdgeInsets.symmetric(vertical: 16),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(8),
@@ -311,7 +311,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 8),
+                                  const SizedBox(width: 8),
                                   Expanded(
                                     child: ElevatedButton(
                                       onPressed: () {
@@ -324,11 +324,11 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                           ),
                                         );
                                       },
-                                      child: Text('Görüntüle'),
+                                      child: const Text('Görüntüle'),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.blueGrey,
                                         padding:
-                                            EdgeInsets.symmetric(vertical: 16),
+                                            const EdgeInsets.symmetric(vertical: 16),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(8),
@@ -338,7 +338,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                             ],
                           ),
                         ),

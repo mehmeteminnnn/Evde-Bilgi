@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/ilan_haz%C4%B1r.dart';
@@ -47,41 +45,41 @@ class _SalaryPageState extends State<SalaryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
-      appBar: EvdeBilgiAppBar(),
+      appBar: const EvdeBilgiAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Maaş Belirtiniz',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
-            Text(
+            const SizedBox(height: 8),
+            const Text(
               'Ücret belirtmeniz başvuru sayısını yükseltecektir.',
               style: TextStyle(fontSize: 16),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: _salaryController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Günlük Ücret',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Checkbox(
                   value: _isNegotiable,
                   onChanged: _onCheckboxChanged,
                 ),
-                Text('Ücret karşılıklı görüşülecektir'),
+                const Text('Ücret karşılıklı görüşülecektir'),
               ],
             ),
-            Spacer(),
+            const Spacer(),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -113,12 +111,12 @@ class _SalaryPageState extends State<SalaryPage> {
                       }
                     : null, // Eğer form tamamlanmadıysa buton devre dışı kalır
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'İleri',
                   style: TextStyle(fontSize: 18),
                 ),

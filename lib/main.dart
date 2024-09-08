@@ -1,14 +1,9 @@
-import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
-import 'package:evde_bilgi/kayit_sayfalari/aile_kayit.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
-import 'package:evde_bilgi/appbarlar/aile_drawer.dart';
 import 'package:evde_bilgi/firebase_options.dart';
 import 'package:evde_bilgi/giris_ekranı_logo_widget.dart';
 import 'package:evde_bilgi/ilan_sayfalari/ilan_ver.dart';
 import 'package:evde_bilgi/kayit_sayfalari/ogretmen_kay%C4%B1t.dart';
 import 'package:evde_bilgi/models/ilan_model.dart';
-import 'package:evde_bilgi/ozgecmis_ekranlari/ozgecmis.dart';
-import 'package:evde_bilgi/uye_olma.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -36,15 +31,15 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
-      appBar: EvdeBilgiAppBar(),
-      drawer: EvdeBilgiDrawer(),
+      appBar: const EvdeBilgiAppBar(),
+      drawer: const EvdeBilgiDrawer(),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Ebeveynler ve Uzmanları\nBir Araya Getiren\nYeni Nesil Platform',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -52,8 +47,8 @@ class HomeScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 20),
-            Row(
+            const SizedBox(height: 20),
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 giris_ekrani(iconData: Icons.school, text: "Gölge Öğretmen"),
@@ -63,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                 giris_ekrani(iconData: Icons.favorite, text: "Yaşam Koçu"),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Column(
               children: [
                 SizedBox(
@@ -77,15 +72,15 @@ class HomeScreen extends StatelessWidget {
                                     jobModel: JobModel(),
                                   )));
                     },
-                    child: Text('Uzman Arıyorum'),
+                    child: const Text('Uzman Arıyorum'),
                     style: ElevatedButton.styleFrom(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                      textStyle: TextStyle(fontSize: 18),
+                          const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                      textStyle: const TextStyle(fontSize: 18),
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 SizedBox(
                   width: 300,
                   child: ElevatedButton(
@@ -95,20 +90,20 @@ class HomeScreen extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => TeacherRegisterPage()));
                     },
-                    child: Text('İş Arıyorum'),
+                    child: const Text('İş Arıyorum'),
                     style: ElevatedButton.styleFrom(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                      textStyle: TextStyle(fontSize: 18),
+                          const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                      textStyle: const TextStyle(fontSize: 18),
                     ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 45),
+            const SizedBox(height: 45),
             OutlinedButton(
               onPressed: () {},
-              child: Row(
+              child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text('Aileler İçin Talep Formu'),
@@ -117,9 +112,9 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               style: OutlinedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                textStyle: TextStyle(fontSize: 18),
-                side: BorderSide(color: Colors.blue),
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                textStyle: const TextStyle(fontSize: 18),
+                side: const BorderSide(color: Colors.blue),
               ),
             ),
           ],

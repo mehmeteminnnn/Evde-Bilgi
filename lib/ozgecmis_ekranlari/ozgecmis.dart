@@ -96,7 +96,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
   Future<void> _updateTeacher() async {
     if (selectedCityName == null || selectedDistrictName == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Şehir ve ilçe seçiminizi yapmalısınız!')),
+        const SnackBar(content: Text('Şehir ve ilçe seçiminizi yapmalısınız!')),
       );
       return;
     }
@@ -130,12 +130,12 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Veriler başarıyla güncellendi!')),
+        const SnackBar(content: Text('Veriler başarıyla güncellendi!')),
       );
     } catch (e) {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Veri güncelleme hatası!')),
+        const SnackBar(content: Text('Veri güncelleme hatası!')),
       );
     }
   }
@@ -145,7 +145,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
-        title: Text('Özgeçmişim'),
+        title: const Text('Özgeçmişim'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -156,8 +156,8 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
             _buildDistrictDropdown(),
             _buildDatePicker(context, 'Doğum Tarihi'),
             _buildExperienceDropdown(),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Çalışmak İstediğiniz Pozisyonlar',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -178,8 +178,8 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
                 },
               ).toList(),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Çalışma Şekli',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -200,17 +200,17 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
                 },
               ).toList(),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _buildTextField('Minimum aylık maaş (TL)',
                 controller: _minSalaryController),
             _buildTextField('Maksimum aylık maaş (TL)',
                 controller: _maxSalaryController),
             _buildTextField('İş deneyiminizi ve görevlerinizi tanımlayın.',
                 maxLines: 3, controller: _experienceDescriptionController),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _updateTeacher,
-              child: Text('Kaydet'),
+              child: const Text('Kaydet'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepOrange,
               ),
@@ -219,7 +219,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
               onPressed: () {
                 // İptal işlemi
               },
-              child: Text('İptal'),
+              child: const Text('İptal'),
             ),
           ],
         ),
@@ -236,7 +236,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 1,
             blurRadius: 5,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -246,7 +246,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
           filled: true,
           fillColor: Colors.white,
           contentPadding:
-              EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+              const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide.none,
@@ -279,7 +279,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 1,
             blurRadius: 5,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -289,7 +289,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
           filled: true,
           fillColor: Colors.white,
           contentPadding:
-              EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+              const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide.none,
@@ -321,7 +321,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 1,
             blurRadius: 5,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -333,7 +333,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
           filled: true,
           fillColor: Colors.white,
           contentPadding:
-              EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+              const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide.none,
@@ -352,7 +352,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 1,
             blurRadius: 5,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -362,7 +362,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
           filled: true,
           fillColor: Colors.white,
           contentPadding:
-              EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+              const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide.none,
@@ -393,7 +393,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 1,
             blurRadius: 5,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -404,7 +404,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
           filled: true,
           fillColor: Colors.white,
           contentPadding:
-              EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+              const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide.none,

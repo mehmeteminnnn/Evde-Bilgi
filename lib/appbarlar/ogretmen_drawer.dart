@@ -22,7 +22,7 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
                 vertical: 15,
                 horizontal: 0), // Sağdan soldan padding'i kaldırıyoruz
             alignment: Alignment.center, // Ortalanmış hale getiriyoruz
@@ -38,42 +38,42 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
                 children: <Widget>[
                   ListTile(
                     dense: true,
-                    leading: Icon(Icons.home, size: 20),
-                    title: Text(
+                    leading: const Icon(Icons.home, size: 20),
+                    title: const Text(
                       'Ana Sayfa',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       Navigator.pop(context);
                     },
                   ),
                   ListTile(
                     dense: true,
-                    leading: Icon(Icons.list, size: 20),
-                    title: Text(
+                    leading: const Icon(Icons.list, size: 20),
+                    title: const Text(
                       'İş İlanları',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => JobListingsPage()));
+                              builder: (context) => const JobListingsPage()));
                     },
                   ),
                   ListTile(
                     dense: true,
-                    leading: Icon(Icons.message, size: 20),
-                    title: Text(
+                    leading: const Icon(Icons.message, size: 20),
+                    title: const Text(
                       'Mesajlarım',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -85,26 +85,26 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
                   ),
                   ListTile(
                     dense: true,
-                    leading: Icon(Icons.card_membership, size: 20),
-                    title: Text(
+                    leading: const Icon(Icons.card_membership, size: 20),
+                    title: const Text(
                       'Başvurularım',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       // Handle the action
                     },
                   ),
                   ListTile(
                     dense: true,
-                    leading: Icon(Icons.settings, size: 20),
-                    title: Text(
+                    leading: const Icon(Icons.settings, size: 20),
+                    title: const Text(
                       'Ayarlar',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -125,7 +125,7 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
                 .get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               }
 
               if (snapshot.hasError) {
@@ -146,13 +146,14 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
                             ? NetworkImage(profileImageUrl) // Profil fotoğrafı
                             : null,
                         child: profileImageUrl == null
-                            ? Icon(Icons.person, size: 16) // Varsayılan ikon
+                            ? const Icon(Icons.person,
+                                size: 16) // Varsayılan ikon
                             : null,
                       ),
-                      SizedBox(width: 5),
+                      const SizedBox(width: 5),
                       Text(
                         userData['name'] ?? 'Bilinmeyen Kullanıcı',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 14), // Yazı boyutunu küçültüyoruz
                       ),
                     ],
@@ -160,17 +161,18 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
                 );
               }
 
-              return Text("Kullanıcı bulunamadı.");
+              return const Text("Kullanıcı bulunamadı.");
             },
           ),
           ListTile(
             dense: true,
-            leading: Icon(Icons.exit_to_app, size: 20, color: Colors.red),
-            title: Text(
+            leading: const Icon(Icons.exit_to_app, size: 20, color: Colors.red),
+            title: const Text(
               'Çıkış Yap',
               style: TextStyle(fontSize: 14, color: Colors.red),
             ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
             onTap: () {
               Navigator.pushReplacement(
                 context,
