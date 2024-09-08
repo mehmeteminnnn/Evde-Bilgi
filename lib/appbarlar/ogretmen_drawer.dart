@@ -64,7 +64,6 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
                           MaterialPageRoute(
                               builder: (context) => JobListingsPage()));
                     },
-                    // Handle the action
                   ),
                   ListTile(
                     dense: true,
@@ -83,7 +82,6 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
                                     messages: ["Mesaj 1", "Mesaj 2"],
                                   )));
                     },
-                    // Handle the action
                   ),
                   ListTile(
                     dense: true,
@@ -136,14 +134,20 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
 
               if (snapshot.hasData && snapshot.data!.exists) {
                 var userData = snapshot.data!.data() as Map<String, dynamic>;
+                String? profileImageUrl = userData['image_url'];
+
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
                     children: [
                       CircleAvatar(
                         radius: 16, // Avatar boyutunu küçültüyoruz
-                        child:
-                            Icon(Icons.person, size: 16), // Icon'u küçültüyoruz
+                        backgroundImage: profileImageUrl != null
+                            ? NetworkImage(profileImageUrl) // Profil fotoğrafı
+                            : null,
+                        child: profileImageUrl == null
+                            ? Icon(Icons.person, size: 16) // Varsayılan ikon
+                            : null,
                       ),
                       SizedBox(width: 5),
                       Text(
