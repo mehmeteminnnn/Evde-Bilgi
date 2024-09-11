@@ -15,6 +15,32 @@ class OgretmenDrawer extends StatefulWidget {
 }
 
 class _OgretmenDrawerState extends State<OgretmenDrawer> {
+  String? _profileImageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserData();
+  }
+
+  Future<void> _getUserData() async {
+    try {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('ogretmen')
+          .doc(widget.uid)
+          .get();
+
+      if (snapshot.exists) {
+        Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
+        setState(() {
+          _profileImageUrl = userData['image_url'];
+        });
+      }
+    } catch (e) {
+      print("Error fetching user data: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -22,13 +48,11 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.symmetric(
-                vertical: 15,
-                horizontal: 0), // Sağdan soldan padding'i kaldırıyoruz
-            alignment: Alignment.center, // Ortalanmış hale getiriyoruz
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 0),
+            alignment: Alignment.center,
             child: Image.asset(
               'assets/logov3.png',
-              height: 50, // Logo yüksekliğini 50 olarak ayarladık
+              height: 50,
             ),
           ),
           Expanded(
@@ -118,51 +142,46 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
               ),
             ),
           ),
-          FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance
-                .collection('ogretmen')
-                .doc(widget.uid) // Öğretmen ID'si burada kullanılmalı
-                .get(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              }
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 20,
+                  backgroundImage: _profileImageUrl != null
+                      ? NetworkImage(_profileImageUrl!)
+                      : const AssetImage('assets/default_avatar.png')
+                          as ImageProvider,
+                ),
+                const SizedBox(width: 10),
+                FutureBuilder<DocumentSnapshot>(
+                  future: FirebaseFirestore.instance
+                      .collection('ogretmen')
+                      .doc(widget.uid)
+                      .get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
 
-              if (snapshot.hasError) {
-                return Text("Hata: ${snapshot.error}");
-              }
+                    if (snapshot.hasError) {
+                      return Text("Hata: ${snapshot.error}");
+                    }
 
-              if (snapshot.hasData && snapshot.data!.exists) {
-                var userData = snapshot.data!.data() as Map<String, dynamic>;
-                String? profileImageUrl = userData['image_url'];
-
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 16, // Avatar boyutunu küçültüyoruz
-                        backgroundImage: profileImageUrl != null
-                            ? NetworkImage(profileImageUrl) // Profil fotoğrafı
-                            : null,
-                        child: profileImageUrl == null
-                            ? const Icon(Icons.person,
-                                size: 16) // Varsayılan ikon
-                            : null,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
+                    if (snapshot.hasData && snapshot.data!.exists) {
+                      var userData =
+                          snapshot.data!.data() as Map<String, dynamic>;
+                      return Text(
                         userData['name'] ?? 'Bilinmeyen Kullanıcı',
-                        style: const TextStyle(
-                            fontSize: 14), // Yazı boyutunu küçültüyoruz
-                      ),
-                    ],
-                  ),
-                );
-              }
+                        style: const TextStyle(fontSize: 14),
+                      );
+                    }
 
-              return const Text("Kullanıcı bulunamadı.");
-            },
+                    return const Text("Kullanıcı bulunamadı.");
+                  },
+                ),
+              ],
+            ),
           ),
           ListTile(
             dense: true,
@@ -176,9 +195,7 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
             onTap: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        HomeScreen()), // HomeScreen'e yönlendirme
+                MaterialPageRoute(builder: (context) => HomeScreen()),
               );
             },
           ),

@@ -102,12 +102,14 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
                                           )));
                               // Kayıt başarılı olduğunda yapılacak işlemler
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Aile kaydı başarılı!')),
+                                const SnackBar(
+                                    content: Text('Aile kaydı başarılı!')),
                               );
                             }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Şifreler uyuşmuyor')),
+                              const SnackBar(
+                                  content: Text('Şifreler uyuşmuyor')),
                             );
                           }
                         }
@@ -178,6 +180,7 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
       'phone': familyPhoneController.text,
       'email': familyEmailController.text,
       'password': familyPasswordController.text, // Şifreyi hashleyin
+      'createdAt': FieldValue.serverTimestamp(),
     });
 
     String familyId = docRef.id;

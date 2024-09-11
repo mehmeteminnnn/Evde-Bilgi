@@ -65,6 +65,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
         'password': passwordController.text,
         'nationality': nationality,
         'image_url': imageUrl ?? "", // imageUrl boş ise boş string kullan
+        'createdAt': FieldValue.serverTimestamp(),
       });
 
       return documentRef.id;
@@ -166,7 +167,8 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                                         )));
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Kayıt işlemi başarısız')),
+                              const SnackBar(
+                                  content: Text('Kayıt işlemi başarısız')),
                             );
                           }
                         }

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 class SalaryPage extends StatefulWidget {
   final JobModel jobModel;
-  
 
   SalaryPage({required this.jobModel}); // JobModel nesnesi alınır
 
@@ -87,14 +86,13 @@ class _SalaryPageState extends State<SalaryPage> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: _isButtonActive
-                    ? () {print(widget.jobModel.userId);
+                    ? () {
+                        print(widget.jobModel.userId);
                         // Eğer maaş belirtildiyse onu kullan, belirtilmediyse "Ücret karşılıklı görüşülecektir" seçeneği işaretlenmişse salary "" olacak
                         widget.jobModel.salary =
                             _isNegotiable ? "" : _salaryController.text.trim();
                         widget.jobModel.isNegotiable = _isNegotiable;
                         widget.jobModel.publishDate = Timestamp.now();
-                        
-                     
 
                         // Firestore'a veriyi kaydetme
                         FirebaseFirestore.instance

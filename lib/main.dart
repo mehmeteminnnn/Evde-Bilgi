@@ -68,10 +68,7 @@ class HomeScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => IlanVer(
-                                    jobModel: JobModel(),
-                                    userId: "",
-                                  )));
+                              builder: (context) => TeacherRegisterPage()));
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
