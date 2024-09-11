@@ -193,14 +193,24 @@ class _JobDetailPageState extends State<JobDetailPage> {
         ),
         Padding(
           padding: const EdgeInsets.all(4.0),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                  child: Text(neighborhood, overflow: TextOverflow.ellipsis)),
-              SizedBox(width: 8.0),
-              Expanded(child: Text(city, overflow: TextOverflow.ellipsis)),
-              SizedBox(width: 8.0),
-              Expanded(child: Text(district, overflow: TextOverflow.ellipsis)),
+              Text(
+                neighborhood,
+                style: TextStyle(overflow: TextOverflow.visible),
+                softWrap: true,
+              ),
+              Text(
+                city,
+                style: TextStyle(overflow: TextOverflow.visible),
+                softWrap: true,
+              ),
+              Text(
+                district,
+                style: TextStyle(overflow: TextOverflow.visible),
+                softWrap: true,
+              ),
             ],
           ),
         ),

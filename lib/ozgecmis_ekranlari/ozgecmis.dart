@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:evde_bilgi/models/ogretmen_model.dart';
+import 'package:evde_bilgi/ozgecmis_ekranlari/ek_bilgi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,6 +15,9 @@ class OzgecmisimEkrani extends StatefulWidget {
 }
 
 class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
+  String? ad;
+  String? ulke;
+
   List<String> pozisyonlar = [
     'Gölge Öğretmen',
     'Oyun Ablası/Abisi',
@@ -57,6 +62,25 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
   void initState() {
     super.initState();
     _loadCities();
+    _loadTeacherInfo(); // Öğretmen bilgilerini yükle
+  }
+
+  Future<void> _loadTeacherInfo() async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('ogretmen') // Koleksiyon adı
+          .doc(widget.teacherId)
+          .get();
+
+      if (userDoc.exists) {
+        setState(() {
+          ad = userDoc['name'] ?? '';
+          ulke = userDoc['nationality'] ?? '';
+        });
+      }
+    } catch (e) {
+      print('Kullanıcı bilgileri alınamadı: $e');
+    }
   }
 
   Future<void> _loadCities() async {
@@ -101,39 +125,69 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
       return;
     }
 
-    try {
-      String? teacherId = widget.teacherId; // Öğretmen ID'sini al
+    if (ad == null || ulke == null || selectedExperience == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Eksik veya geçersiz bilgiler!')),
+      );
+      return;
+    }
 
-      await FirebaseFirestore.instance
-          .collection('ogretmen')
-          .doc(teacherId)
-          .update({
-        'selectedCity': selectedCityName,
-        'selectedDistrict': selectedDistrictName,
-        'selectedExperience': selectedExperience,
-        'pozisyonlar': pozisyonlar
+    try {
+      int minSalary = int.tryParse(_minSalaryController.text) ?? 0;
+      int maxSalary = int.tryParse(_maxSalaryController.text) ?? 0;
+
+      Teacher ogretmen = Teacher(
+        nationality: ulke!,
+        name: ad!,
+        teacherId: widget.teacherId!,
+        selectedCity: selectedCityName!,
+        selectedDistrict: selectedDistrictName!,
+        selectedExperience: selectedExperience!,
+        positions: pozisyonlar
             .asMap()
             .entries
             .where((entry) => seciliPozisyonlar[entry.key])
             .map((entry) => entry.value)
             .toList(),
-        'calismaSekilleri': calismaSekilleri
+        workingTypes: calismaSekilleri
             .asMap()
             .entries
             .where((entry) => seciliCalismaSekilleri[entry.key])
             .map((entry) => entry.value)
             .toList(),
-        'minSalary': _minSalaryController.text,
-        'maxSalary': _maxSalaryController.text,
-        'experienceDescription': _experienceDescriptionController.text,
-        'dob': _dobController.text,
+        minSalary: minSalary,
+        maxSalary: maxSalary,
+        experienceDescription: _experienceDescriptionController.text,
+        dob: _dobController.text,
+      );
+
+      await FirebaseFirestore.instance
+          .collection('ogretmen')
+          .doc(ogretmen.teacherId)
+          .update({
+        'selectedCity': ogretmen.selectedCity,
+        'selectedDistrict': ogretmen.selectedDistrict,
+        'selectedExperience': ogretmen.selectedExperience,
+        'pozisyonlar': ogretmen.positions,
+        'calismaSekilleri': ogretmen.workingTypes,
+        'minSalary': ogretmen.minSalary,
+        'maxSalary': ogretmen.maxSalary,
+        'experienceDescription': ogretmen.experienceDescription,
+        'dob': ogretmen.dob,
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Veriler başarıyla güncellendi!')),
       );
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EkBilgilerEkrani(ogretmen: ogretmen),
+        ),
+      );
     } catch (e) {
-      print(e);
+      print('Veri güncelleme hatası: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Veri güncelleme hatası!')),
       );
@@ -213,7 +267,7 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepOrange,
               ),
-              child: const Text('Kaydet'),
+              child: const Text('İleri'),
             ),
             TextButton(
               onPressed: () {
@@ -239,31 +293,23 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
             offset: const Offset(0, 3),
           ),
         ],
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
       ),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: 'İl seçiniz',
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
-          ),
-        ),
+      child: DropdownButton<String>(
         value: selectedCityName,
-        items: cities.map<DropdownMenuItem<String>>((city) {
+        hint: const Text('Şehir seçin'),
+        isExpanded: true,
+        items: cities.map((city) {
           return DropdownMenuItem<String>(
             value: city['name'],
             child: Text(city['name']),
           );
         }).toList(),
-        onChanged: (value) {
+        onChanged: (String? newValue) {
           setState(() {
-            selectedCityName = value;
-            selectedDistrictName = null; // Seçili ilçeyi sıfırla
-            _updateDistricts(); // İlçeleri güncelle
+            selectedCityName = newValue;
+            _updateDistricts(); // İlçe listesini güncelle
           });
         },
       ),
@@ -282,63 +328,24 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
             offset: const Offset(0, 3),
           ),
         ],
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
       ),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: 'İlçe seçiniz',
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
-          ),
-        ),
+      child: DropdownButton<String>(
         value: selectedDistrictName,
-        items: districts.map<DropdownMenuItem<String>>((district) {
+        hint: const Text('İlçe seçin'),
+        isExpanded: true,
+        items: districts.map((district) {
           return DropdownMenuItem<String>(
             value: district['name'],
             child: Text(district['name']),
           );
         }).toList(),
-        onChanged: (value) {
+        onChanged: (String? newValue) {
           setState(() {
-            selectedDistrictName = value;
+            selectedDistrictName = newValue;
           });
         },
-      ),
-    );
-  }
-
-  Widget _buildTextField(String labelText,
-      {int maxLines = 1, TextEditingController? controller}) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: TextFormField(
-        maxLines: maxLines,
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: labelText,
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
-          ),
-        ),
       ),
     );
   }
@@ -355,36 +362,29 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
             offset: const Offset(0, 3),
           ),
         ],
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
       ),
-      child: DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          labelText: 'Deneyim Seviyesi',
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
-          ),
-        ),
+      child: DropdownButton<String>(
         value: selectedExperience,
-        items: experienceOptions.map<DropdownMenuItem<String>>((experience) {
+        hint: const Text('Deneyim seviyenizi seçin'),
+        isExpanded: true,
+        items: experienceOptions.map((exp) {
           return DropdownMenuItem<String>(
-            value: experience,
-            child: Text(experience),
+            value: exp,
+            child: Text(exp),
           );
         }).toList(),
-        onChanged: (value) {
+        onChanged: (String? newValue) {
           setState(() {
-            selectedExperience = value;
+            selectedExperience = newValue;
           });
         },
       ),
     );
   }
 
-  Widget _buildDatePicker(BuildContext context, String labelText) {
+  Widget _buildDatePicker(BuildContext context, String label) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       decoration: BoxDecoration(
@@ -396,35 +396,64 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
             offset: const Offset(0, 3),
           ),
         ],
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
       ),
       child: TextFormField(
         controller: _dobController,
         decoration: InputDecoration(
-          labelText: labelText,
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
+          labelText: label,
+          suffixIcon: IconButton(
+            icon: const Icon(Icons.calendar_today),
+            onPressed: () async {
+              DateTime? pickedDate = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(1900),
+                lastDate: DateTime.now(),
+              );
+              if (pickedDate != null) {
+                setState(() {
+                  _dobController.text =
+                      '${pickedDate.day}-${pickedDate.month}-${pickedDate.year}';
+                });
+              }
+            },
           ),
         ),
         readOnly: true,
-        onTap: () async {
-          DateTime? pickedDate = await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(1900),
-            lastDate: DateTime.now(),
-          );
-          if (pickedDate != null) {
-            setState(() {
-              _dobController.text =
-                  '${pickedDate.day}/${pickedDate.month}/${pickedDate.year}';
-            });
-          }
-        },
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+    String label, {
+    int maxLines = 1,
+    TextEditingController? controller,
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: TextField(
+        controller: controller,
+        maxLines: maxLines,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
       ),
     );
   }

@@ -1,6 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
+import 'package:evde_bilgi/models/ogretmen_model.dart';
 import 'package:flutter/material.dart';
 
 class EkBilgilerEkrani extends StatefulWidget {
+  final Teacher ogretmen;
+  EkBilgilerEkrani({required this.ogretmen});
+
   @override
   _EkBilgilerEkraniState createState() => _EkBilgilerEkraniState();
 }
@@ -13,6 +19,11 @@ class _EkBilgilerEkraniState extends State<EkBilgilerEkrani> {
   String? sahsiAraba;
   String? ehliyet;
   String? pasaport;
+  String? sigara;
+  String? kamera;
+  String? evcilHayvan;
+  String? katildiginKurslar;
+  String? konustugunDiller;
 
   @override
   Widget build(BuildContext context) {
@@ -74,29 +85,48 @@ class _EkBilgilerEkraniState extends State<EkBilgilerEkrani> {
                   pasaport = newValue;
                 });
               }),
-              _buildDropdown('Sigara kullanıyor musunuz?', ['Evet', 'Hayır'],
-                  null, (newValue) {}),
+              _buildDropdown(
+                  'Sigara kullanıyor musunuz?', ['Evet', 'Hayır'], sigara,
+                  (newValue) {
+                setState(() {
+                  sigara = newValue;
+                });
+              }),
               _buildDropdown(
                   'Kameraların bulunduğu yerde çalışmak ister misiniz?',
                   ['Evet', 'Hayır'],
-                  null,
-                  (newValue) {}),
+                  kamera, (newValue) {
+                setState(() {
+                  kamera = newValue;
+                });
+              }),
               _buildDropdown(
                   'Evcil hayvanların olduğu yerde çalışmak ister misiniz?',
                   ['Evet', 'Hayır'],
-                  null,
-                  (newValue) {}),
-              _buildTextField('Katıldığınız Kurslar'),
-              _buildTextField('Konuştuğunuz Diller'),
+                  evcilHayvan, (newValue) {
+                setState(() {
+                  evcilHayvan = newValue;
+                });
+              }),
+              _buildTextField('Katıldığınız Kurslar', (newValue) {
+                setState(() {
+                  katildiginKurslar = newValue;
+                });
+              }),
+              _buildTextField('Konuştuğunuz Diller', (newValue) {
+                setState(() {
+                  konustugunDiller = newValue;
+                });
+              }),
               const SizedBox(height: 32),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   _buildButton('İptal', Colors.red, () {
-                    // İptal butonu işlevi
+                    Navigator.pop(context);
                   }),
                   _buildButton('Kaydet', Colors.green, () {
-                    // Kaydet butonu işlevi
+                    _saveData();
                   }),
                 ],
               ),
@@ -107,7 +137,7 @@ class _EkBilgilerEkraniState extends State<EkBilgilerEkrani> {
     );
   }
 
-  Widget _buildTextField(String labelText) {
+  Widget _buildTextField(String labelText, ValueChanged<String>? onChanged) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       decoration: BoxDecoration(
@@ -132,6 +162,7 @@ class _EkBilgilerEkraniState extends State<EkBilgilerEkrani> {
             borderSide: BorderSide.none,
           ),
         ),
+        onChanged: onChanged,
       ),
     );
   }
@@ -189,5 +220,51 @@ class _EkBilgilerEkraniState extends State<EkBilgilerEkrani> {
         style: const TextStyle(color: Colors.white),
       ),
     );
+  }
+
+  Future<void> _saveData() async {
+    final teacherRef = FirebaseFirestore.instance
+        .collection('ogretmen')
+        .doc(widget.ogretmen.teacherId);
+
+    final updatedTeacher = Teacher(
+      teacherId: widget.ogretmen.teacherId,
+      workingTypes: widget.ogretmen.workingTypes,
+      dob: widget.ogretmen.dob,
+      experienceDescription: widget.ogretmen.experienceDescription,
+      maxSalary: widget.ogretmen.maxSalary,
+      minSalary: widget.ogretmen.minSalary,
+      name: widget.ogretmen.name,
+      nationality: widget.ogretmen.nationality,
+      positions: widget.ogretmen.positions,
+      selectedCity: widget.ogretmen.selectedCity,
+      selectedDistrict: widget.ogretmen.selectedDistrict,
+      selectedExperience: widget.ogretmen.selectedExperience,
+      gender: cinsiyet,
+      educationLevel: egitimSeviyesi,
+      medicalEducation: tibbiEgitim,
+      educationFaculty: egitimFakultesi,
+      personalCar: sahsiAraba,
+      drivingLicense: ehliyet,
+      passport: pasaport,
+      smokingHabit: sigara,
+      workingInCameraEnvironment: kamera,
+      workingInPetEnvironment: evcilHayvan,
+      attendedCourses: katildiginKurslar,
+      spokenLanguages: konustugunDiller,
+    );
+
+    await teacherRef
+        .set(updatedTeacher.toJson(), SetOptions(merge: true))
+        .then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Veri başarıyla kaydedildi!')),
+      );
+      Navigator.pop(context);
+    }).catchError((error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Hata: $error')),
+      );
+    });
   }
 }
