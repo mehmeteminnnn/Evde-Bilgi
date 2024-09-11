@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/giris_sayfalari/aile_girisi.dart';
-import 'package:evde_bilgi/ogretmen_listeleri.dart';
+import 'package:evde_bilgi/ogretmen_bilgi/ogretmen_listeleri.dart';
 import 'package:flutter/material.dart';
 
 final TextEditingController familyNameController = TextEditingController();

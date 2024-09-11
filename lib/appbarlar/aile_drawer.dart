@@ -4,7 +4,7 @@ import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
 import 'package:evde_bilgi/main.dart';
 import 'package:evde_bilgi/mesajlar.dart';
 import 'package:evde_bilgi/models/ilan_model.dart';
-import 'package:evde_bilgi/ogretmen_listeleri.dart';
+import 'package:evde_bilgi/ogretmen_bilgi/ogretmen_listeleri.dart';
 import 'package:flutter/material.dart';
 
 class AileDrawer extends StatefulWidget {

@@ -1,18 +1,18 @@
 class Teacher {
   // Existing fields
   List<String> workingTypes; // "Part-time", "Hourly", etc.
-  String dob; // Date of birth
-  String teacherId;
-  String experienceDescription;
-  int maxSalary;
-  int minSalary;
-  String name;
-  String nationality;
- // String phone;
+  String? dob; // Date of birth
+  String? teacherId;
+  String? experienceDescription;
+  int? maxSalary; // Changed to int
+  int? minSalary; // Changed to int
+  String? name;
+  String? nationality;
+  // String phone;
   List<String> positions; // "Shadow Teacher", "Life Coach", etc.
-  String selectedCity; // Selected city
-  String selectedDistrict; // Selected district
-  String selectedExperience; // Experience range
+  String? selectedCity; // Selected city
+  String? selectedDistrict; // Selected district
+  String? selectedExperience; // Experience range
 
   // Newly added fields
   String? gender;
@@ -28,7 +28,8 @@ class Teacher {
   String? attendedCourses;
   String? spokenLanguages;
 
-  Teacher({required this.teacherId,
+  Teacher({
+    required this.teacherId,
     required this.workingTypes,
     required this.dob,
     required this.experienceDescription,
@@ -36,8 +37,7 @@ class Teacher {
     required this.minSalary,
     required this.name,
     required this.nationality,
- 
-  //  required this.phone,
+    // required this.phone,
     required this.positions,
     required this.selectedCity,
     required this.selectedDistrict,
@@ -57,20 +57,21 @@ class Teacher {
   });
 
   // JSON to model conversion
+  // JSON'dan modele dönüşüm
   factory Teacher.fromJson(Map<String, dynamic> json) {
-    return Teacher(teacherId: json['teacherId'],
-      workingTypes: List<String>.from(json['workingTypes']),
-      dob: json['dob'],
-      experienceDescription: json['experienceDescription'],
-      maxSalary: json['maxSalary'],
-      minSalary: json['minSalary'],
-      name: json['name'],
-      nationality: json['nationality'],
-    //  phone: json['phone'],
-      positions: List<String>.from(json['positions']),
-      selectedCity: json['selectedCity'],
-      selectedDistrict: json['selectedDistrict'],
-      selectedExperience: json['selectedExperience'],
+    return Teacher(
+      teacherId: json['teacherId'] ?? '',
+      workingTypes: List<String>.from(json['workingTypes'] ?? []),
+      dob: json['dob'] ?? '',
+      experienceDescription: json['experienceDescription'] ?? '',
+      maxSalary: _parseInt(json['maxSalary']),
+      minSalary: _parseInt(json['minSalary']),
+      name: json['name'] ?? '',
+      nationality: json['nationality'] ?? '',
+      positions: List<String>.from(json['positions'] ?? []),
+      selectedCity: json['selectedCity'] ?? '',
+      selectedDistrict: json['selectedDistrict'] ?? '',
+      selectedExperience: json['selectedExperience'] ?? '',
       gender: json['gender'],
       educationLevel: json['educationLevel'],
       medicalEducation: json['medicalEducation'],
@@ -86,9 +87,23 @@ class Teacher {
     );
   }
 
+// Helper method to parse int from dynamic value
+  static int? _parseInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is String) {
+      // If the value is a string, attempt to parse it as an integer
+      final parsed = int.tryParse(value);
+      return parsed ?? 0; // Default to 0 if parsing fails
+    }
+    // Default to 0 if the type is not int or String
+    return 0;
+  }
+
   // Model to JSON conversion
   Map<String, dynamic> toJson() {
-    return {'teacherId': teacherId,
+    return {
+      'teacherId': teacherId,
       'workingTypes': workingTypes,
       'dob': dob,
       'experienceDescription': experienceDescription,
@@ -96,7 +111,7 @@ class Teacher {
       'minSalary': minSalary,
       'name': name,
       'nationality': nationality,
-     // 'phone': phone,
+      // 'phone': phone,
       'positions': positions,
       'selectedCity': selectedCity,
       'selectedDistrict': selectedDistrict,

@@ -133,8 +133,8 @@ class _OzgecmisimEkraniState extends State<OzgecmisimEkrani> {
     }
 
     try {
-      int minSalary = int.tryParse(_minSalaryController.text) ?? 0;
-      int maxSalary = int.tryParse(_maxSalaryController.text) ?? 0;
+      int? minSalary = int.tryParse(_minSalaryController.text);
+      int? maxSalary = int.tryParse(_maxSalaryController.text);
 
       Teacher ogretmen = Teacher(
         nationality: ulke!,
