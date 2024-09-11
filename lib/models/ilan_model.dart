@@ -13,7 +13,13 @@ class JobModel {
   String district;
   String neighborhood;
   Timestamp publishDate;
-  String userId; // Yeni eklenen alan
+  String userId;
+
+  // Yeni eklenen alanlar
+  String fullName;
+  String email;
+  String phoneNumber;
+  String address;
 
   JobModel({
     Timestamp? publishDate,
@@ -28,7 +34,11 @@ class JobModel {
     this.city = '',
     this.district = '',
     this.neighborhood = '',
-    this.userId = '', // Varsayılan değer
+    this.userId = '',
+    this.fullName = '', // Varsayılan değer
+    this.email = '', // Varsayılan değer
+    this.phoneNumber = '', // Varsayılan değer
+    this.address = '', // Varsayılan değer
   }) : this.publishDate = publishDate ?? Timestamp.now();
 
   // Bu method JobModel'i Firestore'a kaydedilmek üzere Map'e dönüştürür.
@@ -47,6 +57,10 @@ class JobModel {
       'neighborhood': neighborhood,
       'publishDate': publishDate,
       'userId': userId,
+      'fullName': fullName, // Yeni alan
+      'email': email, // Yeni alan
+      'phoneNumber': phoneNumber, // Yeni alan
+      'address': address, // Yeni alan
     };
   }
 
@@ -65,7 +79,11 @@ class JobModel {
       district: map['district'] ?? '',
       neighborhood: map['neighborhood'] ?? '',
       publishDate: map['publishDate'] ?? Timestamp.now(),
-      userId: map['userId'] ?? '', // Varsayılan değer
+      userId: map['userId'] ?? '',
+      fullName: map['fullName'] ?? '', // Yeni alan
+      email: map['email'] ?? '', // Yeni alan
+      phoneNumber: map['phoneNumber'] ?? '', // Yeni alan
+      address: map['address'] ?? '', // Yeni alan
     );
   }
 }

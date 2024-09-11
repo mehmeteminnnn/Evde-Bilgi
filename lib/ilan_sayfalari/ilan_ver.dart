@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/ilan_sayfalari/ogretmen_bilgi.dart';
 import 'package:evde_bilgi/models/ilan_model.dart';
@@ -5,13 +6,42 @@ import 'package:flutter/material.dart';
 
 class IlanVer extends StatefulWidget {
   final JobModel jobModel;
-  final String userId; // Kullanıcı ID'si eklenir
+  final String userId; // Kullanıcı ID'si
+
   IlanVer({required this.jobModel, required this.userId});
+
   @override
   State<IlanVer> createState() => _IlanVerState();
 }
 
 class _IlanVerState extends State<IlanVer> {
+  @override
+  void initState() {
+    super.initState();
+    _loadUserInfo(); // Kullanıcı bilgilerini yükle
+  }
+
+  Future<void> _loadUserInfo() async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('aile') // Koleksiyon adı
+          .doc(widget.userId)
+          .get();
+
+      if (userDoc.exists) {
+        setState(() {
+          widget.jobModel.fullName = userDoc['name'] ?? '';
+          widget.jobModel.email = userDoc['email'] ?? '';
+          widget.jobModel.phoneNumber = userDoc['phone'] ?? '';
+          widget.jobModel.address =
+              'Belirtilmemiş'; // Eğer adres varsa ekleyebilirsin
+        });
+      }
+    } catch (e) {
+      print('Kullanıcı bilgileri alınamadı: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

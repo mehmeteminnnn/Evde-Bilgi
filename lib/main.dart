@@ -1,9 +1,7 @@
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/firebase_options.dart';
 import 'package:evde_bilgi/giris_ekranı_logo_widget.dart';
-import 'package:evde_bilgi/ilan_sayfalari/ilan_ver.dart';
 import 'package:evde_bilgi/kayit_sayfalari/ogretmen_kay%C4%B1t.dart';
-import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 

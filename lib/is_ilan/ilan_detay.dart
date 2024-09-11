@@ -44,7 +44,8 @@ class _JobDetailPageState extends State<JobDetailPage> {
                     children: [
                       Text(
                         jobData['title'],
-                        style: const TextStyle(fontSize: 20, color: Colors.white),
+                        style:
+                            const TextStyle(fontSize: 20, color: Colors.white),
                       ),
                       Text(
                         jobData['city'] ?? "",
@@ -54,8 +55,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Card(child: _buildTag(jobData['jobType'] ?? "")),
-                          Card(child: _buildTag(jobData['isopen'] ?? "")),
+                          ..._buildTags(jobData['jobTypes'] ?? []),
                           Card(child: _buildTag('${jobData['salary']} TL')),
                         ],
                       ),
@@ -93,6 +93,12 @@ class _JobDetailPageState extends State<JobDetailPage> {
         },
       ),
     );
+  }
+
+  List<Widget> _buildTags(List<dynamic> jobTypes) {
+    return jobTypes
+        .map((type) => Card(child: _buildTag(type.toString())))
+        .toList();
   }
 
   Widget _buildTag(String text) {
@@ -133,17 +139,25 @@ class _JobDetailPageState extends State<JobDetailPage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Table(
+            columnWidths: {
+              0: FlexColumnWidth(2),
+              1: FlexColumnWidth(3),
+            },
             children: [
               _buildTableRow('Yayınlanma Tarihi', publishDateText),
               _buildTableRow(
-                  'Ad-Soyad', jobData['namesurname'] ?? 'Belirtilmemiş'),
+                  'Ad-Soyad', jobData['fullName'] ?? 'Belirtilmemiş'),
               _buildTableRow(
                   'Pozisyon', jobData['position'] ?? 'Belirtilmemiş'),
               _buildTableRow('Telefon Numarası',
                   jobData['phoneNumber']?.toString() ?? 'Belirtilmemiş'),
               _buildTableRow(
                   'E-posta Adresi', jobData['email'] ?? 'Belirtilmemiş'),
-              _buildTableRow('Adres', jobData['address'] ?? 'Belirtilmemiş'),
+              _buildAddressRow(
+                jobData['neighborhood'] ?? 'Belirtilmemiş',
+                jobData['city'] ?? 'Belirtilmemiş',
+                jobData['district'] ?? 'Belirtilmemiş',
+              ),
             ],
           ),
         ),
@@ -156,11 +170,39 @@ class _JobDetailPageState extends State<JobDetailPage> {
       children: [
         Padding(
           padding: const EdgeInsets.all(4.0),
-          child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+          child:
+              Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
         ),
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text(value?.toString() ?? 'Belirtilmemiş'),
+        ),
+      ],
+    );
+  }
+
+  TableRow _buildAddressRow(String neighborhood, String city, String district) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Text(
+            'Adres',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Row(
+            children: [
+              Expanded(
+                  child: Text(neighborhood, overflow: TextOverflow.ellipsis)),
+              SizedBox(width: 8.0),
+              Expanded(child: Text(city, overflow: TextOverflow.ellipsis)),
+              SizedBox(width: 8.0),
+              Expanded(child: Text(district, overflow: TextOverflow.ellipsis)),
+            ],
+          ),
         ),
       ],
     );
@@ -180,7 +222,8 @@ class _JobDetailPageState extends State<JobDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(title,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               Text(content),
             ],
