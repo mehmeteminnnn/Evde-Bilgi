@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evde_bilgi/Aile_mesaj.dart';
 import 'package:evde_bilgi/ilan_sayfalari/ilan_ver.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
 import 'package:evde_bilgi/main.dart';
@@ -146,9 +147,8 @@ class _AileDrawerState extends State<AileDrawer> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MessagesPage(
-                                    messages: ["Mesaj 1", "Mesaj 2"],
-                                  )));
+                              builder: (context) =>
+                                  FamilyMessagesScreen(familyId: widget.uid!)));
                     },
                     // Handle the action
                   ),

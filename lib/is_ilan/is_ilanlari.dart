@@ -5,6 +5,7 @@ import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
 import 'package:evde_bilgi/mesaj_gonder.dart';
 import 'package:evde_bilgi/ozgecmis_ekranlari/ozgecmis.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class JobListingsPage extends StatefulWidget {
   final String? id;
@@ -189,8 +190,9 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         SendMessagePage(
-                                                      jobId: ilan.id,
                                                       senderId: widget.id!,
+                                                      receiverId:
+                                                          ilan['userId'],
                                                     ),
                                                   ),
                                                 );
@@ -303,8 +305,8 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     SendMessagePage(
-                                                      jobId: job["id"],
                                                       senderId: widget.id!,
+                                                      receiverId: job['userId'],
                                                     )));
                                       },
                                       style: ElevatedButton.styleFrom(
@@ -327,7 +329,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => JobDetailPage(
-                                              jobId: job["id"],
+                                              jobId: job['id'],
                                             ),
                                           ),
                                         );

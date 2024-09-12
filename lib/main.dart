@@ -2,6 +2,7 @@ import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/firebase_options.dart';
 import 'package:evde_bilgi/giris_ekranı_logo_widget.dart';
 import 'package:evde_bilgi/kayit_sayfalari/ogretmen_kay%C4%B1t.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -14,10 +15,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
-    );
+  
+      // UserProvider'ı sağlayıcı olarak ekliyoruz
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: HomeScreen(),
+      );
+    
   }
 }
 
@@ -25,8 +29,11 @@ class HomeScreen extends StatelessWidget {
   final String? uid;
 
   HomeScreen({this.uid});
+
   @override
   Widget build(BuildContext context) {
+   
+
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
       appBar: const EvdeBilgiAppBar(),

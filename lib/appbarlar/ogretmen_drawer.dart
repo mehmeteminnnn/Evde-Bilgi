@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evde_bilgi/aaaa.dart';
 import 'package:evde_bilgi/ayarlar/ogretmen_ayar.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
 import 'package:evde_bilgi/main.dart';
@@ -98,14 +99,7 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
                     ),
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MessagesPage(
-                                    messages: ["Mesaj 1", "Mesaj 2"],
-                                  )));
-                    },
+                    onTap: () {},
                   ),
                   ListTile(
                     dense: true,
@@ -117,8 +111,15 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
-                      // Handle the action
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChatPage(
+                                    receiverId:widget.uid!,
+                                    senderId: "",
+                                  )));
                     },
+                    // Handle the action
                   ),
                   ListTile(
                     dense: true,

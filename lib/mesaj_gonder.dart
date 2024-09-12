@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class SendMessagePage extends StatefulWidget {
-  final String jobId;
+  final String receiverId;
   final String senderId;
 
   const SendMessagePage({
     Key? key,
-    required this.jobId,
+    required this.receiverId,
     required this.senderId,
   }) : super(key: key);
 
@@ -20,31 +20,75 @@ class _SendMessagePageState extends State<SendMessagePage> {
   bool _isSending = false;
 
   Future<void> _sendMessage() async {
-    if (_messageController.text.isEmpty) return;
-
-    setState(() {
-      _isSending = true;
-    });
-
-    try {
-      await FirebaseFirestore.instance.collection('messages').add({
-        'jobId': widget.jobId,
-        'senderId': widget.senderId,
-        'message': _messageController.text,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-
-      Navigator.pop(context);
-    } catch (e) {
-      // Handle error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Mesaj gönderme hatası: $e')),
-      );
-    } finally {
+    final message = _messageController.text.trim();
+    if (message.isNotEmpty) {
       setState(() {
-        _isSending = false;
+        _isSending = true;
       });
+
+      final timestamp = FieldValue.serverTimestamp();
+      final messageData = {
+        'senderId': widget.senderId,
+        'receiverId': widget.receiverId,
+        'message': message,
+        'timestamp': timestamp,
+      };
+
+      try {
+        // Gönderenin mesajlar koleksiyonuna ekle
+        await _addMessage(
+          collection: 'ogretmen',
+          docId: widget.senderId,
+          targetDocId: widget.receiverId,
+          messageData: messageData,
+        );
+
+        // Alıcının mesajlar koleksiyonuna ekle
+        await _addMessage(
+          collection: 'aile',
+          docId: widget.receiverId,
+          targetDocId: widget.senderId,
+          messageData: messageData,
+        );
+
+        // Mesaj gönderildikten sonra temizle
+        _messageController.clear();
+        setState(() {
+          _isSending = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Mesaj gönderildi!')),
+        );
+      } catch (error) {
+        setState(() {
+          _isSending = false;
+        });
+        print(error);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Mesaj gönderilemedi: $error'),
+          ),
+        );
+      }
     }
+  }
+
+  Future<void> _addMessage({
+    required String collection,
+    required String docId,
+    required String targetDocId,
+    required Map<String, dynamic> messageData,
+  }) async {
+    // Eğer koleksiyon veya belge yoksa, Firestore'da oluşturulacaktır.
+    final docRef = FirebaseFirestore.instance
+        .collection(collection)
+        .doc(docId)
+        .collection('messages')
+        .doc(targetDocId)
+        .collection('messages')
+        .doc(); // Yeni mesaj belgesi oluştur
+
+    await docRef.set(messageData);
   }
 
   @override
@@ -60,10 +104,11 @@ class _SendMessagePageState extends State<SendMessagePage> {
           children: [
             TextField(
               controller: _messageController,
-              decoration: const InputDecoration(
+              maxLines: 5,
+              decoration: InputDecoration(
                 labelText: 'Mesajınızı yazın...',
+                border: OutlineInputBorder(),
               ),
-              maxLines: 4,
             ),
             const SizedBox(height: 16),
             ElevatedButton(
