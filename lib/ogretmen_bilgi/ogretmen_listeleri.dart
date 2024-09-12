@@ -27,7 +27,7 @@ class TeacherListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Teacher List')),
+      appBar: AppBar(title: Text('Kayıtlı Uzmanlar')),
       drawer: AileDrawer(uid: id),
       body: FutureBuilder<List<Teacher>>(
         future: _fetchTeachers(),
