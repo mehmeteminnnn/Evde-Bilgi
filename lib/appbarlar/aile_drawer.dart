@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evde_bilgi/ayarlar/aile_ayar.dart';
 import 'package:evde_bilgi/mesaj_ekranlari/aile_mesaj.dart';
 import 'package:evde_bilgi/ilan_sayfalari/ilan_ver.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
@@ -187,8 +188,14 @@ class _AileDrawerState extends State<AileDrawer> {
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
-                      // Handle the action
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AileAyarlarPage(
+                                    uid: widget.uid,
+                                  )));
                     },
+                    // Handle the action
                   ),
                 ],
               ),

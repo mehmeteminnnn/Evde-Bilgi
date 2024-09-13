@@ -254,7 +254,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
                   itemBuilder: (context, index) {
                     var message = messages[index];
                     bool isSentByCurrentUser =
-                        message['senderId'] == widget.receiverId;
+                        message['senderId'] == widget.familyId;
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 8.0, horizontal: 16.0),
