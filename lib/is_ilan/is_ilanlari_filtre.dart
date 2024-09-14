@@ -58,7 +58,12 @@ class _FilterPageState extends State<FilterPage> {
               });
             }),
             const SizedBox(height: 16),
-            buildDropdown('Pozisyon', ['Gölge Öğretmen', 'Diğer'], (value) {
+            buildDropdown('Pozisyon', [
+              'Gölge Öğretmen',
+              'Oyun Ablası / Abisi',
+              "Özel Eğitim",
+              "Yaşam Koçu"
+            ], (value) {
               setState(() {
                 selectedPosition = value;
               });
@@ -76,7 +81,8 @@ class _FilterPageState extends State<FilterPage> {
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.blue,
-                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),

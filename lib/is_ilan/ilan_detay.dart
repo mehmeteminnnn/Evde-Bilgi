@@ -1,11 +1,14 @@
+import 'package:evde_bilgi/mesaj_gonder.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class JobDetailPage extends StatefulWidget {
   final String jobId;
+  final String? receiverId;
+  final String? senderId;
 
-  JobDetailPage({required this.jobId});
+  JobDetailPage({required this.jobId, this.receiverId, this.senderId});
 
   @override
   State<JobDetailPage> createState() => _JobDetailPageState();
@@ -258,7 +261,13 @@ class _JobDetailPageState extends State<JobDetailPage> {
           ),
           ElevatedButton(
             onPressed: () {
-              // Mesaj Gönder butonuna tıklama işlevi
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SendMessagePage(
+                            senderId: widget.senderId!,
+                            receiverId: widget.receiverId!,
+                          )));
             },
             style: ElevatedButton.styleFrom(foregroundColor: Colors.blue),
             child: const Text('Mesaj Gönder'),

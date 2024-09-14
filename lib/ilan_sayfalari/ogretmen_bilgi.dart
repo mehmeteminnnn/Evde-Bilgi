@@ -3,6 +3,7 @@ import 'package:evde_bilgi/ilan_sayfalari/is_ayr%C4%B1ntilari.dart';
 import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:turkish/turkish.dart';
 
 class CalismaAdresiScreen extends StatefulWidget {
   final JobModel jobModel;
@@ -34,7 +35,7 @@ class _CalismaAdresiScreenState extends State<CalismaAdresiScreen> {
         List<Map<String, dynamic>>.from(jsonDecode(cityJson));
 
     // Şehirleri alfabetik sıraya göre sıralayın
-    cityList.sort((a, b) => a['name'].compareTo(b['name']));
+    cityList.sort((a, b) => turkish.comparator(a['name'], b['name']));
 
     setState(() {
       cities = cityList;

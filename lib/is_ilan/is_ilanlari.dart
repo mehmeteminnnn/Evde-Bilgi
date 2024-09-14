@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/appbarlar/ogretmen_drawer.dart';
 import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
+import 'package:evde_bilgi/is_ilan/is_ilanlari_filtre.dart';
 import 'package:evde_bilgi/mesaj_ekranlari/ogretmen_mesaj.dart';
 import 'package:evde_bilgi/mesaj_gonder.dart';
 import 'package:evde_bilgi/ozgecmis_ekranlari/ozgecmis.dart';
@@ -230,6 +231,9 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         JobDetailPage(
+                                                      senderId: widget.id!,
+                                                      receiverId:
+                                                          ilan['userId'],
                                                       jobId: ilan.id,
                                                     ),
                                                   ),
@@ -339,6 +343,8 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => JobDetailPage(
+                                              senderId: widget.id!,
+                                              receiverId: job['userId'],
                                               jobId: job['id'],
                                             ),
                                           ),
@@ -366,6 +372,23 @@ class _JobListingsPageState extends State<JobListingsPage> {
                     );
                   },
                 ),
+          /* Positioned(
+            bottom: 16,
+            right: 16,
+            child: FloatingActionButton(
+              onPressed: () {
+                // Filtreleme sayfasına yönlendirme yapıyoruz
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FilterPage(),
+                  ),
+                );
+              },
+              child: const Icon(Icons.filter_list),
+              backgroundColor: Colors.blue,
+            ),
+          ),*/
         ],
       ),
     );
