@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,7 @@ class TeacherMessagesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EvdeBilgiAppBar(),
+      appBar: const EvdeBilgiAppBar(),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('ogretmen')
@@ -20,7 +19,7 @@ class TeacherMessagesScreen extends StatelessWidget {
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
@@ -28,7 +27,7 @@ class TeacherMessagesScreen extends StatelessWidget {
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('Hiç mesaj yok.'));
+            return const Center(child: Text('Hiç mesaj yok.'));
           }
 
           var messages = snapshot.data!.docs;
@@ -45,7 +44,7 @@ class TeacherMessagesScreen extends StatelessWidget {
                 builder:
                     (context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
-                    return ListTile(
+                    return const ListTile(
                       title: Text('Yükleniyor...'),
                     );
                   }
@@ -57,7 +56,7 @@ class TeacherMessagesScreen extends StatelessWidget {
                   }
 
                   if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-                    return ListTile(
+                    return const ListTile(
                       title: Text('Kullanıcı bulunamadı.'),
                     );
                   }
@@ -75,11 +74,11 @@ class TeacherMessagesScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: ListTile(
-                        contentPadding: EdgeInsets.symmetric(
+                        contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20.0,
                           vertical: 15.0,
                         ),
-                        leading: CircleAvatar(
+                        leading: const CircleAvatar(
                           backgroundColor: Colors.blueAccent,
                           child: Icon(
                             Icons.person,
@@ -88,7 +87,7 @@ class TeacherMessagesScreen extends StatelessWidget {
                         ),
                         title: Text(
                           userName.toUpperCase(),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18.0,
                             color: Colors.blueAccent,
@@ -184,7 +183,7 @@ class _TeacherMessageDetailScreenState
           _isSending = false;
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Yanıt gönderildi!')),
+          const SnackBar(content: Text('Yanıt gönderildi!')),
         );
       } catch (error) {
         setState(() {
@@ -213,6 +212,12 @@ class _TeacherMessageDetailScreenState
         .doc(targetDocId)
         .collection('messages')
         .doc(); // Yeni mesaj belgesi oluştur
+    await FirebaseFirestore.instance
+        .collection(collection)
+        .doc(docId)
+        .collection('messages')
+        .doc(targetDocId)
+        .set({'createdAt': FieldValue.serverTimestamp()});
 
     await docRef.set(messageData);
   }
@@ -220,7 +225,7 @@ class _TeacherMessageDetailScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Mesaj Detayları')),
+      appBar: AppBar(title: const Text('Mesaj Detayları')),
       body: Column(
         children: [
           Expanded(
@@ -236,7 +241,7 @@ class _TeacherMessageDetailScreenState
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 // Veri bekleniyor
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 // Veri hatası durumu
@@ -247,7 +252,7 @@ class _TeacherMessageDetailScreenState
 
                 // Veri yoksa veya boşsa
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text('Hiç mesaj yok.'));
+                  return const Center(child: Text('Hiç mesaj yok.'));
                 }
 
                 var messages = snapshot.data!.docs;
@@ -313,7 +318,7 @@ class _TeacherMessageDetailScreenState
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Yanıtınızı yazın...',
                       border: OutlineInputBorder(),
                     ),
@@ -323,7 +328,7 @@ class _TeacherMessageDetailScreenState
                 ElevatedButton(
                   onPressed: _isSending ? null : _sendMessage,
                   child:
-                      _isSending ? CircularProgressIndicator() : Text('Gönder'),
+                      _isSending ? const CircularProgressIndicator() : const Text('Gönder'),
                 ),
               ],
             ),

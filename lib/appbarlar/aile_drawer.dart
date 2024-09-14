@@ -123,19 +123,6 @@ class _AileDrawerState extends State<AileDrawer> {
                   ),
                   ListTile(
                     dense: true,
-                    leading: const Icon(Icons.person, size: 20),
-                    title: const Text(
-                      'Aday İşlemleri',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    onTap: () {
-                      // Handle the action
-                    },
-                  ),
-                  ListTile(
-                    dense: true,
                     leading: const Icon(Icons.message, size: 20),
                     title: const Text(
                       'Mesajlarım',

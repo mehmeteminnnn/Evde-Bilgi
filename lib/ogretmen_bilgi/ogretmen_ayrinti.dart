@@ -30,10 +30,10 @@ class ProfilePage extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Profil'),
+              title: const Text('Profil'),
               backgroundColor: Colors.blue,
             ),
-            body: Center(
+            body: const Center(
               child: CircularProgressIndicator(),
             ),
           );
@@ -42,7 +42,7 @@ class ProfilePage extends StatelessWidget {
         if (snapshot.hasError) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Profil'),
+              title: const Text('Profil'),
               backgroundColor: Colors.blue,
             ),
             body: Center(
@@ -56,10 +56,10 @@ class ProfilePage extends StatelessWidget {
         if (teacher == null) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Profil'),
+              title: const Text('Profil'),
               backgroundColor: Colors.blue,
             ),
-            body: Center(
+            body: const Center(
               child: Text('Öğretmen bilgisi bulunamadı.'),
             ),
           );
@@ -68,7 +68,7 @@ class ProfilePage extends StatelessWidget {
         return Scaffold(
           backgroundColor: Colors.blue.shade100,
           appBar: AppBar(
-            title: Text('Profil'),
+            title: const Text('Profil'),
             backgroundColor: Colors.blue,
           ),
           body: SingleChildScrollView(
@@ -81,28 +81,28 @@ class ProfilePage extends StatelessWidget {
                   CircleAvatar(
                     radius: 50,
                     backgroundColor: Colors.blueGrey[800],
-                    child: Icon(
+                    child: const Icon(
                       Icons.person,
                       size: 60,
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text(
                     '${teacher.name?.toUpperCase() ?? "İsim"} (${_calculateAge(teacher.dob)} Yaşında)',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     '${teacher.selectedCity ?? "Şehir Bilgisi Yok"}',
                     style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     'İş Arayışı: ${teacher.workingTypes.isNotEmpty ? teacher.workingTypes.join(', ') : "Bilgi Yok"}',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   // Öğretmen Hakkında
                   Align(
@@ -110,21 +110,21 @@ class ProfilePage extends StatelessWidget {
                     child: Text(
                       '${teacher.name?.toUpperCase() ?? "İsim"} Hakkında',
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       teacher.experienceDescription ?? "Açıklama Yok",
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   // Çalışmak İstediği Pozisyonlar
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Çalışmak İstediği Pozisyonlar',
@@ -132,24 +132,24 @@ class ProfilePage extends StatelessWidget {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       teacher.positions.isNotEmpty
                           ? '• ${teacher.positions.join('\n• ')}'
                           : 'Bilgi Yok',
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   // Tercih Edilen Pozisyonlar
 
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
 
                   // Çalışma Şekli
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Çalışma Şekli',
@@ -157,21 +157,21 @@ class ProfilePage extends StatelessWidget {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       teacher.workingTypes.isNotEmpty
                           ? '• ${teacher.workingTypes.join('\n• ')}'
                           : 'Bilgi Yok',
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ),
 
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   // Kişisel Bilgiler
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Kişisel Bilgiler',
@@ -179,20 +179,20 @@ class ProfilePage extends StatelessWidget {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       '${teacher.educationLevel != null ? '• Öğrenim Durumu:${teacher.educationLevel}' : ''}\n'
                       '${teacher.gender != null ? '• Cinsiyet:${teacher.gender}' : ''}\n'
                       '${teacher.smokingHabit != null ? '• Sigara Kullanıyor Mu:${teacher.smokingHabit}' : ''}\n',
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ),
-                  SizedBox(height: 6),
+                  const SizedBox(height: 6),
 
                   // Tercihler
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Tercihler',
@@ -200,13 +200,13 @@ class ProfilePage extends StatelessWidget {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       '${teacher.workingInCameraEnvironment != null ? '• Kameralı evde çalışabilirim' : ''}\n'
                       '${teacher.workingInPetEnvironment != null ? '• Evcil hayvanlı evde çalışabilirim' : ''}',
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ),
                 ],

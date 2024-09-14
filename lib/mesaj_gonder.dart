@@ -57,7 +57,7 @@ class _SendMessagePageState extends State<SendMessagePage> {
           _isSending = false;
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Mesaj gönderildi!')),
+          const SnackBar(content: Text('Mesaj gönderildi!')),
         );
       } catch (error) {
         setState(() {
@@ -87,6 +87,12 @@ class _SendMessagePageState extends State<SendMessagePage> {
         .doc(targetDocId)
         .collection('messages')
         .doc(); // Yeni mesaj belgesi oluştur
+    await FirebaseFirestore.instance
+        .collection(collection)
+        .doc(docId)
+        .collection('messages')
+        .doc(targetDocId)
+        .set({'createdAt': FieldValue.serverTimestamp()});
 
     await docRef.set(messageData);
   }
@@ -105,7 +111,7 @@ class _SendMessagePageState extends State<SendMessagePage> {
             TextField(
               controller: _messageController,
               maxLines: 5,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Mesajınızı yazın...',
                 border: OutlineInputBorder(),
               ),

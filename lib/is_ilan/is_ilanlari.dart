@@ -6,7 +6,6 @@ import 'package:evde_bilgi/mesaj_ekranlari/ogretmen_mesaj.dart';
 import 'package:evde_bilgi/mesaj_gonder.dart';
 import 'package:evde_bilgi/ozgecmis_ekranlari/ozgecmis.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class JobListingsPage extends StatefulWidget {
   final String? id;

@@ -64,14 +64,15 @@ class _JobDetailPageState extends State<JobDetailPage> {
                 ),
                 _buildInfoBox(jobData),
                 SizedBox(
+                  width: double.infinity,
                   child: _buildBox('İş Tanımı', jobData['details'] ?? ""),
-                  width: double.infinity,
                 ),
                 SizedBox(
+                  width: double.infinity,
                   child: _buildBox('Maaş', '${jobData['salary']} TL'),
-                  width: double.infinity,
                 ),
                 SizedBox(
+                  width: double.infinity,
                   child: _buildBox(
                     'Çalışma Günü',
                     jobData['workingDays'] != null &&
@@ -79,12 +80,11 @@ class _JobDetailPageState extends State<JobDetailPage> {
                         ? (jobData['workingDays'] as List<dynamic>).join(', ')
                         : 'Belirtilmemiş',
                   ),
-                  width: double.infinity,
                 ),
                 SizedBox(
+                  width: double.infinity,
                   child: _buildBox(
                       'Çalışma Saati(Günlük)', jobData['hoursPerDay'] ?? ''),
-                  width: double.infinity,
                 ),
                 _buildActionButtons(),
               ],
@@ -140,8 +140,8 @@ class _JobDetailPageState extends State<JobDetailPage> {
           padding: const EdgeInsets.all(16.0),
           child: Table(
             columnWidths: {
-              0: FlexColumnWidth(2),
-              1: FlexColumnWidth(3),
+              0: const FlexColumnWidth(2),
+              1: const FlexColumnWidth(3),
             },
             children: [
               _buildTableRow('Yayınlanma Tarihi', publishDateText),
@@ -184,11 +184,11 @@ class _JobDetailPageState extends State<JobDetailPage> {
   TableRow _buildAddressRow(String neighborhood, String city, String district) {
     return TableRow(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(4.0),
+        const Padding(
+          padding: EdgeInsets.all(4.0),
           child: Text(
             'Adres',
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         Padding(
@@ -198,17 +198,17 @@ class _JobDetailPageState extends State<JobDetailPage> {
             children: [
               Text(
                 neighborhood,
-                style: TextStyle(overflow: TextOverflow.visible),
+                style: const TextStyle(overflow: TextOverflow.visible),
                 softWrap: true,
               ),
               Text(
                 city,
-                style: TextStyle(overflow: TextOverflow.visible),
+                style: const TextStyle(overflow: TextOverflow.visible),
                 softWrap: true,
               ),
               Text(
                 district,
-                style: TextStyle(overflow: TextOverflow.visible),
+                style: const TextStyle(overflow: TextOverflow.visible),
                 softWrap: true,
               ),
             ],
@@ -253,15 +253,15 @@ class _JobDetailPageState extends State<JobDetailPage> {
             onPressed: () {
               // Şimdi Başvur butonuna tıklama işlevi
             },
-            child: const Text('Şimdi Başvur'),
             style: ElevatedButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Şimdi Başvur'),
           ),
           ElevatedButton(
             onPressed: () {
               // Mesaj Gönder butonuna tıklama işlevi
             },
-            child: const Text('Mesaj Gönder'),
             style: ElevatedButton.styleFrom(foregroundColor: Colors.blue),
+            child: const Text('Mesaj Gönder'),
           ),
         ],
       ),
