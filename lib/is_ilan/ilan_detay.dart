@@ -41,6 +41,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
+                  width: double.infinity,
                   padding: const EdgeInsets.all(16.0),
                   color: Colors.blue,
                   child: Column(
@@ -55,12 +56,15 @@ class _JobDetailPageState extends State<JobDetailPage> {
                         style: const TextStyle(color: Colors.white),
                       ),
                       const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ..._buildTags(jobData['jobTypes'] ?? []),
-                          Card(child: _buildTag('${jobData['salary']} TL')),
-                        ],
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ..._buildTags(jobData['jobTypes'] ?? []),
+                            Card(child: _buildTag('${jobData['salary']} TL')),
+                          ],
+                        ),
                       ),
                     ],
                   ),

@@ -1,6 +1,7 @@
 import 'package:evde_bilgi/giris_sayfalari/aile_girisi.dart';
 import 'package:evde_bilgi/giris_sayfalari/ogretmen_giris.dart';
 import 'package:evde_bilgi/ilan_sayfalari/ilan_ver.dart';
+import 'package:evde_bilgi/kayit_sayfalari/aile_kayit.dart';
 import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:evde_bilgi/uye_olma.dart';
 import 'package:flutter/material.dart';
@@ -66,9 +67,7 @@ class _EvdeBilgiDrawerState extends State<EvdeBilgiDrawer> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => IlanVer(
-                            jobModel: JobModel(),userId: "",
-                          )));
+                      builder: (context) => FamilyRegisterPage()));
             },
           ),
 
@@ -76,8 +75,10 @@ class _EvdeBilgiDrawerState extends State<EvdeBilgiDrawer> {
             leading: const Icon(Icons.group),
             title: const Text('Aile Girişi'),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const AileGirisEkrani()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AileGirisEkrani()));
             },
             // Handle the action
           ),
@@ -104,8 +105,8 @@ class _EvdeBilgiDrawerState extends State<EvdeBilgiDrawer> {
             leading: const Icon(Icons.person_add),
             title: const Text('Üye Ol'),
             onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => const UyeOlma()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const UyeOlma()));
               // Handle the action
             },
           ),
