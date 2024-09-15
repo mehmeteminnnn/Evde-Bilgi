@@ -26,14 +26,11 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
 
   bool isFormValid() {
     return nameController.text.isNotEmpty &&
-        phoneController.text.isNotEmpty &&
-        emailController.text.isNotEmpty &&
         passwordController.text.isNotEmpty &&
         passwordController2.text.isNotEmpty &&
         nationality != null &&
         isChecked &&
-        passwordController.text ==
-            passwordController2.text; // Şifre doğrulaması
+        passwordController.text == passwordController2.text;
   }
 
   Future<String?> saveDataToFirestoreTeacher() async {
@@ -73,6 +70,25 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
       print("Error saving data to Firestore: $e");
       return null;
     }
+  }
+
+  Future<bool> isPhoneOrEmailRegistered(String phone, String email) async {
+    final CollectionReference teachers =
+        FirebaseFirestore.instance.collection('ogretmen');
+    final querySnapshot = await teachers
+        .where('phone', isEqualTo: phone)
+        .where('email', isEqualTo: email)
+        .get();
+
+    return querySnapshot.docs.isNotEmpty;
+  }
+
+  bool isValidPhoneNumber(String phone) {
+    return phone.length == 10 && RegExp(r'^[0-9]+$').hasMatch(phone);
+  }
+
+  bool isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 
   // Resim seçimi için fonksiyon
@@ -144,6 +160,38 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                 child: ElevatedButton(
                   onPressed: isFormValid()
                       ? () async {
+                          final phone = phoneController.text;
+                          final email = emailController.text;
+                          if (isValidPhoneNumber(phone) == false) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Geçerli bir telefon numarası giriniz.'),
+                              ),
+                            );
+                            return;
+                          }
+                          if (isValidEmail(email) == false) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                    Text('Geçerli bir e-posta adresi giriniz.'),
+                              ),
+                            );
+                            return;
+                          }
+
+                          // Telefon veya e-posta zaten kayıtlı mı kontrol et
+                          if (await isPhoneOrEmailRegistered(phone, email)) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Bu telefon numarası veya e-posta zaten kayıtlı.'),
+                              ),
+                            );
+                            return;
+                          }
+
                           String? newUserId =
                               await saveDataToFirestoreTeacher();
                           if (newUserId != null) {
@@ -160,11 +208,12 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                             });
 
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => JobListingsPage(
-                                          id: newUserId, // Yeni userId'yi kullan
-                                        )));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    JobListingsPage(id: newUserId),
+                              ),
+                            );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
