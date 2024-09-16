@@ -113,7 +113,7 @@ class _AileDrawerState extends State<AileDrawer> {
                     dense: true,
                     leading: const Icon(Icons.folder_open, size: 20),
                     title: const Text(
-                      'Başvurablar',
+                      'Başvuranlar',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:

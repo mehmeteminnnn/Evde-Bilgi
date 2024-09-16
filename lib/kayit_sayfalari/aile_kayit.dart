@@ -18,6 +18,8 @@ class FamilyRegisterPage extends StatefulWidget {
 class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
   bool isChecked = false;
   String? familyId;
+  String? phoneErrorText; // Telefon numarası hatası için değişken
+
   Future<bool> isPhoneOrEmailRegistered(String phone, String email) async {
     final CollectionReference teachers =
         FirebaseFirestore.instance.collection('aile');
@@ -61,7 +63,10 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
               buildTextField('Adınız/Soyadınız', familyNameController),
               const SizedBox(height: 16),
               buildTextField('Cep Telefonu', familyPhoneController,
-                  keyboardType: TextInputType.phone),
+                  keyboardType: TextInputType.phone,
+                  maxLength: 10, // Maksimum uzunluk
+                  hintText: 'Telefon numaranızı başında 0 olmadan giriniz.',
+                  ),
               const SizedBox(height: 16),
               buildTextField('E-Posta', familyEmailController,
                   keyboardType: TextInputType.emailAddress),
@@ -118,6 +123,7 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
                             );
                             return;
                           }
+
                           if (familyPasswordController.text ==
                               familyPasswordController2.text) {
                             familyId = await saveDataToFirestoreFamily();
@@ -129,6 +135,7 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
                                 familyPasswordController.clear();
                                 familyPasswordController2.clear();
                                 isChecked = false;
+                                phoneErrorText = null; // Hata mesajını temizle
                               });
                               Navigator.push(
                                   context,
@@ -187,13 +194,19 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
 
   Widget buildTextField(String label, TextEditingController controller,
       {bool isPassword = false,
-      TextInputType keyboardType = TextInputType.text}) {
+      TextInputType keyboardType = TextInputType.text,
+      String? hintText,
+      String? errorText,
+      int? maxLength}) {
     return TextField(
       controller: controller,
       obscureText: isPassword,
       keyboardType: keyboardType,
+      maxLength: maxLength,
       decoration: InputDecoration(
         labelText: label,
+        hintText: hintText,
+        errorText: errorText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -202,9 +215,6 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
           borderRadius: BorderRadius.circular(8),
         ),
       ),
-      onChanged: (text) {
-        setState(() {}); // Butonun durumunu kontrol etmek için
-      },
     );
   }
 

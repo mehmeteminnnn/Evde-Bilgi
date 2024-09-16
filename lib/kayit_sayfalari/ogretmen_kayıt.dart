@@ -117,8 +117,12 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
               const SizedBox(height: 16),
               buildDropdown('Vatandaşlık'),
               const SizedBox(height: 16),
-              buildTextField('Cep Telefonu', phoneController,
-                  keyboardType: TextInputType.phone),
+              buildTextField(
+                'Cep Telefonu', phoneController,
+                keyboardType: TextInputType.phone,
+                maxLength: 10, // Maksimum uzunluk
+                hintText: 'Telefon numaranızı başında 0 olmadan giriniz.',
+              ),
               const SizedBox(height: 16),
               buildTextField('E-Posta', emailController,
                   keyboardType: TextInputType.emailAddress),
@@ -221,16 +225,28 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
     );
   }
 
-  Widget buildTextField(String labelText, TextEditingController controller,
+  Widget buildTextField(String label, TextEditingController controller,
       {bool isPassword = false,
-      TextInputType keyboardType = TextInputType.text}) {
+      TextInputType keyboardType = TextInputType.text,
+      String? hintText,
+      String? errorText,
+      int? maxLength}) {
     return TextField(
       controller: controller,
       obscureText: isPassword,
       keyboardType: keyboardType,
+      maxLength: maxLength,
       decoration: InputDecoration(
-        labelText: labelText,
-        border: OutlineInputBorder(),
+        labelText: label,
+        hintText: hintText,
+        errorText: errorText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.black),
+          borderRadius: BorderRadius.circular(8),
+        ),
       ),
     );
   }
