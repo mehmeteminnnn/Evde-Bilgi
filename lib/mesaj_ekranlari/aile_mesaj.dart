@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evde_bilgi/appbarlar/aile_drawer.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,7 @@ class FamilyMessagesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const EvdeBilgiAppBar(),
+      drawer: AileDrawer(uid: familyId),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('aile')
