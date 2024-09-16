@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/ayarlar/aile_ayar.dart';
+import 'package:evde_bilgi/basvuran_ogretmenler.dart';
 import 'package:evde_bilgi/mesaj_ekranlari/aile_mesaj.dart';
 import 'package:evde_bilgi/ilan_sayfalari/ilan_ver.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
@@ -94,7 +95,7 @@ class _AileDrawerState extends State<AileDrawer> {
                     dense: true,
                     leading: const Icon(Icons.search, size: 20),
                     title: const Text(
-                      'Öğretmen Bul',
+                      'Uzman Bul',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
@@ -112,12 +113,18 @@ class _AileDrawerState extends State<AileDrawer> {
                     dense: true,
                     leading: const Icon(Icons.folder_open, size: 20),
                     title: const Text(
-                      'İlanlarım',
+                      'Başvurablar',
                       style: TextStyle(fontSize: 14),
                     ),
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BasvuranOgretmenlerPage(
+                                    aileId: widget.uid!,
+                                  )));
                       // Handle the action
                     },
                   ),

@@ -18,6 +18,20 @@ class FamilyRegisterPage extends StatefulWidget {
 class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
   bool isChecked = false;
   String? familyId;
+  Future<bool> isPhoneOrEmailRegistered(String phone, String email) async {
+    final CollectionReference teachers =
+        FirebaseFirestore.instance.collection('aile');
+    final querySnapshot = await teachers
+        .where('phone', isEqualTo: phone)
+        .where('email', isEqualTo: email)
+        .get();
+
+    return querySnapshot.docs.isNotEmpty;
+  }
+
+  bool isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+  }
 
   bool isFormValid() {
     return familyNameController.text.isNotEmpty &&
@@ -82,6 +96,28 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
                 child: ElevatedButton(
                   onPressed: isFormValid()
                       ? () async {
+                          final phone = familyPhoneController.text;
+                          final email = familyEmailController.text;
+                          if (isValidEmail(email) == false) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                    Text('Geçerli bir e-posta adresi giriniz.'),
+                              ),
+                            );
+                            return;
+                          }
+
+                          // Telefon veya e-posta zaten kayıtlı mı kontrol et
+                          if (await isPhoneOrEmailRegistered(phone, email)) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Bu telefon numarası veya e-posta zaten kayıtlı.'),
+                              ),
+                            );
+                            return;
+                          }
                           if (familyPasswordController.text ==
                               familyPasswordController2.text) {
                             familyId = await saveDataToFirestoreFamily();

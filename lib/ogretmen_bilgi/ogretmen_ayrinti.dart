@@ -80,17 +80,24 @@ class ProfilePage extends StatelessWidget {
                   // Profil Resmi ve Kişisel Bilgiler
                   CircleAvatar(
                     radius: 50,
-                    backgroundColor: Colors.blueGrey[800],
-                    child: const Icon(
-                      Icons.person,
-                      size: 60,
-                      color: Colors.white,
-                    ),
+                    backgroundImage: teacher.imageUrl != null
+                        ? NetworkImage(teacher.imageUrl!)
+                        : null,
+                    backgroundColor:
+                        teacher.imageUrl == null ? Colors.grey[300] : null,
+                    child: teacher.imageUrl == null
+                        ? Icon(
+                            Icons.person,
+                            size: 60,
+                            color: Colors.grey[700],
+                          )
+                        : null,
                   ),
                   const SizedBox(height: 16),
                   Text(
                     '${teacher.name?.toUpperCase() ?? "İsim"} (${_calculateAge(teacher.dob)} Yaşında)',
-                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -100,7 +107,8 @@ class ProfilePage extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     'İş Arayışı: ${teacher.workingTypes.isNotEmpty ? teacher.workingTypes.join(', ') : "Bilgi Yok"}',
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
 
@@ -109,8 +117,8 @@ class ProfilePage extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       '${teacher.name?.toUpperCase() ?? "İsim"} Hakkında',
-                      style:
-                          const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 8),

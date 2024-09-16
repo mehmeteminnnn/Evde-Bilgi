@@ -12,6 +12,7 @@ final TextEditingController phoneController = TextEditingController();
 final TextEditingController emailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
 final TextEditingController passwordController2 = TextEditingController();
+
 String? nationality = "";
 
 class TeacherRegisterPage extends StatefulWidget {
@@ -83,15 +84,10 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
     return querySnapshot.docs.isNotEmpty;
   }
 
-  bool isValidPhoneNumber(String phone) {
-    return phone.length == 10 && RegExp(r'^[0-9]+$').hasMatch(phone);
-  }
-
   bool isValidEmail(String email) {
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 
-  // Resim seçimi için fonksiyon
   Future<void> _pickImage(ImageSource source) async {
     final pickedFile = await picker.pickImage(source: source);
     if (pickedFile != null) {
@@ -162,15 +158,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                       ? () async {
                           final phone = phoneController.text;
                           final email = emailController.text;
-                          if (isValidPhoneNumber(phone) == false) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    'Geçerli bir telefon numarası giriniz.'),
-                              ),
-                            );
-                            return;
-                          }
+
                           if (isValidEmail(email) == false) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -217,37 +205,13 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                  content: Text('Kayıt işlemi başarısız')),
+                                content: Text('Veriler kaydedilemedi.'),
+                              ),
                             );
                           }
                         }
                       : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueGrey[800],
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    'Üye Ol',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Center(
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OgretmenGirisEkrani()));
-                  },
-                  child: const Text(
-                    'Zaten üye misiniz?',
-                    style: TextStyle(fontSize: 16),
-                  ),
+                  child: const Text('Kayıt Ol'),
                 ),
               ),
             ],
@@ -257,7 +221,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
     );
   }
 
-  Widget buildTextField(String label, TextEditingController controller,
+  Widget buildTextField(String labelText, TextEditingController controller,
       {bool isPassword = false,
       TextInputType keyboardType = TextInputType.text}) {
     return TextField(
@@ -265,18 +229,9 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
       obscureText: isPassword,
       keyboardType: keyboardType,
       decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.black),
-          borderRadius: BorderRadius.circular(8),
-        ),
+        labelText: labelText,
+        border: OutlineInputBorder(),
       ),
-      onChanged: (text) {
-        setState(() {});
-      },
     );
   }
 
@@ -342,13 +297,13 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
               onPressed: () => setState(() => _image = null),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(200, 50),
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.blueGrey[800],
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text('Fotoğrafı Kaldır'),
+              child: const Text('Fotoğrafı Sil'),
             ),
         ],
       ),

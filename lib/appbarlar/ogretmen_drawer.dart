@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/ayarlar/ogretmen_ayar.dart';
+import 'package:evde_bilgi/basvurularim.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
 import 'package:evde_bilgi/main.dart';
 import 'package:evde_bilgi/mesaj_ekranlari/ogretmen_mesaj.dart';
@@ -86,7 +87,8 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const JobListingsPage()));
+                              builder: (context) =>
+                                  JobListingsPage(id: widget.uid!)));
                     },
                   ),
                   ListTile(
@@ -115,7 +117,11 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
                     ),
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    onTap: () {},
+                    onTap: () {
+                      MyApplicationsPage(
+                        teacherId: widget.uid!,
+                      );
+                    },
                     // Handle the action
                   ),
                   ListTile(

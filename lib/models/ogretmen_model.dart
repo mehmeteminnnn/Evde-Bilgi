@@ -8,7 +8,6 @@ class Teacher {
   int? minSalary; // Changed to int
   String? name;
   String? nationality;
-  // String phone;
   List<String> positions; // "Shadow Teacher", "Life Coach", etc.
   String? selectedCity; // Selected city
   String? selectedDistrict; // Selected district
@@ -28,6 +27,9 @@ class Teacher {
   String? attendedCourses;
   String? spokenLanguages;
 
+  // Image URL field
+  String? imageUrl;
+
   Teacher({
     required this.teacherId,
     required this.workingTypes,
@@ -37,7 +39,6 @@ class Teacher {
     required this.minSalary,
     required this.name,
     required this.nationality,
-    // required this.phone,
     required this.positions,
     required this.selectedCity,
     required this.selectedDistrict,
@@ -54,10 +55,10 @@ class Teacher {
     this.workingInPetEnvironment,
     this.attendedCourses,
     this.spokenLanguages,
+    this.imageUrl, // Added imageUrl
   });
 
   // JSON to model conversion
-  // JSON'dan modele dönüşüm
   factory Teacher.fromJson(Map<String, dynamic> json) {
     return Teacher(
       teacherId: json['teacherId'] ?? '',
@@ -84,20 +85,8 @@ class Teacher {
       workingInPetEnvironment: json['workingInPetEnvironment'],
       attendedCourses: json['attendedCourses'],
       spokenLanguages: json['spokenLanguages'],
+      imageUrl: json['image_url'], // Added imageUrl parsing
     );
-  }
-
-// Helper method to parse int from dynamic value
-  static int? _parseInt(dynamic value) {
-    if (value == null) return null;
-    if (value is int) return value;
-    if (value is String) {
-      // If the value is a string, attempt to parse it as an integer
-      final parsed = int.tryParse(value);
-      return parsed ?? 0; // Default to 0 if parsing fails
-    }
-    // Default to 0 if the type is not int or String
-    return 0;
   }
 
   // Model to JSON conversion
@@ -111,7 +100,6 @@ class Teacher {
       'minSalary': minSalary,
       'name': name,
       'nationality': nationality,
-      // 'phone': phone,
       'positions': positions,
       'selectedCity': selectedCity,
       'selectedDistrict': selectedDistrict,
@@ -128,6 +116,18 @@ class Teacher {
       'workingInPetEnvironment': workingInPetEnvironment,
       'attendedCourses': attendedCourses,
       'spokenLanguages': spokenLanguages,
+      'imageUrl': imageUrl, // Added imageUrl to JSON
     };
+  }
+
+  // Helper method to parse int from dynamic value
+  static int? _parseInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is String) {
+      final parsed = int.tryParse(value);
+      return parsed ?? 0;
+    }
+    return 0;
   }
 }

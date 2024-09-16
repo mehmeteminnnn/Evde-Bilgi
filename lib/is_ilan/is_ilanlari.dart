@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/appbarlar/ogretmen_drawer.dart';
+import 'package:evde_bilgi/basvurularim.dart';
 import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari_filtre.dart';
 import 'package:evde_bilgi/mesaj_ekranlari/ogretmen_mesaj.dart';
@@ -43,6 +44,70 @@ class _JobListingsPageState extends State<JobListingsPage> {
         }
       }
     });
+  }
+
+  void Basvur(String ilanId, String teacherId, String familyId) async {
+    // Kullanıcıdan başvuruyu onaylamasını isteyen bir diyalog gösterelim
+    bool isConfirmed = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Başvuruyu Onaylıyor Musunuz?'),
+          content: const Text('Bu ilana başvurmak istediğinize emin misiniz?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // İptal
+              },
+              child: const Text('Hayır'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Onayla
+              },
+              child: const Text('Evet'),
+            ),
+          ],
+        );
+      },
+    );
+
+    // Eğer başvuru onaylandıysa
+    if (isConfirmed) {
+      try {
+        // Öğretmenin "basvurularim" listesine ilanı ekliyoruz
+        DocumentReference teacherRef =
+            FirebaseFirestore.instance.collection('ogretmen').doc(teacherId);
+
+        await teacherRef.update({
+          'basvurularim': FieldValue.arrayUnion([ilanId])
+        });
+
+        // İlanın "basvuranlar" listesine öğretmenin ID'sini ekliyoruz
+        DocumentReference ilanRef =
+            FirebaseFirestore.instance.collection('aile').doc(familyId);
+
+        await ilanRef.update({
+          'basvuranlar': FieldValue.arrayUnion([teacherId])
+        });
+
+        // Başvuru başarılı mesajı gösterelim
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Başvurunuz başarıyla gönderildi!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } catch (e) {
+        // Eğer bir hata olursa, kullanıcıya hata mesajı gösterelim
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Başvuru sırasında bir hata oluştu.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   void _showResumeReminder(BuildContext context) {
@@ -103,7 +168,21 @@ class _JobListingsPageState extends State<JobListingsPage> {
           setState(() {
             _selectedIndex = index;
           });
-
+          if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyApplicationsPage(
+                  teacherId: widget.id!,
+                ),
+              ),
+            ).then((_) {
+              // Sayfa geri dönüldüğünde indexi sıfırla
+              setState(() {
+                _selectedIndex = 0;
+              });
+            });
+          }
           if (index == 2) {
             Navigator.push(
               context,
@@ -112,7 +191,12 @@ class _JobListingsPageState extends State<JobListingsPage> {
                   teacherId: widget.id,
                 ),
               ),
-            );
+            ).then((_) {
+              // Sayfa geri dönüldüğünde indexi sıfırla
+              setState(() {
+                _selectedIndex = 0;
+              });
+            });
           }
           if (index == 1) {
             Navigator.push(
@@ -122,7 +206,12 @@ class _JobListingsPageState extends State<JobListingsPage> {
                   teacherId: widget.id!,
                 ),
               ),
-            );
+            ).then((_) {
+              // Sayfa geri dönüldüğünde indexi sıfırla
+              setState(() {
+                _selectedIndex = 0;
+              });
+            });
           }
         },
       ),
@@ -178,7 +267,10 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                         children: [
                                           Expanded(
                                             child: ElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                Basvur(ilan.id, widget.id!,
+                                                    ilan['userId']);
+                                              },
                                               style: ElevatedButton.styleFrom(
                                                 foregroundColor: Colors.orange,
                                                 padding:

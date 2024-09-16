@@ -1,19 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/aile_drawer.dart';
+import 'package:evde_bilgi/basvuran_ogretmenler.dart';
+import 'package:evde_bilgi/ilan_sayfalari/ilan_ver.dart';
+import 'package:evde_bilgi/mesaj_ekranlari/aile_mesaj.dart';
+import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:evde_bilgi/models/ogretmen_model.dart';
 import 'package:evde_bilgi/ogretmen_bilgi/ogretmen_ayrinti.dart';
 import 'package:flutter/material.dart';
 
-class TeacherListPage extends StatelessWidget {
+class TeacherListPage extends StatefulWidget {
   final String? id;
 
   TeacherListPage({Key? key, this.id}) : super(key: key);
 
+  @override
+  State<TeacherListPage> createState() => _TeacherListPageState();
+}
+
+class _TeacherListPageState extends State<TeacherListPage> {
+  int _selectedIndex = 0;
+  
   Future<List<Teacher>> _fetchTeachers() async {
     final firestore = FirebaseFirestore.instance;
     final snapshot = await firestore.collection('ogretmen').get();
 
-    // Filtreleme işlemini burada yapın
     return snapshot.docs
         .map((doc) {
           final data = doc.data() as Map<String, dynamic>;
@@ -28,14 +38,87 @@ class TeacherListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Kayıtlı Uzmanlar')),
-      drawer: AileDrawer(uid: id),
+      drawer: AileDrawer(uid: widget.id),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'Uzman Bul',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_box),
+            label: 'İlan Ver',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.message),
+            label: 'Mesajlar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.assignment),
+            label: 'Başvuranlar',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+          if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BasvuranOgretmenlerPage(
+                  aileId: widget.id!,
+                ),
+              ),
+            ).then((_) {
+              setState(() {
+                _selectedIndex = 0;
+              });
+            });
+          }
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => IlanVer(
+                  userId: widget.id!,
+                  jobModel: JobModel(),
+                ),
+              ),
+            ).then((_) {
+              setState(() {
+                _selectedIndex = 0;
+              });
+            });
+          }
+          if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FamilyMessagesScreen(
+                  familyId: widget.id!,
+                ),
+              ),
+            ).then((_) {
+              setState(() {
+                _selectedIndex = 0;
+              });
+            });
+          }
+        },
+      ),
       body: FutureBuilder<List<Teacher>>(
         future: _fetchTeachers(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            print(snapshot.error);
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No teachers found.'));
@@ -69,12 +152,19 @@ class TeacherListPage extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 radius: 30,
-                                backgroundColor: Colors.grey[300],
-                                child: Icon(
-                                  Icons.person,
-                                  size: 40,
-                                  color: Colors.grey[700],
-                                ),
+                                backgroundImage: teacher.imageUrl != null
+                                    ? NetworkImage(teacher.imageUrl!)
+                                    : null,
+                                backgroundColor: teacher.imageUrl == null
+                                    ? Colors.grey[300]
+                                    : null,
+                                child: teacher.imageUrl == null
+                                    ? Icon(
+                                        Icons.person,
+                                        size: 40,
+                                        color: Colors.grey[700],
+                                      )
+                                    : null,
                               ),
                               const SizedBox(width: 16),
                               Column(
@@ -116,8 +206,6 @@ class TeacherListPage extends StatelessWidget {
                                           id: teacher.teacherId ?? "")),
                                 );
                               },
-                              // Detay sayfasına gitme kodu buraya gelecek
-
                               child: const Text(
                                 'Devamını Oku >>',
                                 style: TextStyle(color: Colors.blue),
