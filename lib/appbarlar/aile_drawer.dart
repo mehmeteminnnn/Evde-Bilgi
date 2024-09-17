@@ -122,8 +122,8 @@ class _AileDrawerState extends State<AileDrawer> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => BasvuranOgretmenlerPage(
-                                    aileId: widget.uid!,
+                              builder: (context) => IlanListPage(
+                                    familyId: widget.uid!,
                                   )));
                       // Handle the action
                     },

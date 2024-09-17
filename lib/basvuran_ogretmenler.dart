@@ -1,169 +1,112 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:evde_bilgi/ogretmen_bilgi/ogretmen_ayrinti.dart';
 import 'package:flutter/material.dart';
 
-class BasvuranOgretmenlerPage extends StatefulWidget {
-  final String aileId; // Aile id'si
-  const BasvuranOgretmenlerPage({Key? key, required this.aileId})
-      : super(key: key);
+class IlanListPage extends StatefulWidget {
+  final String? familyId; // Aile ID alacağız
+  const IlanListPage({super.key, this.familyId});
 
   @override
-  _BasvuranOgretmenlerPageState createState() =>
-      _BasvuranOgretmenlerPageState();
+  State<IlanListPage> createState() => _IlanListPageState();
 }
 
-class _BasvuranOgretmenlerPageState extends State<BasvuranOgretmenlerPage> {
-  List<String> basvuranOgretmenIds = [];
+class _IlanListPageState extends State<IlanListPage> {
+  List<Map<String, dynamic>> ilanDetails = [];
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _getBasvuranOgretmenler();
+    fetchAndDisplayIlanDetails();
   }
 
-  // Aile koleksiyonundan basvuran öğretmenlerin id'lerini al
-  Future<void> _getBasvuranOgretmenler() async {
-    try {
-      DocumentSnapshot aileDoc = await FirebaseFirestore.instance
-          .collection('aile')
-          .doc(widget.aileId)
-          .get();
+  // Aile koleksiyonundan ilanId'leri al ve ilanlar koleksiyonundan ilan detaylarını getir
+  Future<void> fetchAndDisplayIlanDetails() async {
+    final ilanIds = await getIlanIdsFromFamily(widget.familyId);
+    final ilanDetails = await getIlanDetails(ilanIds);
 
-      List<dynamic> basvuranlar = aileDoc.get('basvuranlar');
+    setState(() {
+      this.ilanDetails = ilanDetails;
+      isLoading = false;
+    });
+  }
 
-      setState(() {
-        basvuranOgretmenIds = List<String>.from(basvuranlar);
-      });
-    } catch (e) {
-      print('Başvuran öğretmenler alınamadı: $e');
+  // Aile koleksiyonundan ilanId'leri alır
+  Future<List<String>> getIlanIdsFromFamily(String? familyId) async {
+    if (familyId == null) return [];
+
+    final familyDoc = FirebaseFirestore.instance.collection('aile').doc(familyId);
+    final familySnapshot = await familyDoc.get();
+
+    if (familySnapshot.exists) {
+      final data = familySnapshot.data();
+      final ilanlarim = List.from(data?['ilanlarım'] ?? []);
+      return ilanlarim.map<String>((ilan) => ilan['ilanId']).toList();
     }
+    return [];
+  }
+
+  // İlanlar koleksiyonundan ilan detaylarını alır
+  Future<List<Map<String, dynamic>>> getIlanDetails(List<String> ilanIds) async {
+    final ilanCollection = FirebaseFirestore.instance.collection('ilanlar');
+    final ilanDetails = <Map<String, dynamic>>[];
+
+    for (String ilanId in ilanIds) {
+      final ilanDoc = await ilanCollection.doc(ilanId).get();
+      if (ilanDoc.exists) {
+        ilanDetails.add(ilanDoc.data()!);
+      }
+    }
+    return ilanDetails;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Başvuran Öğretmenler"),
+        title: Text('İlanlarım'),
       ),
-      body: basvuranOgretmenIds.isEmpty
-          ? const Center(child: Text('Henüz başvuru yapılmadı.'))
-          : Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.blue[100]!, Colors.blue[300]!],
-                ),
-              ),
-              child: ListView.builder(
-                padding: const EdgeInsets.all(16.0),
-                itemCount: basvuranOgretmenIds.length,
-                itemBuilder: (context, index) {
-                  String ogretmenId = basvuranOgretmenIds[index];
-                  return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance
-                        .collection('ogretmen')
-                        .doc(ogretmenId)
-                        .get(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-
-                      if (!snapshot.hasData) {
-                        return const Text("Veri bulunamadı.");
-                      }
-
-                      var ogretmenData =
-                          snapshot.data!.data() as Map<String, dynamic>;
-
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 16.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : ilanDetails.isEmpty
+              ? const Center(child: Text('Hiç ilan bulunamadı.'))
+              : ListView.builder(
+                  itemCount: ilanDetails.length,
+                  itemBuilder: (context, index) {
+                    final ilan = ilanDetails[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.blue),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
+                        child: ListTile(
+                          title: Text(ilan['title'] ?? 'Başlık Yok'),
+                          subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage:
-                                        ogretmenData["image_url"] != null
-                                            ? NetworkImage(
-                                                ogretmenData["image_url"]!)
-                                            : null,
-                                    backgroundColor:
-                                        ogretmenData["image_url"] == null
-                                            ? Colors.grey[300]
-                                            : null,
-                                    child: ogretmenData["image_url"] == null
-                                        ? Icon(
-                                            Icons.person,
-                                            size: 40,
-                                            color: Colors.grey[700],
-                                          )
-                                        : null,
-                                  ),
-                                  const SizedBox(width: 16),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        ogretmenData['name'] ?? "",
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Row(
-                                        children: [
-                                          const Icon(Icons.location_on,
-                                              size: 16),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                              '${ogretmenData['selectedCity'] ?? ""} - ${ogretmenData['selectedDistrict'] ?? ""}'),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 16),
+                              Text(ilan['details'] ?? 'Detay yok'),
+                              const SizedBox(height: 8),
                               Text(
-                                ogretmenData['deneyim'] ??
-                                    "Deneyim bilgisi yok.",
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ProfilePage(
-                                                id: ogretmenId,
-                                              )),
-                                    );
-                                  },
-                                  child: const Text('Detaylara Bak'),
+                                '${ilan['salary']} TL',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.red,
                                 ),
                               ),
+                              const SizedBox(height: 8),
+                              Text('Konum: ${ilan['city'] ?? 'Bilinmiyor'}'),
+                              Text('İletişim: ${ilan['phoneNumber'] ?? 'Telefon yok'}'),
                             ],
                           ),
+                          isThreeLine: true,
                         ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
+                      ),
+                    );
+                  },
+                ),
     );
   }
 }

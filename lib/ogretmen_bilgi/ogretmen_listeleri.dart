@@ -19,7 +19,7 @@ class TeacherListPage extends StatefulWidget {
 
 class _TeacherListPageState extends State<TeacherListPage> {
   int _selectedIndex = 0;
-  
+
   Future<List<Teacher>> _fetchTeachers() async {
     final firestore = FirebaseFirestore.instance;
     final snapshot = await firestore.collection('ogretmen').get();
@@ -72,8 +72,8 @@ class _TeacherListPageState extends State<TeacherListPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BasvuranOgretmenlerPage(
-                  aileId: widget.id!,
+                builder: (context) => IlanListPage(
+                  familyId: widget.id!,
                 ),
               ),
             ).then((_) {
