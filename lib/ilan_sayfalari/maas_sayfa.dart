@@ -101,19 +101,6 @@ class _SalaryPageState extends State<SalaryPage> {
                               .collection('ilanlar')
                               .add(widget.jobModel.toMap());
 
-                          // İlan ID'sini al
-                          String ilanId = docRef.id;
-
-                          // Aile koleksiyonuna ilanı ekle
-                          await FirebaseFirestore.instance
-                              .collection('aile')
-                              .doc(widget.jobModel
-                                  .userId) // Ailenin userId'siyle belgeyi bul
-                              .update({
-                            'ilanlarım': FieldValue.arrayUnion(
-                                [ilanId]) // Yeni ilanı ekle
-                          });
-
                           // İşlem başarılıysa başarı sayfasına yönlendir
                           Navigator.push(
                             context,
