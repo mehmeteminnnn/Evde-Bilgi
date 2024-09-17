@@ -75,29 +75,60 @@ class _JobListingsPageState extends State<JobListingsPage> {
     // Eğer başvuru onaylandıysa
     if (isConfirmed) {
       try {
-        // Öğretmenin "basvurularim" listesine ilanı ekliyoruz
-        DocumentReference teacherRef =
-            FirebaseFirestore.instance.collection('ogretmen').doc(teacherId);
-
-        await teacherRef.update({
-          'basvurularim': FieldValue.arrayUnion([ilanId])
-        });
-
-        // İlanın "basvuranlar" listesine öğretmenin ID'sini ekliyoruz
+        // Aile koleksiyonundan ilgili belgeyi çekelim
         DocumentReference ilanRef =
             FirebaseFirestore.instance.collection('aile').doc(familyId);
+        DocumentSnapshot ilanDoc = await ilanRef.get();
 
-        await ilanRef.update({
-          'basvuranlar': FieldValue.arrayUnion([teacherId])
-        });
+        if (ilanDoc.exists) {
+          Map<String, dynamic>? data = ilanDoc.data() as Map<String, dynamic>?;
+          List<dynamic> basvuranlar = data?['basvuranlar'] ?? [];
 
-        // Başvuru başarılı mesajı gösterelim
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Başvurunuz başarıyla gönderildi!'),
-            backgroundColor: Colors.green,
-          ),
-        );
+          // Kullanıcının daha önce başvurup başvurmadığını kontrol edelim
+          bool hasApplied = basvuranlar
+              .any((application) => application['userId'] == teacherId);
+
+          if (hasApplied) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Bu ilana zaten başvurmuşsunuz.'),
+                backgroundColor: Colors.orange,
+              ),
+            );
+            return;
+          }
+
+          Timestamp basvuruTarihi = Timestamp.now();
+
+          // Öğretmenin "basvurularim" listesine ilanı ekliyoruz
+          DocumentReference teacherRef =
+              FirebaseFirestore.instance.collection('ogretmen').doc(teacherId);
+          await teacherRef.update({
+            'basvurularim': FieldValue.arrayUnion([ilanId])
+          });
+
+          // İlanın "ilanlarım" listesinde olup olmadığını kontrol edip ekleme yapıyoruz
+          await ilanRef.set({
+            'basvuranlar': FieldValue.arrayUnion([
+              {'userId': teacherId, 'basvuru_tarihi': basvuruTarihi}
+            ])
+          }, SetOptions(merge: true));
+
+          // Başvuru başarıyla eklendiği mesajını gösterelim
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Başvuru başarıyla eklendi!'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('İlan bulunamadı.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       } catch (e) {
         // Eğer bir hata olursa, kullanıcıya hata mesajı gösterelim
         ScaffoldMessenger.of(context).showSnackBar(
