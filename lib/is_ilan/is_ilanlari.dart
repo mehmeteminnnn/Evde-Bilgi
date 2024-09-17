@@ -82,7 +82,15 @@ class _JobListingsPageState extends State<JobListingsPage> {
 
         if (ilanDoc.exists) {
           Map<String, dynamic>? data = ilanDoc.data() as Map<String, dynamic>?;
-          List<dynamic> basvuranlar = data?['basvuranlar'] ?? [];
+          List<dynamic> ilanlarim = data?['ilanlarım'] ?? [];
+
+          // İlgili ilanı bulalım
+          Map<String, dynamic>? ilan = ilanlarim.firstWhere(
+              (ilan) => ilan['ilanId'] == ilanId,
+              orElse: () => null);
+
+          List<dynamic> basvuranlar =
+              ilan != null ? ilan['basvuranlar'] ?? [] : [];
 
           // Kullanıcının daha önce başvurup başvurmadığını kontrol edelim
           bool hasApplied = basvuranlar
@@ -107,12 +115,28 @@ class _JobListingsPageState extends State<JobListingsPage> {
             'basvurularim': FieldValue.arrayUnion([ilanId])
           });
 
-          // İlanın "ilanlarım" listesinde olup olmadığını kontrol edip ekleme yapıyoruz
-          await ilanRef.set({
-            'basvuranlar': FieldValue.arrayUnion([
-              {'userId': teacherId, 'basvuru_tarihi': basvuruTarihi}
-            ])
-          }, SetOptions(merge: true));
+          // Başvuranlar listesine yeni öğretmen ekleniyor
+          basvuranlar.add({
+            'userId': teacherId,
+            'basvuru_tarihi': basvuruTarihi,
+          });
+
+          // İlanı güncelleme: önce eski ilanı kaldırıyoruz
+          if (ilan != null) {
+            await ilanRef.update({
+              'ilanlarım': FieldValue.arrayRemove([ilan]),
+            });
+          }
+
+          // Yeni ilan yapısını oluşturuyoruz ve tekrar ekliyoruz
+          ilan = {
+            'ilanId': ilanId,
+            'basvuranlar': basvuranlar,
+          };
+
+          await ilanRef.update({
+            'ilanlarım': FieldValue.arrayUnion([ilan]),
+          });
 
           // Başvuru başarıyla eklendiği mesajını gösterelim
           ScaffoldMessenger.of(context).showSnackBar(
