@@ -1,6 +1,7 @@
 import 'package:evde_bilgi/giris_sayfalari/aile_girisi.dart';
 import 'package:evde_bilgi/giris_sayfalari/ogretmen_giris.dart';
 import 'package:evde_bilgi/ilan_sayfalari/ilan_ver.dart';
+import 'package:evde_bilgi/iletisim.dart';
 import 'package:evde_bilgi/kayit_sayfalari/aile_kayit.dart';
 import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:evde_bilgi/uye_olma.dart';
@@ -97,6 +98,8 @@ class _EvdeBilgiDrawerState extends State<EvdeBilgiDrawer> {
             leading: const Icon(Icons.contact_phone),
             title: const Text('İletişim'),
             onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ContactPage()));
               // Handle the action
             },
           ),
