@@ -1,3 +1,4 @@
+import 'package:evde_bilgi/aile_talep_formu/aile_talep_formu.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/firebase_options.dart';
 import 'package:evde_bilgi/giris_ekranı_logo_widget.dart';
@@ -15,13 +16,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-  
-      // UserProvider'ı sağlayıcı olarak ekliyoruz
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: HomeScreen(),
-      );
-    
+    // UserProvider'ı sağlayıcı olarak ekliyoruz
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
+    );
   }
 }
 
@@ -32,8 +31,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
-
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
       appBar: const EvdeBilgiAppBar(),
@@ -105,7 +102,10 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 45),
             OutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AileTalepFormu()));
+              },
               style: OutlinedButton.styleFrom(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
