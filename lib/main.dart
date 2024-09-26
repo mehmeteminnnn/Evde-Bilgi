@@ -1,3 +1,4 @@
+import 'package:evde_bilgi/admin_ekrani.dart';
 import 'package:evde_bilgi/aile_talep_formu/aile_talep_formu.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/firebase_options.dart';
@@ -120,6 +121,15 @@ class HomeScreen extends StatelessWidget {
                   Icon(Icons.arrow_forward),
                 ],
               ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AdminTalepListesi()));
+              },
+              child: Text('Deneme'),
             ),
           ],
         ),

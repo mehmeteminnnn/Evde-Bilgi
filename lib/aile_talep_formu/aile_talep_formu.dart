@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class AileTalepFormu extends StatefulWidget {
   @override
@@ -21,8 +23,9 @@ class _AileTalepFormuState extends State<AileTalepFormu> {
   final TextEditingController _talepIcerigiController = TextEditingController();
   final TextEditingController _talepGunSaatController = TextEditingController();
   final TextEditingController _ekstraController = TextEditingController();
+  final TextEditingController _passwordController =
+      TextEditingController(); // Şifre kontrolcüsü
 
-  // SMTP Mail Gönderme
   // SMTP Mail Gönderme
   Future<void> sendEmail() async {
     String username = 'mhmtmntok@gmail.com'; // Gmail adresiniz
@@ -46,12 +49,7 @@ class _AileTalepFormuState extends State<AileTalepFormu> {
     <p><strong>Talep İçeriği:</strong> ${_talepIcerigiController.text}</p>
     <p><strong>Talep Gün/Saat:</strong> ${_talepGunSaatController.text}</p>
     <p><strong>Ekstra Bilgiler:</strong> ${_ekstraController.text}</p>
-
-    <h4>Lütfen aşağıdaki seçeneklerden birini seçin:</h4>
-    <p>
-      <a href="https://example.com/confirm" style="padding:10px 20px; background-color:green; color:white; text-decoration:none; border-radius:5px;">Onayla</a>
-      <a href="https://example.com/reject" style="padding:10px 20px; background-color:red; color:white; text-decoration:none; border-radius:5px;">Reddet</a>
-    </p>
+    <p><strong>Şifre:</strong> ${_passwordController.text}</p>
     ''';
 
     try {
@@ -62,34 +60,32 @@ class _AileTalepFormuState extends State<AileTalepFormu> {
     }
   }
 
-  // Form Onaylandığında Çalışan Fonksiyon
-  void _submitForm() {
+  // Form Onaylandığında Firestore'a Kayıt
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      sendEmail();
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Bilgilendirme'),
-            content:
-                const Text('Bilgileriniz gönderilecektir. Onaylıyor musunuz?'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('İptal'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Form başarıyla gönderildi!')),
-                  );
-                },
-                child: const Text('Onayla'),
-              ),
-            ],
-          );
-        },
+      // Mail gönderme işlemi
+      await sendEmail();
+
+      // Firestore'a veriyi ekleme
+      await FirebaseFirestore.instance.collection('ailetalepformları').add({
+        'name': _adSoyadController.text,
+        'il': _ilController.text,
+        'phone': _cepNoController.text,
+        'ikinciNo': _ikinciNoController.text,
+        'email': _mailController.text,
+        'ogrenciAdSoyad': _ogrenciAdSoyadController.text,
+        'ogrenciYas': _ogrenciYasController.text,
+        'gelisimBilgisi': _gelisimController.text,
+        'talepIcerigi': _talepIcerigiController.text,
+        'talepGunSaat': _talepGunSaatController.text,
+        'ekstra': _ekstraController.text,
+        'password': _passwordController.text, // Şifreyi de Firestore'a kaydet
+      });
+
+      // Başarılı kaydedildiğinde kullanıcıya bildirim göster
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Form başarıyla gönderildi ve kaydedildi!')),
       );
     }
   }
@@ -121,6 +117,7 @@ class _AileTalepFormuState extends State<AileTalepFormu> {
               buildTextField(
                   'Talep Ettiğiniz Gün/Saat Aralığı', _talepGunSaatController),
               buildTextField('Başka Eklemek İstedikleriniz', _ekstraController),
+              buildPasswordField('Şifre', _passwordController), // Şifre alanı
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _submitForm,
@@ -139,6 +136,29 @@ class _AileTalepFormuState extends State<AileTalepFormu> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
         controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Lütfen bu alanı doldurun';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  // Şifre için özel alan
+  Widget buildPasswordField(String label, TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextFormField(
+        controller: controller,
+        obscureText: true, // Şifre gizleme özelliği
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(
