@@ -1,4 +1,5 @@
 import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
+import 'package:evde_bilgi/kayit_sayfalari/ogretmen_kay%C4%B1t.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -154,6 +155,25 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
                 _passwordController.clear();
               },
               child: const Text('İptal'),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Üye değil misiniz?"),
+                TextButton(
+                  onPressed: () {
+                    // Üye ol sayfasına yönlendirme yapılabilir
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            TeacherRegisterPage(), // Bu sayfa üye olma sayfası
+                      ),
+                    );
+                  },
+                  child: const Text('Üye Ol'),
+                ),
+              ],
             ),
           ],
         ),

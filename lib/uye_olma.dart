@@ -1,3 +1,4 @@
+import 'package:evde_bilgi/aile_talep_formu/aile_talep_formu.dart';
 import 'package:evde_bilgi/kayit_sayfalari/aile_kayit.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/kayit_sayfalari/ogretmen_kay%C4%B1t.dart';
@@ -20,7 +21,7 @@ class UyeOlma extends StatelessWidget {
             _buildElevatedButton(
               context,
               'AİLE OLARAK ÜYE OL',
-              FamilyRegisterPage(),
+              AileTalepFormu(),
               Icons.family_restroom,
               // Aile ikonu
             ),

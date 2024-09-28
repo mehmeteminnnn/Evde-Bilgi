@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evde_bilgi/aile_giris.dart';
 import 'package:evde_bilgi/ayarlar/aile_ayar.dart';
 import 'package:evde_bilgi/basvuran_ogretmenler.dart';
 import 'package:evde_bilgi/mesaj_ekranlari/aile_mesaj.dart';
@@ -66,7 +67,7 @@ class _AileDrawerState extends State<AileDrawer> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => JobListingsPage(
+                              builder: (context) => AileGiris(
                                     id: widget.uid,
                                   )));
                     },
@@ -88,24 +89,6 @@ class _AileDrawerState extends State<AileDrawer> {
                               builder: (context) => IlanVer(
                                     jobModel: JobModel(),
                                     userId: widget.uid!,
-                                  )));
-                    },
-                  ),
-                  ListTile(
-                    dense: true,
-                    leading: const Icon(Icons.search, size: 20),
-                    title: const Text(
-                      'Uzman Bul',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TeacherListPage(
-                                    id: widget.uid,
                                   )));
                     },
                   ),
