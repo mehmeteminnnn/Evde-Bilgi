@@ -6,6 +6,7 @@ import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari_filtre.dart';
 import 'package:evde_bilgi/mesaj_ekranlari/ogretmen_mesaj.dart';
 import 'package:evde_bilgi/mesaj_gonder.dart';
+import 'package:evde_bilgi/odeme_ekrani.dart';
 import 'package:evde_bilgi/ozgecmis_ekranlari/ozgecmis.dart';
 import 'package:flutter/material.dart';
 
@@ -187,6 +188,53 @@ class _JobListingsPageState extends State<JobListingsPage> {
     );
   }
 
+  void _onPaymentSuccess() {
+    // Ödeme başarılı olduğunda bu fonksiyon çağrılacak
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OzgecmisimEkrani(teacherId: widget.id),
+      ),
+    );
+  }
+
+  void _checkResumeAndNavigate(BuildContext context) {
+    FirebaseFirestore.instance
+        .collection('ogretmen')
+        .doc(widget.id)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        var userData = documentSnapshot.data() as Map<String, dynamic>;
+
+        // Özgeçmiş alanını kontrol et
+        if (!userData.containsKey('resume') ||
+            userData['resume'] == null ||
+            userData['resume'].isEmpty) {
+          // Özgeçmiş boşsa kullanıcıyı ödeme ekranına yönlendir
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OdemeEkrani(
+                totalAmount: 50,
+                onPaymentSuccess:
+                    _onPaymentSuccess, // Ödeme başarılı olunca çağrılacak
+              ),
+            ),
+          );
+        } else {
+          // Özgeçmiş varsa direkt özgeçmiş ekranına yönlendir
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OzgecmisimEkrani(teacherId: widget.id),
+            ),
+          );
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -239,20 +287,13 @@ class _JobListingsPageState extends State<JobListingsPage> {
             });
           }
           if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => OzgecmisimEkrani(
-                  teacherId: widget.id,
-                ),
-              ),
-            ).then((_) {
-              // Sayfa geri dönüldüğünde indexi sıfırla
-              setState(() {
-                _selectedIndex = 0;
-              });
+            // Özgeçmiş bilgilerini kontrol ediyoruz
+            _checkResumeAndNavigate(context);
+            setState(() {
+              _selectedIndex = 0;
             });
           }
+
           if (index == 1) {
             Navigator.push(
               context,

@@ -148,32 +148,6 @@ class _AileDrawerState extends State<AileDrawer> {
                   ),
                   ListTile(
                     dense: true,
-                    leading: const Icon(Icons.notifications, size: 20),
-                    title: const Text(
-                      'Bildirimler',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    onTap: () {
-                      // Handle the action
-                    },
-                  ),
-                  ListTile(
-                    dense: true,
-                    leading: const Icon(Icons.card_membership, size: 20),
-                    title: const Text(
-                      'Paketlerim',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    onTap: () {
-                      // Handle the action
-                    },
-                  ),
-                  ListTile(
-                    dense: true,
                     leading: const Icon(Icons.settings, size: 20),
                     title: const Text(
                       'Ayarlar',

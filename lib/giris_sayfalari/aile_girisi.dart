@@ -1,3 +1,4 @@
+import 'package:evde_bilgi/aile_giris.dart';
 import 'package:evde_bilgi/ogretmen_bilgi/ogretmen_listeleri.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -37,7 +38,7 @@ class _AileGirisEkraniState extends State<AileGirisEkrani> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => TeacherListPage(
+              builder: (context) => AileGiris(
                 id: userId,
               ),
             )); // İstediğiniz yere yönlendirme yapabilirsiniz
@@ -93,8 +94,8 @@ class _AileGirisEkraniState extends State<AileGirisEkrani> {
                   labelText: 'E-posta',
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 12.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -124,8 +125,8 @@ class _AileGirisEkraniState extends State<AileGirisEkrani> {
                   labelText: 'Şifre',
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 12.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,

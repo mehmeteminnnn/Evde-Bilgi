@@ -7,8 +7,13 @@ class JobDetailPage extends StatefulWidget {
   final String jobId;
   final String? receiverId;
   final String? senderId;
+  final bool isAile;
 
-  JobDetailPage({required this.jobId, this.receiverId, this.senderId});
+  JobDetailPage(
+      {required this.jobId,
+      this.receiverId,
+      this.senderId,
+      this.isAile = false});
 
   @override
   State<JobDetailPage> createState() => _JobDetailPageState();
@@ -19,7 +24,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Evde Bilgi'),
+        title: const Text('İlan Detayı'),
       ),
       body: FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
@@ -251,6 +256,10 @@ class _JobDetailPageState extends State<JobDetailPage> {
   }
 
   Widget _buildActionButtons() {
+    if (widget.isAile) {
+      return SizedBox.shrink(); // Eğer isAile true ise, boş bir widget döndür
+    }
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -266,12 +275,14 @@ class _JobDetailPageState extends State<JobDetailPage> {
           ElevatedButton(
             onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SendMessagePage(
-                            senderId: widget.senderId!,
-                            receiverId: widget.receiverId!,
-                          )));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SendMessagePage(
+                    senderId: widget.senderId!,
+                    receiverId: widget.receiverId!,
+                  ),
+                ),
+              );
             },
             style: ElevatedButton.styleFrom(foregroundColor: Colors.blue),
             child: const Text('Mesaj Gönder'),
