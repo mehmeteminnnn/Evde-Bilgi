@@ -1,11 +1,9 @@
-import 'package:evde_bilgi/admin_ekrani.dart';
 import 'package:evde_bilgi/aile_talep_formu/aile_talep_formu.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/firebase_options.dart';
 import 'package:evde_bilgi/giris_ekranı_logo_widget.dart';
 import 'package:evde_bilgi/giris_sayfalari/aile_girisi.dart';
 import 'package:evde_bilgi/giris_sayfalari/ogretmen_giris.dart';
-import 'package:evde_bilgi/kayit_sayfalari/ogretmen_kay%C4%B1t.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -123,15 +121,6 @@ class HomeScreen extends StatelessWidget {
                   Icon(Icons.arrow_forward),
                 ],
               ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AdminTalepListesi()));
-              },
-              child: const Text('Deneme'),
             ),
           ],
         ),

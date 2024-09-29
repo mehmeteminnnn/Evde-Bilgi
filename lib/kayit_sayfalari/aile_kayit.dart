@@ -11,6 +11,8 @@ final TextEditingController familyPasswordController = TextEditingController();
 final TextEditingController familyPasswordController2 = TextEditingController();
 
 class FamilyRegisterPage extends StatefulWidget {
+  const FamilyRegisterPage({super.key});
+
   @override
   State<FamilyRegisterPage> createState() => _FamilyRegisterPageState();
 }

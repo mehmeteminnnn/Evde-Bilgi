@@ -113,6 +113,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
           });
 
           // Başvuru başarıyla eklendiği mesajını gösterelim
+          // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Başvuru başarıyla eklendi!'),

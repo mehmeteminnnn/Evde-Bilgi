@@ -4,10 +4,8 @@ import 'package:evde_bilgi/ayarlar/aile_ayar.dart';
 import 'package:evde_bilgi/basvuran_ogretmenler.dart';
 import 'package:evde_bilgi/mesaj_ekranlari/aile_mesaj.dart';
 import 'package:evde_bilgi/ilan_sayfalari/ilan_ver.dart';
-import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
 import 'package:evde_bilgi/main.dart';
 import 'package:evde_bilgi/models/ilan_model.dart';
-import 'package:evde_bilgi/ogretmen_bilgi/ogretmen_listeleri.dart';
 import 'package:flutter/material.dart';
 
 class AileDrawer extends StatefulWidget {
@@ -84,7 +82,7 @@ class _AileDrawerState extends State<AileDrawer> {
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
-                      print(widget.uid);
+                 
                       Navigator.push(
                           context,
                           MaterialPageRoute(
