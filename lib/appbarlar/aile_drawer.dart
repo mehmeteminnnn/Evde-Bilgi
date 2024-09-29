@@ -32,8 +32,10 @@ class _AileDrawerState extends State<AileDrawer> {
                 horizontal: 0), // Sağdan soldan padding'i kaldırıyoruz
             alignment: Alignment.center, // Ortalanmış hale getiriyoruz
             child: Image.asset(
+              height: 80,
+              width: double.infinity,
+              fit: BoxFit.fitWidth,
               'assets/logov3.png',
-              height: 50, // Logo yüksekliğini 50 olarak ayarladık
             ),
           ),
           Expanded(
