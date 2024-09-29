@@ -22,7 +22,7 @@ class _AileGirisState extends State<AileGiris> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('İlanlar')),
+      appBar: AppBar(title: const Text('İlanlar')),
       drawer: AileDrawer(uid: widget.id),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

@@ -36,7 +36,7 @@ class OdemeEkrani extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
+                    const Text(
                       'Ödeme Yap',
                       style: TextStyle(
                         fontSize: 28,
@@ -45,7 +45,7 @@ class OdemeEkrani extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Container(
                       decoration: BoxDecoration(
                         border:
@@ -55,15 +55,15 @@ class OdemeEkrani extends StatelessWidget {
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          Text(
+                          const Text(
                             'Ödenecek Tutar:',
                             style: TextStyle(fontSize: 20),
                             textAlign: TextAlign.center,
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Text(
                             '₺${totalAmount.toStringAsFixed(2)}', // Tutarı iki ondalık basamakla göster
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 36,
                               fontWeight: FontWeight.bold,
                               color: Colors.green,
@@ -73,7 +73,7 @@ class OdemeEkrani extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
                         _makePayment(context); // Ödeme işlemi başlatılır
@@ -82,8 +82,8 @@ class OdemeEkrani extends StatelessWidget {
                         backgroundColor: Colors.deepPurple, // Buton rengi
                         foregroundColor: Colors.white, // Buton metin rengi
                         padding:
-                            EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                        textStyle: TextStyle(fontSize: 20),
+                            const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                        textStyle: const TextStyle(fontSize: 20),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),

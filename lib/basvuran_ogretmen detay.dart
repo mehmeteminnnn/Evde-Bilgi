@@ -30,7 +30,7 @@ class ApplicantsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Başvuranlar'),
+        title: const Text('Başvuranlar'),
       ),
       body: applicants.isEmpty
           ? const Center(child: Text('Bu ilana henüz başvuru yapılmamış.'))
@@ -51,12 +51,12 @@ class ApplicantsPage extends StatelessWidget {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
-                      return ListTile(
-                        title: const Text('Hata oluştu'),
+                      return const ListTile(
+                        title: Text('Hata oluştu'),
                       );
                     } else if (!snapshot.hasData) {
-                      return ListTile(
-                        title: const Text('Bilgi yok'),
+                      return const ListTile(
+                        title: Text('Bilgi yok'),
                       );
                     }
 
@@ -71,9 +71,9 @@ class ApplicantsPage extends StatelessWidget {
                         padding: const EdgeInsets.all(16.0),
                         child: Row(
                           children: [
-                            CircleAvatar(
+                            const CircleAvatar(
                               radius: 30,
-                              child: const Icon(Icons.person),
+                              child: Icon(Icons.person),
                             ),
                             const SizedBox(width: 16),
                             Expanded(

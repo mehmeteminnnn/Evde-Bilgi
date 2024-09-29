@@ -73,7 +73,7 @@ class HomeScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AileGirisEkrani()));
+                              builder: (context) => const AileGirisEkrani()));
                     },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
@@ -131,7 +131,7 @@ class HomeScreen extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => AdminTalepListesi()));
               },
-              child: Text('Deneme'),
+              child: const Text('Deneme'),
             ),
           ],
         ),

@@ -17,11 +17,11 @@ class giris_ekrani extends StatelessWidget {
             iconData,
             size: 50,
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             text,
             textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ],
       ),

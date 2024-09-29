@@ -31,12 +31,12 @@ class _AdminTalepListesiState extends State<AdminTalepListesi> {
       await talep.reference.delete();
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Kullanıcı başarıyla onaylandı ve eklendi.')),
+        const SnackBar(content: Text('Kullanıcı başarıyla onaylandı ve eklendi.')),
       );
     } catch (e) {
       print('Hata: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Kullanıcı eklenirken bir hata oluştu.')),
+        const SnackBar(content: Text('Kullanıcı eklenirken bir hata oluştu.')),
       );
     }
   }
@@ -65,7 +65,7 @@ class _AdminTalepListesiState extends State<AdminTalepListesi> {
           ),
           actions: [
             TextButton(
-              child: Text('Kapat'),
+              child: const Text('Kapat'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -81,12 +81,12 @@ class _AdminTalepListesiState extends State<AdminTalepListesi> {
       await talep.reference.delete();
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Talep başarıyla reddedildi.')),
+        const SnackBar(content: Text('Talep başarıyla reddedildi.')),
       );
     } catch (e) {
       print('Hata: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Talep silinirken bir hata oluştu.')),
+        const SnackBar(content: Text('Talep silinirken bir hata oluştu.')),
       );
     }
   }
@@ -95,28 +95,28 @@ class _AdminTalepListesiState extends State<AdminTalepListesi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Admin - Talep Listesi'),
+        title: const Text('Admin - Talep Listesi'),
         backgroundColor: Colors.deepPurple,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _getTalepList(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('Hiçbir talep bulunmamaktadır.'));
+            return const Center(child: Text('Hiçbir talep bulunmamaktadır.'));
           }
 
           return ListView(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             children: snapshot.data!.docs.map((doc) {
               Map<String, dynamic> talepData =
                   doc.data() as Map<String, dynamic>;
 
               return Card(
-                margin: EdgeInsets.symmetric(vertical: 10),
+                margin: const EdgeInsets.symmetric(vertical: 10),
                 elevation: 6,
                 shape: RoundedRectangleBorder(
                   borderRadius:
@@ -133,7 +133,7 @@ class _AdminTalepListesiState extends State<AdminTalepListesi> {
                           // Talep sahibinin adı
                           Text(
                             talepData['name'] ?? 'Bilinmiyor',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
                               color: Colors.deepPurple,
@@ -144,14 +144,14 @@ class _AdminTalepListesiState extends State<AdminTalepListesi> {
                             children: [
                               IconButton(
                                 iconSize: 28,
-                                icon: FaIcon(FontAwesomeIcons.checkCircle,
+                                icon: const FaIcon(FontAwesomeIcons.checkCircle,
                                     color: Colors.green),
                                 onPressed: () => _onaylaVeAileyeEkle(doc),
                                 tooltip: 'Onayla',
                               ),
                               IconButton(
                                 iconSize: 28,
-                                icon: FaIcon(FontAwesomeIcons.timesCircle,
+                                icon: const FaIcon(FontAwesomeIcons.timesCircle,
                                     color: Colors.red),
                                 onPressed: () => _reddetTalep(doc),
                                 tooltip: 'Reddet',
@@ -160,7 +160,7 @@ class _AdminTalepListesiState extends State<AdminTalepListesi> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       // E-posta
                       Text(
                         talepData['email'] ?? 'E-posta yok',
@@ -169,16 +169,16 @@ class _AdminTalepListesiState extends State<AdminTalepListesi> {
                           color: Colors.grey[700],
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       // Detaylar Butonu
                       OutlinedButton.icon(
                         onPressed: () => _showTalepDetails(context, talepData),
-                        icon: FaIcon(FontAwesomeIcons.infoCircle,
+                        icon: const FaIcon(FontAwesomeIcons.infoCircle,
                             color: Colors.deepPurple),
-                        label: Text('Detaylar'),
+                        label: const Text('Detaylar'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.deepPurple,
-                          side: BorderSide(color: Colors.deepPurple),
+                          side: const BorderSide(color: Colors.deepPurple),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
