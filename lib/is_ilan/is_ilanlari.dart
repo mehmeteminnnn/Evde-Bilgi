@@ -21,7 +21,7 @@ class JobListingsPage extends StatefulWidget {
 class _JobListingsPageState extends State<JobListingsPage> {
   int _selectedIndex = 0;
   List<Map<String, dynamic>> filteredJobs = [];
-  bool isConfirmed = true;
+  bool isConfirmed = false;
 
   @override
   void initState() {
@@ -41,7 +41,9 @@ class _JobListingsPageState extends State<JobListingsPage> {
         var userData = documentSnapshot.data() as Map<String, dynamic>;
         if (!userData.containsKey('selectedCity') ||
             userData['selectedCity'] == null) {
-          bool isConfirmed = false;
+          setState(() {
+            isConfirmed = true; // Sınıf düzeyindeki değişkeni güncelliyoruz
+          });
           _showResumeReminder(context);
         }
       }
