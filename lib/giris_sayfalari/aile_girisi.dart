@@ -1,4 +1,5 @@
-import 'package:evde_bilgi/ogretmen_bilgi/ogretmen_listeleri.dart';
+import 'package:evde_bilgi/aile_giris.dart';
+import 'package:evde_bilgi/aile_talep_formu/aile_talep_formu.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -26,7 +27,6 @@ class _AileGirisEkraniState extends State<AileGirisEkrani> {
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        // Giriş başarılı
         String userId = querySnapshot.docs.first.id;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -35,14 +35,14 @@ class _AileGirisEkraniState extends State<AileGirisEkrani> {
           ),
         );
         Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TeacherListPage(
-                id: userId,
-              ),
-            )); // İstediğiniz yere yönlendirme yapabilirsiniz
+          context,
+          MaterialPageRoute(
+            builder: (context) => AileGiris(
+              id: userId,
+            ),
+          ),
+        );
       } else {
-        // Giriş başarısız
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('E-posta veya şifre hatalı!'),
@@ -51,7 +51,6 @@ class _AileGirisEkraniState extends State<AileGirisEkrani> {
         );
       }
     } catch (e) {
-      // Hata durumu
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Bir hata oluştu: $e'),
@@ -93,8 +92,8 @@ class _AileGirisEkraniState extends State<AileGirisEkrani> {
                   labelText: 'E-posta',
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 12.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -124,8 +123,8 @@ class _AileGirisEkraniState extends State<AileGirisEkrani> {
                   labelText: 'Şifre',
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 12.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
@@ -156,6 +155,27 @@ class _AileGirisEkraniState extends State<AileGirisEkrani> {
                 _passwordController.clear();
               },
               child: const Text('İptal'),
+            ),
+
+            // Üye Değil Misiniz? Kısmı
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Üye değil misiniz?"),
+                TextButton(
+                  onPressed: () {
+                    // Üye ol sayfasına yönlendirme yapılabilir
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            AileTalepFormu(), // Bu sayfa üye olma sayfası
+                      ),
+                    );
+                  },
+                  child: const Text('Üye Ol'),
+                ),
+              ],
             ),
           ],
         ),

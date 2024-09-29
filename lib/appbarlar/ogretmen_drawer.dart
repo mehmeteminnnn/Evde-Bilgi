@@ -52,8 +52,10 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 0),
             alignment: Alignment.center,
             child: Image.asset(
+              height: 80,
+              width: double.infinity,
+              fit: BoxFit.fitWidth,
               'assets/logov3.png',
-              height: 50,
             ),
           ),
           Expanded(
@@ -118,11 +120,16 @@ class _OgretmenDrawerState extends State<OgretmenDrawer> {
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
-                      MyApplicationsPage(
-                        teacherId: widget.uid!,
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyApplicationsPage(
+                            teacherId: widget.uid!,
+                          ),
+                        ),
                       );
                     },
-                    // Handle the action
+                    // Handle the actionn
                   ),
                   ListTile(
                     dense: true,

@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evde_bilgi/aile_giris.dart';
 import 'package:evde_bilgi/ayarlar/aile_ayar.dart';
 import 'package:evde_bilgi/basvuran_ogretmenler.dart';
 import 'package:evde_bilgi/mesaj_ekranlari/aile_mesaj.dart';
 import 'package:evde_bilgi/ilan_sayfalari/ilan_ver.dart';
-import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
 import 'package:evde_bilgi/main.dart';
 import 'package:evde_bilgi/models/ilan_model.dart';
-import 'package:evde_bilgi/ogretmen_bilgi/ogretmen_listeleri.dart';
 import 'package:flutter/material.dart';
 
 class AileDrawer extends StatefulWidget {
@@ -31,8 +30,10 @@ class _AileDrawerState extends State<AileDrawer> {
                 horizontal: 0), // Sağdan soldan padding'i kaldırıyoruz
             alignment: Alignment.center, // Ortalanmış hale getiriyoruz
             child: Image.asset(
+              height: 80,
+              width: double.infinity,
+              fit: BoxFit.fitWidth,
               'assets/logov3.png',
-              height: 50, // Logo yüksekliğini 50 olarak ayarladık
             ),
           ),
           Expanded(
@@ -66,7 +67,7 @@ class _AileDrawerState extends State<AileDrawer> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => JobListingsPage(
+                              builder: (context) => AileGiris(
                                     id: widget.uid,
                                   )));
                     },
@@ -81,31 +82,13 @@ class _AileDrawerState extends State<AileDrawer> {
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     onTap: () {
-                      print(widget.uid);
+                 
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => IlanVer(
                                     jobModel: JobModel(),
                                     userId: widget.uid!,
-                                  )));
-                    },
-                  ),
-                  ListTile(
-                    dense: true,
-                    leading: const Icon(Icons.search, size: 20),
-                    title: const Text(
-                      'Uzman Bul',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TeacherListPage(
-                                    id: widget.uid,
                                   )));
                     },
                   ),
@@ -145,32 +128,6 @@ class _AileDrawerState extends State<AileDrawer> {
                                   FamilyMessagesScreen(familyId: widget.uid!)));
                     },
                     // Handle the action
-                  ),
-                  ListTile(
-                    dense: true,
-                    leading: const Icon(Icons.notifications, size: 20),
-                    title: const Text(
-                      'Bildirimler',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    onTap: () {
-                      // Handle the action
-                    },
-                  ),
-                  ListTile(
-                    dense: true,
-                    leading: const Icon(Icons.card_membership, size: 20),
-                    title: const Text(
-                      'Paketlerim',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    onTap: () {
-                      // Handle the action
-                    },
                   ),
                   ListTile(
                     dense: true,

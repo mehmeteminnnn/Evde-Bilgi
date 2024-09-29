@@ -7,19 +7,144 @@ class JobDetailPage extends StatefulWidget {
   final String jobId;
   final String? receiverId;
   final String? senderId;
+  final bool isAile;
 
-  JobDetailPage({required this.jobId, this.receiverId, this.senderId});
+  JobDetailPage(
+      {required this.jobId,
+      this.receiverId,
+      this.senderId,
+      this.isAile = false});
 
   @override
   State<JobDetailPage> createState() => _JobDetailPageState();
 }
 
 class _JobDetailPageState extends State<JobDetailPage> {
+  void Basvur(String ilanId, String teacherId, String familyId) async {
+    // Kullanıcıdan başvuruyu onaylamasını isteyen bir diyalog gösterelim
+    bool isConfirmed = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Başvuruyu Onaylıyor Musunuz?'),
+          content: const Text('Bu ilana başvurmak istediğinize emin misiniz?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // İptal
+              },
+              child: const Text('Hayır'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Onayla
+              },
+              child: const Text('Evet'),
+            ),
+          ],
+        );
+      },
+    );
+
+    // Eğer başvuru onaylandıysa
+    if (isConfirmed) {
+      try {
+        // Aile koleksiyonundan ilgili belgeyi çekelim
+        DocumentReference ilanRef =
+            FirebaseFirestore.instance.collection('aile').doc(familyId);
+        DocumentSnapshot ilanDoc = await ilanRef.get();
+
+        if (ilanDoc.exists) {
+          Map<String, dynamic>? data = ilanDoc.data() as Map<String, dynamic>?;
+          List<dynamic> ilanlarim = data?['ilanlarım'] ?? [];
+
+          // İlgili ilanı bulalım
+          Map<String, dynamic>? ilan = ilanlarim.firstWhere(
+              (ilan) => ilan['ilanId'] == ilanId,
+              orElse: () => null);
+
+          List<dynamic> basvuranlar =
+              ilan != null ? ilan['basvuranlar'] ?? [] : [];
+
+          // Kullanıcının daha önce başvurup başvurmadığını kontrol edelim
+          bool hasApplied = basvuranlar
+              .any((application) => application['userId'] == teacherId);
+
+          if (hasApplied) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Bu ilana zaten başvurmuşsunuz.'),
+                backgroundColor: Colors.orange,
+              ),
+            );
+            return;
+          }
+
+          Timestamp basvuruTarihi = Timestamp.now();
+
+          // Öğretmenin "basvurularim" listesine ilanı ekliyoruz
+          DocumentReference teacherRef =
+              FirebaseFirestore.instance.collection('ogretmen').doc(teacherId);
+          await teacherRef.update({
+            'basvurularim': FieldValue.arrayUnion([ilanId])
+          });
+
+          // Başvuranlar listesine yeni öğretmen ekleniyor
+          basvuranlar.add({
+            'userId': teacherId,
+            'basvuru_tarihi': basvuruTarihi,
+          });
+
+          // İlanı güncelleme: önce eski ilanı kaldırıyoruz
+          if (ilan != null) {
+            await ilanRef.update({
+              'ilanlarım': FieldValue.arrayRemove([ilan]),
+            });
+          }
+
+          // Yeni ilan yapısını oluşturuyoruz ve tekrar ekliyoruz
+          ilan = {
+            'ilanId': ilanId,
+            'basvuranlar': basvuranlar,
+          };
+
+          await ilanRef.update({
+            'ilanlarım': FieldValue.arrayUnion([ilan]),
+          });
+
+          // Başvuru başarıyla eklendiği mesajını gösterelim
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Başvuru başarıyla eklendi!'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('İlan bulunamadı.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } catch (e) {
+        // Eğer bir hata olursa, kullanıcıya hata mesajı gösterelim
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Başvuru sırasında bir hata oluştu.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Evde Bilgi'),
+        title: const Text('İlan Detayı'),
       ),
       body: FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
@@ -251,6 +376,10 @@ class _JobDetailPageState extends State<JobDetailPage> {
   }
 
   Widget _buildActionButtons() {
+    if (widget.isAile) {
+      return SizedBox.shrink(); // Eğer isAile true ise, boş bir widget döndür
+    }
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -258,6 +387,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
         children: [
           ElevatedButton(
             onPressed: () {
+              Basvur(widget.jobId, widget.senderId!, widget.receiverId!);
               // Şimdi Başvur butonuna tıklama işlevi
             },
             style: ElevatedButton.styleFrom(foregroundColor: Colors.red),
@@ -266,12 +396,14 @@ class _JobDetailPageState extends State<JobDetailPage> {
           ElevatedButton(
             onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SendMessagePage(
-                            senderId: widget.senderId!,
-                            receiverId: widget.receiverId!,
-                          )));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SendMessagePage(
+                    senderId: widget.senderId!,
+                    receiverId: widget.receiverId!,
+                  ),
+                ),
+              );
             },
             style: ElevatedButton.styleFrom(foregroundColor: Colors.blue),
             child: const Text('Mesaj Gönder'),

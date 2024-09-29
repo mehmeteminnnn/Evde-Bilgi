@@ -1,9 +1,7 @@
+import 'package:evde_bilgi/aile_talep_formu/aile_talep_formu.dart';
 import 'package:evde_bilgi/giris_sayfalari/aile_girisi.dart';
 import 'package:evde_bilgi/giris_sayfalari/ogretmen_giris.dart';
-import 'package:evde_bilgi/ilan_sayfalari/ilan_ver.dart';
 import 'package:evde_bilgi/iletisim.dart';
-import 'package:evde_bilgi/kayit_sayfalari/aile_kayit.dart';
-import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:evde_bilgi/uye_olma.dart';
 import 'package:flutter/material.dart';
 
@@ -45,8 +43,14 @@ class _EvdeBilgiDrawerState extends State<EvdeBilgiDrawer> {
       child: Column(
         children: <Widget>[
           DrawerHeader(
-            child: Image.asset('assets/logov3.png'),
+            child: Image.asset(
+              'assets/logov3.png',
+              fit: BoxFit
+                  .cover, // Tüm alanı doldurması için cover kullanabilirsin.
+              width: double.infinity, // Genişliği tam olarak doldurması için.
+            ),
           ),
+
           ListTile(
             leading: const Icon(Icons.home),
             title: const Text('Ana Sayfa'),
@@ -58,6 +62,9 @@ class _EvdeBilgiDrawerState extends State<EvdeBilgiDrawer> {
             leading: const Icon(Icons.list),
             title: const Text('İş İlanları'),
             onTap: () {
+              Navigator.push(
+                  // ignore: prefer_const_constructors
+                  context, MaterialPageRoute(builder: (context) => UyeOlma()));
               // Handle the action
             },
           ),
@@ -65,10 +72,8 @@ class _EvdeBilgiDrawerState extends State<EvdeBilgiDrawer> {
             leading: const Icon(Icons.add_box),
             title: const Text('İlan Ver'),
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => FamilyRegisterPage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AileTalepFormu()));
             },
           ),
 

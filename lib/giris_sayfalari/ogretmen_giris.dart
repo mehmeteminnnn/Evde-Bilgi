@@ -1,4 +1,6 @@
+import 'package:evde_bilgi/admin_ekrani.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari.dart';
+import 'package:evde_bilgi/kayit_sayfalari/ogretmen_kay%C4%B1t.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -15,6 +17,24 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
   Future<void> _girisYap() async {
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
+
+    // Admin giriş kontrolü
+    if (email == 'admin' && password == 'admin123') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Admin girişi başarılı!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              AdminTalepListesi(), // Admin sayfasına yönlendirin
+        ),
+      );
+      return;
+    }
 
     try {
       QuerySnapshot querySnapshot = await _firestore
@@ -33,12 +53,13 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
           ),
         );
         Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => JobListingsPage(
-                id: userId,
-              ),
-            )); // İstediğiniz yere yönlendirme yapabilirsiniz
+          context,
+          MaterialPageRoute(
+            builder: (context) => JobListingsPage(
+              id: userId,
+            ),
+          ),
+        );
       } else {
         // Giriş başarısız
         ScaffoldMessenger.of(context).showSnackBar(
@@ -154,6 +175,24 @@ class _OgretmenGirisEkraniState extends State<OgretmenGirisEkrani> {
                 _passwordController.clear();
               },
               child: const Text('İptal'),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Üye değil misiniz?"),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            TeacherRegisterPage(), // Üye olma sayfası
+                      ),
+                    );
+                  },
+                  child: const Text('Üye Ol'),
+                ),
+              ],
             ),
           ],
         ),

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evde_bilgi/aile_giris.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
-import 'package:evde_bilgi/ilan_haz%C4%B1r.dart';
 import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:flutter/material.dart';
 
@@ -101,16 +101,35 @@ class _SalaryPageState extends State<SalaryPage> {
                               .collection('ilanlar')
                               .add(widget.jobModel.toMap());
 
-                          // İşlem başarılıysa başarı sayfasına yönlendir
-                          Navigator.push(
+                          // İlan başarıyla eklendiğinde mesaj göster
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('İlanınız başarıyla oluşturuldu!'),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+
+                          // Sonraki sayfaya yönlendirme (eğer istenirse)
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SuccessPage(),
+                              builder: (context) => (AileGiris(
+                                id: widget.jobModel.userId,
+                              )),
                             ),
                           );
                         } catch (error) {
                           // Eğer Firestore'a veri kaydedilirken bir hata oluşursa
                           print("Veri kaydedilirken hata oluştu: $error");
+
+                          // Hata mesajı göster
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  'Veri kaydedilirken hata oluştu: $error'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
                         }
                       }
                     : null,
