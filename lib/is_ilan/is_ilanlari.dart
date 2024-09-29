@@ -3,7 +3,6 @@ import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/appbarlar/ogretmen_drawer.dart';
 import 'package:evde_bilgi/basvurularim.dart';
 import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
-import 'package:evde_bilgi/is_ilan/is_ilanlari_filtre.dart';
 import 'package:evde_bilgi/mesaj_ekranlari/ogretmen_mesaj.dart';
 import 'package:evde_bilgi/mesaj_gonder.dart';
 import 'package:evde_bilgi/odeme_ekrani.dart';
@@ -22,6 +21,7 @@ class JobListingsPage extends StatefulWidget {
 class _JobListingsPageState extends State<JobListingsPage> {
   int _selectedIndex = 0;
   List<Map<String, dynamic>> filteredJobs = [];
+  bool isConfirmed = true;
 
   @override
   void initState() {
@@ -41,6 +41,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
         var userData = documentSnapshot.data() as Map<String, dynamic>;
         if (!userData.containsKey('selectedCity') ||
             userData['selectedCity'] == null) {
+          bool isConfirmed = false;
           _showResumeReminder(context);
         }
       }
@@ -423,6 +424,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                                       receiverId:
                                                           ilan['userId'],
                                                       jobId: ilan.id,
+                                                      isConfirmed: isConfirmed,
                                                     ),
                                                   ),
                                                 );
@@ -534,6 +536,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                               senderId: widget.id!,
                                               receiverId: job['userId'],
                                               jobId: job['id'],
+                                              isConfirmed: isConfirmed,
                                             ),
                                           ),
                                         );

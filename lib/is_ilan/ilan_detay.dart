@@ -8,12 +8,15 @@ class JobDetailPage extends StatefulWidget {
   final String? receiverId;
   final String? senderId;
   final bool isAile;
+  final isConfirmed;
 
   JobDetailPage(
-      {super.key, required this.jobId,
+      {super.key,
+      required this.jobId,
       this.receiverId,
       this.senderId,
-      this.isAile = false});
+      this.isAile = false,
+      this.isConfirmed});
 
   @override
   State<JobDetailPage> createState() => _JobDetailPageState();
@@ -260,7 +263,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
     } else {
       publishDateText = 'Belirtilmemiş';
     }
-
+    bool hideContactInfo = widget.isConfirmed;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
@@ -282,9 +285,11 @@ class _JobDetailPageState extends State<JobDetailPage> {
               _buildTableRow(
                   'Pozisyon', jobData['position'] ?? 'Belirtilmemiş'),
               _buildTableRow('Telefon Numarası',
-                  jobData['phoneNumber']?.toString() ?? 'Belirtilmemiş'),
+                  jobData['phoneNumber']?.toString() ?? 'Belirtilmemiş',
+                  hideInfo: hideContactInfo),
               _buildTableRow(
-                  'E-posta Adresi', jobData['email'] ?? 'Belirtilmemiş'),
+                  'E-posta Adresi', jobData['email'] ?? 'Belirtilmemiş',
+                  hideInfo: hideContactInfo),
               _buildAddressRow(
                 jobData['neighborhood'] ?? 'Belirtilmemiş',
                 jobData['city'] ?? 'Belirtilmemiş',
@@ -297,7 +302,8 @@ class _JobDetailPageState extends State<JobDetailPage> {
     );
   }
 
-  TableRow _buildTableRow(String label, dynamic value) {
+  TableRow _buildTableRow(String label, dynamic value,
+      {bool hideInfo = false}) {
     return TableRow(
       children: [
         Padding(
@@ -307,7 +313,9 @@ class _JobDetailPageState extends State<JobDetailPage> {
         ),
         Padding(
           padding: const EdgeInsets.all(4.0),
-          child: Text(value?.toString() ?? 'Belirtilmemiş'),
+          child: hideInfo
+              ? const Text('Bilgileri görmek için özgeçmişinizi doldurun')
+              : Text(value?.toString() ?? 'Belirtilmemiş'),
         ),
       ],
     );
