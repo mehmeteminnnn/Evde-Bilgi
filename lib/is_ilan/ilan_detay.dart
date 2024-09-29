@@ -10,7 +10,7 @@ class JobDetailPage extends StatefulWidget {
   final bool isAile;
 
   JobDetailPage(
-      {required this.jobId,
+      {super.key, required this.jobId,
       this.receiverId,
       this.senderId,
       this.isAile = false});
