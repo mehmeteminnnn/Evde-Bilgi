@@ -8,7 +8,7 @@ class JobDetailPage extends StatefulWidget {
   final String? receiverId;
   final String? senderId;
   final bool isAile;
-  final isConfirmed;
+  final bool isConfirmed;
 
   JobDetailPage(
       {super.key,
@@ -16,7 +16,7 @@ class JobDetailPage extends StatefulWidget {
       this.receiverId,
       this.senderId,
       this.isAile = false,
-      this.isConfirmed});
+      this.isConfirmed = false});
 
   @override
   State<JobDetailPage> createState() => _JobDetailPageState();
