@@ -31,7 +31,8 @@ class _AdminTalepListesiState extends State<AdminTalepListesi> {
       await talep.reference.delete();
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Kullanıcı başarıyla onaylandı ve eklendi.')),
+        const SnackBar(
+            content: Text('Kullanıcı başarıyla onaylandı ve eklendi.')),
       );
     } catch (e) {
       print('Hata: $e');
@@ -96,7 +97,6 @@ class _AdminTalepListesiState extends State<AdminTalepListesi> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Admin - Talep Listesi'),
-        backgroundColor: Colors.deepPurple,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _getTalepList(),

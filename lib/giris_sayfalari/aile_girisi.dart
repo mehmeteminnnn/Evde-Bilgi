@@ -1,5 +1,6 @@
 import 'package:evde_bilgi/aile_giris.dart';
 import 'package:evde_bilgi/aile_talep_formu/aile_talep_formu.dart';
+import 'package:evde_bilgi/kayit_sayfalari/aile_kayit.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -65,6 +66,7 @@ class _AileGirisEkraniState extends State<AileGirisEkrani> {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
+        
         title: const Text('Aile Girişi'),
       ),
       body: Padding(
@@ -169,7 +171,7 @@ class _AileGirisEkraniState extends State<AileGirisEkrani> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            AileTalepFormu(), // Bu sayfa üye olma sayfası
+                            FamilyRegisterPage(), // Bu sayfa üye olma sayfası
                       ),
                     );
                   },

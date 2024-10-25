@@ -6,6 +6,7 @@ import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
 import 'package:evde_bilgi/mesaj_ekranlari/aile_mesaj.dart';
 import 'package:evde_bilgi/models/ilan_model.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // Tarih formatı için
 
 class AileGiris extends StatefulWidget {
   final String? id;
@@ -17,17 +18,18 @@ class AileGiris extends StatefulWidget {
 
 class _AileGirisState extends State<AileGiris> {
   int _selectedIndex = 0;
-  List<Map<String, dynamic>> filteredJobs = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('İlanlar')),
+      appBar: AppBar(
+        title: const Text('İlanlar'),
+      ),
       drawer: AileDrawer(uid: widget.id),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
-        selectedItemColor: Colors.blue,
+        selectedItemColor: Colors.blueAccent,
         unselectedItemColor: Colors.grey,
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
         items: const [
@@ -53,6 +55,7 @@ class _AileGirisState extends State<AileGiris> {
           setState(() {
             _selectedIndex = index;
           });
+          // Navigation logic
           if (index == 3) {
             Navigator.push(
               context,
@@ -100,176 +103,151 @@ class _AileGirisState extends State<AileGiris> {
       ),
       body: Stack(
         children: [
-          filteredJobs.isEmpty
-              ? StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('ilanlar')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return const Center(child: Text('Bir hata oluştu.'));
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('ilanlar')
+                .orderBy('publishDate', descending: true)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Center(child: Text('Bir hata oluştu.'));
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-                    final data = snapshot.data!;
+              final data = snapshot.data!;
+              return ListView.builder(
+                itemCount: data.size,
+                itemBuilder: (context, index) {
+                  var ilan = data.docs[index];
+                  var publishDate =
+                      (ilan['publishDate'] as Timestamp?)?.toDate() ??
+                          DateTime.now();
+                  String formattedDate = DateFormat('dd/MM/yyyy')
+                      .format(publishDate); // Gün/ay/yıl formatı
 
-                    return ListView.builder(
-                      itemCount: data.size,
-                      itemBuilder: (context, index) {
-                        var ilan = data.docs[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.blue),
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 16.0),
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => JobDetailPage(
+                                isAile: true,
+                                jobId: ilan.id,
+                              ),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ListTile(
-                                  title: Text(ilan['title']),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(ilan['details'] ?? ""),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        '${ilan['salary']} TL',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        JobDetailPage(
-                                                      isAile: true,
-                                                      jobId: ilan.id,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                foregroundColor: Colors.green,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 10),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                              ),
-                                              child: const Text('Görüntüle'),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 8),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                )
-              : ListView.builder(
-                  itemCount: filteredJobs.length,
-                  itemBuilder: (context, index) {
-                    var job = filteredJobs[index];
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blue),
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                        ),
-                        child: ListTile(
-                          title: Text(job['title']),
-                          subtitle: Column(
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(job['details'] ?? ""),
-                              const SizedBox(height: 8),
-                              Text(
-                                '${job['salary']} TL',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.red,
-                                ),
-                              ),
                               Row(
                                 children: [
                                   Expanded(
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => JobDetailPage(
-                                              isAile: true,
-                                              jobId: job['id'],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.green,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 16),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
+                                    child: Text(
+                                      ilan['title'],
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
                                       ),
-                                      child: const Text('Görüntüle'),
                                     ),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      ilan['details'] ?? "",
+                                      style: TextStyle(color: Colors.grey[700]),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  const Icon(Icons.currency_lira,
+                                      color: Colors.green), // TL sembolü
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    '${ilan['salary']} TL', // Dolar yerine TL
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Icon(Icons.calendar_today,
+                                      color: Colors.grey),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    'Yayınlanma Tarihi: $formattedDate',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                  height: 12), // Space before the button
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => JobDetailPage(
+                                        isAile: true,
+                                        jobId: ilan.id,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blueAccent,
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 12, horizontal: 20),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Görüntüle',
+                                  style: TextStyle(
+                                    color: Colors
+                                        .white, // Buton metnini beyaz yapıyoruz
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ),
-                    );
-                  },
-                ),
-          /* Positioned(
-            bottom: 16,
-            right: 16,
-            child: FloatingActionButton(
-              onPressed: () {
-                // Filtreleme sayfasına yönlendirme yapıyoruz
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FilterPage(),
-                  ),
-                );
-              },
-              child: const Icon(Icons.filter_list),
-              backgroundColor: Colors.blue,
-            ),
-          ),*/
+                    ),
+                  );
+                },
+              );
+            },
+          ),
         ],
       ),
     );

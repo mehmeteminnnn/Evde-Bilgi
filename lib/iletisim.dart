@@ -10,7 +10,7 @@ class ContactPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('İletişim'),
-        backgroundColor: Colors.blueAccent,
+        
       ),
       body: Center(
         child: Padding(

@@ -102,7 +102,7 @@ class _SendMessagePageState extends State<SendMessagePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mesaj Gönder'),
-        backgroundColor: Colors.teal,
+        
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

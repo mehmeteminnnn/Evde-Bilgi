@@ -69,7 +69,7 @@ class ProfilePage extends StatelessWidget {
           backgroundColor: Colors.blue.shade100,
           appBar: AppBar(
             title: const Text('Profil'),
-            backgroundColor: Colors.blue,
+           
           ),
           body: SingleChildScrollView(
             child: Padding(

@@ -22,7 +22,6 @@ class EvdeBilgiAppBar extends StatelessWidget implements PreferredSizeWidget {
         },
       ),
       centerTitle: true,
-      backgroundColor: Colors.transparent,
     );
   }
 
@@ -64,7 +63,8 @@ class _EvdeBilgiDrawerState extends State<EvdeBilgiDrawer> {
             onTap: () {
               Navigator.push(
                   // ignore: prefer_const_constructors
-                  context, MaterialPageRoute(builder: (context) => UyeOlma()));
+                  context,
+                  MaterialPageRoute(builder: (context) => UyeOlma()));
               // Handle the action
             },
           ),
