@@ -21,13 +21,29 @@ class _AdminTalepListesiState extends State<AdminTalepListesi> {
       String phone = talep['phone'];
       String password = talep['password'];
 
-      await _firestore.collection('aile').add({
-        'name': adSoyad,
-        'email': email,
-        'phone': phone,
-        'password': password,
-      });
+      // 'aile' koleksiyonunda aynı e-posta adresine sahip kullanıcıyı ara
+      QuerySnapshot existingUser = await _firestore
+          .collection('aile')
+          .where('email', isEqualTo: email)
+          .get();
 
+      if (existingUser.docs.isNotEmpty) {
+        // Kullanıcı zaten mevcut, `isApproved` alanını güncelle
+        await existingUser.docs.first.reference.update({
+          'isApproved': true,
+        });
+      } else {
+        // Kullanıcı mevcut değil, yeni kullanıcı olarak ekle
+        await _firestore.collection('aile').add({
+          'name': adSoyad,
+          'email': email,
+          'phone': phone,
+          'password': password,
+          'isApproved': true, // İlk başta onaylanmış olarak ekleniyor
+        });
+      }
+
+      // Talebi sil
       await talep.reference.delete();
 
       ScaffoldMessenger.of(context).showSnackBar(
