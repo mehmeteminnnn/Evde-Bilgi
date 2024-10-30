@@ -20,19 +20,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.blue.shade50,
-
-        // Daha yumuşak bir arka plan rengi
         appBarTheme: AppBarTheme(
-          backgroundColor:
-              Colors.indigo.shade400, // AppBar arka planı için daha hoş bir ton
+          backgroundColor: Colors.indigo.shade400,
           titleTextStyle: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w500,
             color: Colors.white,
-            fontFamily: 'Lato', // Daha yumuşak bir font ailesi
+            fontFamily: 'Lato',
           ),
-          centerTitle: true, // Başlığın ortalanması
-          elevation: 2, // AppBar gölgesi
+          centerTitle: true,
+          elevation: 2,
         ),
       ),
       debugShowCheckedModeBanner: false,
@@ -51,7 +48,7 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          const SizedBox(height: 20),
+          const SizedBox(height: 10), // Yüksekliği azaltılmış
           const Text(
             'Ebeveynler ve Uzmanları\nBir Araya Getiren\nYeni Nesil Platform',
             textAlign: TextAlign.center,
@@ -61,11 +58,11 @@ class HomeScreen extends StatelessWidget {
               color: Colors.blueAccent,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10), // Yüksekliği azaltılmış
           StaggeredGrid.count(
             crossAxisCount: 2,
-            mainAxisSpacing: 20,
-            crossAxisSpacing: 20,
+            mainAxisSpacing: 16, // Aralık azaltılmış
+            crossAxisSpacing: 16,
             children: <Widget>[
               _buildGridCard(context, Icons.school, "Gölge Öğretmen"),
               _buildGridCard(context, Icons.book, "Özel Eğitim"),
@@ -73,11 +70,11 @@ class HomeScreen extends StatelessWidget {
               _buildGridCard(context, Icons.favorite, "Yaşam Koçu"),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10), // Yüksekliği azaltılmış
           _buildGradientButton(context, 'Uzman Arıyorum', AileGirisEkrani()),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5), // Yüksekliği azaltılmış
           _buildGradientButton(context, 'İş Arıyorum', OgretmenGirisEkrani()),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10), // Yüksekliği azaltılmış
           OutlinedButton(
             onPressed: () {
               Navigator.push(context,
@@ -116,16 +113,18 @@ class HomeScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         onTap: () {},
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(12.0), // İç padding azaltılmış
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 48, color: Colors.blueAccent),
-              const SizedBox(height: 10),
+              Icon(icon,
+                  size: 40,
+                  color: Colors.blueAccent), // Icon boyutu küçültülmüş
+              const SizedBox(height: 8),
               Text(
                 title,
                 style:
-                    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -138,7 +137,7 @@ class HomeScreen extends StatelessWidget {
   Widget _buildGradientButton(
       BuildContext context, String text, Widget targetPage) {
     return Container(
-      width: 300,
+      width: 280, // Buton genişliği azaltılmış
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [Colors.blue, Colors.lightBlueAccent],
@@ -153,13 +152,15 @@ class HomeScreen extends StatelessWidget {
               context, MaterialPageRoute(builder: (context) => targetPage));
         },
         style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.symmetric(
+              vertical: 10), // Buton iç padding azaltılmış
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
         ),
         child: Text(
           text,
-          style: const TextStyle(fontSize: 18, color: Colors.white),
+          style: const TextStyle(
+              fontSize: 16, color: Colors.white), // Font boyutu küçültülmüş
         ),
       ),
     );
