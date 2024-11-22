@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
-import 'package:evde_bilgi/giris_sayfalari/ogretmen_giris.dart';
 import 'package:evde_bilgi/is_ilan/is_ilanlari.dart'; // Güncel sayfa yolunu kontrol edin
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -100,7 +99,7 @@ class _TeacherRegisterPageState extends State<TeacherRegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade100,
+      
       appBar: const EvdeBilgiAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

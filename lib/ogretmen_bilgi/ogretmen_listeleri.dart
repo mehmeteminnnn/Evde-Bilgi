@@ -37,7 +37,7 @@ class _TeacherListPageState extends State<TeacherListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Kayıtlı Uzmanlar')),
+      appBar: AppBar(title: const Text('Kayıtlı Uzmanlar')),
       drawer: AileDrawer(uid: widget.id),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -117,11 +117,11 @@ class _TeacherListPageState extends State<TeacherListPage> {
         future: _fetchTeachers(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No teachers found.'));
+            return const Center(child: const Text('No teachers found.'));
           } else {
             final teachers = snapshot.data!;
 

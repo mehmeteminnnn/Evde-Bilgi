@@ -1,7 +1,8 @@
-import 'package:evde_bilgi/kayit_sayfalari/aile_kayit.dart';
+import 'package:evde_bilgi/aile_talep_formu/aile_talep_formu.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/kayit_sayfalari/ogretmen_kay%C4%B1t.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class UyeOlma extends StatelessWidget {
   const UyeOlma({super.key});
@@ -9,28 +10,31 @@ class UyeOlma extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade50,
-      appBar: EvdeBilgiAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      appBar: const EvdeBilgiAppBar(),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFe1f5fe), Color(0xFFb3e5fc)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Aile olarak üye ol butonu
             _buildElevatedButton(
               context,
               'AİLE OLARAK ÜYE OL',
-              FamilyRegisterPage(),
+              AileTalepFormu(),
               Icons.family_restroom,
-              // Aile ikonu
             ),
-            SizedBox(height: 16),
-            // Öğretmen olarak üye ol butonu
+            const SizedBox(height: 24),
             _buildElevatedButton(
               context,
               'UZMAN OLARAK ÜYE OL',
               TeacherRegisterPage(),
-              Icons.school, // Öğretmen ikonu
+              Icons.school,
             ),
           ],
         ),
@@ -38,7 +42,6 @@ class UyeOlma extends StatelessWidget {
     );
   }
 
-  // Özelleştirilmiş ElevatedButton widget'ı
   Widget _buildElevatedButton(
       BuildContext context, String text, Widget page, IconData icon) {
     return ElevatedButton.icon(
@@ -50,22 +53,30 @@ class UyeOlma extends StatelessWidget {
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        foregroundColor: Colors.blue.shade900,
+        shadowColor: Colors.blueAccent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(20),
         ),
-        elevation: 5,
-        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-        side: BorderSide(color: Colors.blue.shade300, width: 2),
-        minimumSize: Size(double.infinity, 100),
-        // Butonları büyütme
+        elevation: 8,
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        side: BorderSide(color: Colors.blueAccent.shade100, width: 2),
+        minimumSize: const Size(double.infinity, 90),
       ),
-      icon: Icon(icon, size: 35),
+      icon: Icon(
+        icon,
+        size: 36,
+        color: Colors.blue.shade700,
+      ),
       label: Expanded(
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: GoogleFonts.nunito(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.blue.shade900,
+          ),
         ),
       ),
     );

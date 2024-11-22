@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evde_bilgi/aile_giris.dart';
 import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/giris_sayfalari/aile_girisi.dart';
 import 'package:evde_bilgi/ogretmen_bilgi/ogretmen_listeleri.dart';
@@ -11,6 +12,8 @@ final TextEditingController familyPasswordController = TextEditingController();
 final TextEditingController familyPasswordController2 = TextEditingController();
 
 class FamilyRegisterPage extends StatefulWidget {
+  const FamilyRegisterPage({super.key});
+
   @override
   State<FamilyRegisterPage> createState() => _FamilyRegisterPageState();
 }
@@ -47,7 +50,7 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade100,
+     
       appBar: const EvdeBilgiAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -62,11 +65,12 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
               const SizedBox(height: 16),
               buildTextField('Adınız/Soyadınız', familyNameController),
               const SizedBox(height: 16),
-              buildTextField('Cep Telefonu', familyPhoneController,
-                  keyboardType: TextInputType.phone,
-                  maxLength: 10, // Maksimum uzunluk
-                  hintText: 'Telefon numaranızı başında 0 olmadan giriniz.',
-                  ),
+              buildTextField(
+                'Cep Telefonu', familyPhoneController,
+                keyboardType: TextInputType.phone,
+                maxLength: 10, // Maksimum uzunluk
+                hintText: 'Telefon numaranızı başında 0 olmadan giriniz.',
+              ),
               const SizedBox(height: 16),
               buildTextField('E-Posta', familyEmailController,
                   keyboardType: TextInputType.emailAddress),
@@ -140,7 +144,7 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => TeacherListPage(
+                                      builder: (context) => AileGiris(
                                             id: familyId,
                                           )));
                               // Kayıt başarılı olduğunda yapılacak işlemler
@@ -227,6 +231,7 @@ class _FamilyRegisterPageState extends State<FamilyRegisterPage> {
       'email': familyEmailController.text,
       'password': familyPasswordController.text, // Şifreyi hashleyin
       'createdAt': FieldValue.serverTimestamp(),
+      "isApproved": false,
     });
 
     String familyId = docRef.id;

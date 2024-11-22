@@ -3,11 +3,12 @@ import 'package:evde_bilgi/appbarlar/app_bar.dart';
 import 'package:evde_bilgi/appbarlar/ogretmen_drawer.dart';
 import 'package:evde_bilgi/basvurularim.dart';
 import 'package:evde_bilgi/is_ilan/ilan_detay.dart';
-import 'package:evde_bilgi/is_ilan/is_ilanlari_filtre.dart';
 import 'package:evde_bilgi/mesaj_ekranlari/ogretmen_mesaj.dart';
 import 'package:evde_bilgi/mesaj_gonder.dart';
+import 'package:evde_bilgi/odeme_ekrani.dart';
 import 'package:evde_bilgi/ozgecmis_ekranlari/ozgecmis.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class JobListingsPage extends StatefulWidget {
   final String? id;
@@ -21,6 +22,7 @@ class JobListingsPage extends StatefulWidget {
 class _JobListingsPageState extends State<JobListingsPage> {
   int _selectedIndex = 0;
   List<Map<String, dynamic>> filteredJobs = [];
+  bool isConfirmed = false;
 
   @override
   void initState() {
@@ -40,6 +42,9 @@ class _JobListingsPageState extends State<JobListingsPage> {
         var userData = documentSnapshot.data() as Map<String, dynamic>;
         if (!userData.containsKey('selectedCity') ||
             userData['selectedCity'] == null) {
+          setState(() {
+            isConfirmed = true; // Sınıf düzeyindeki değişkeni güncelliyoruz
+          });
           _showResumeReminder(context);
         }
       }
@@ -187,6 +192,53 @@ class _JobListingsPageState extends State<JobListingsPage> {
     );
   }
 
+  void _onPaymentSuccess() {
+    // Ödeme başarılı olduğunda bu fonksiyon çağrılacak
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OzgecmisimEkrani(teacherId: widget.id),
+      ),
+    );
+  }
+
+  void _checkResumeAndNavigate(BuildContext context) {
+    FirebaseFirestore.instance
+        .collection('ogretmen')
+        .doc(widget.id)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        var userData = documentSnapshot.data() as Map<String, dynamic>;
+
+        // Özgeçmiş alanını kontrol et
+        if (!userData.containsKey('resume') ||
+            userData['resume'] == null ||
+            userData['resume'].isEmpty) {
+          // Özgeçmiş boşsa kullanıcıyı ödeme ekranına yönlendir
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OdemeEkrani(
+                totalAmount: 50,
+                onPaymentSuccess:
+                    _onPaymentSuccess, // Ödeme başarılı olunca çağrılacak
+              ),
+            ),
+          );
+        } else {
+          // Özgeçmiş varsa direkt özgeçmiş ekranına yönlendir
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OzgecmisimEkrani(teacherId: widget.id),
+            ),
+          );
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -239,20 +291,13 @@ class _JobListingsPageState extends State<JobListingsPage> {
             });
           }
           if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => OzgecmisimEkrani(
-                  teacherId: widget.id,
-                ),
-              ),
-            ).then((_) {
-              // Sayfa geri dönüldüğünde indexi sıfırla
-              setState(() {
-                _selectedIndex = 0;
-              });
+            // Özgeçmiş bilgilerini kontrol ediyoruz
+            _checkResumeAndNavigate(context);
+            setState(() {
+              _selectedIndex = 0;
             });
           }
+
           if (index == 1) {
             Navigator.push(
               context,
@@ -276,6 +321,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
               ? StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('ilanlar')
+                      .orderBy('publishDate', descending: true)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
@@ -286,126 +332,179 @@ class _JobListingsPageState extends State<JobListingsPage> {
                     }
 
                     final data = snapshot.data!;
-
                     return ListView.builder(
                       itemCount: data.size,
                       itemBuilder: (context, index) {
                         var ilan = data.docs[index];
+                        var publishDate =
+                            (ilan['publishDate'] as Timestamp?)?.toDate() ??
+                                DateTime.now();
+                        String formattedDate = DateFormat('dd/MM/yyyy')
+                            .format(publishDate); // Gün/ay/yıl formatı
+
                         return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.blue),
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 16.0),
+                          child: Card(
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ListTile(
-                                  title: Text(ilan['title']),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
                                     children: [
-                                      Text(ilan['details'] ?? ""),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        '${ilan['salary']} TL',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          color: Colors.red,
+                                      Expanded(
+                                        child: Text(
+                                          ilan['title'],
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                          ),
                                         ),
                                       ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                Basvur(ilan.id, widget.id!,
-                                                    ilan['userId']);
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                foregroundColor: Colors.orange,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 10),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                              ),
-                                              child: const Text('Şimdi Başvur'),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        SendMessagePage(
-                                                      senderId: widget.id!,
-                                                      receiverId:
-                                                          ilan['userId'],
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                foregroundColor:
-                                                    Colors.blueGrey,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 10),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                              ),
-                                              child: const Text('Mesaj Gönder'),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        JobDetailPage(
-                                                      senderId: widget.id!,
-                                                      receiverId:
-                                                          ilan['userId'],
-                                                      jobId: ilan.id,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                foregroundColor: Colors.green,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 10),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                              ),
-                                              child: const Text('Görüntüle'),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 8),
                                     ],
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          ilan['details'] ?? "",
+                                          style: TextStyle(
+                                              color: Colors.grey[700]),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.currency_lira,
+                                          color: Colors.green), // TL sembolü
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        '${ilan['salary']} TL', // Dolar yerine TL
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.calendar_today,
+                                          color: Colors.grey),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        'Yayınlanma Tarihi: $formattedDate',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            Basvur(ilan.id, widget.id!,
+                                                ilan['userId']);
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.orange,
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            'Şimdi Başvur',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SendMessagePage(
+                                                  senderId: widget.id!,
+                                                  receiverId: ilan['userId'],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.blue,
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            'Mesaj Gönder',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    JobDetailPage(
+                                                  senderId: widget.id!,
+                                                  receiverId: ilan['userId'],
+                                                  jobId: ilan.id,
+                                                  isConfirmed: isConfirmed,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.green,
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            'Görüntüle',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                ],
+                              ),
                             ),
                           ),
                         );
@@ -493,6 +592,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
                                               senderId: widget.id!,
                                               receiverId: job['userId'],
                                               jobId: job['id'],
+                                              isConfirmed: isConfirmed,
                                             ),
                                           ),
                                         );
